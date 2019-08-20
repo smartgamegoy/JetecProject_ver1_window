@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">JetecPro_ver1</string>
+
+
+    <!--MainActivity-->
+    <string name="main_button">搜尋裝置</string>
+    <string name="ble_not_supported">該裝置不支援藍芽</string>
+
+    <!--DeviceScanActivity-->
+    <string name="unknown_device">未知裝置</string>
+    <string name="menu_scan">掃描裝置</string>
+    <string name="menu_stop">停止掃描</string>
+    <string name="title_devices">裝置掃描</string>
+    <string name="menu_connect">連線</string>
+    <string name="menu_disconnect">斷線</string>
+
+
+</resources>

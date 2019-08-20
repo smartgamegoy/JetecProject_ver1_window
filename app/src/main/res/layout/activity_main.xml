@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="JTC-X40"
+        android:textColor="@color/Black"
+        android:textSize="38dp" />
+
+    <Button
+        android:id="@+id/nt01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="130dp"
+
+        android:background="@drawable/main_activity_round_button"
+        android:text="@string/main_button"
+        android:textColor="@drawable/main_activity_password_btn_text_selector"
+        android:textSize="26dp" />
+</LinearLayout>
