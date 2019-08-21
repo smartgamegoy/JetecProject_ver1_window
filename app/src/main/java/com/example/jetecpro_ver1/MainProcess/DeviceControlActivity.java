@@ -71,7 +71,6 @@ public class DeviceControlActivity extends Activity {
 
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
-    String mGetData;
 
     // Code to manage Service lifecycle.
 
@@ -157,6 +156,11 @@ public class DeviceControlActivity extends Activity {
         String getMain = data.substring(0, 3);
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
+        if (data.contains("OVER")) {
+            Intent intent = new Intent(DeviceControlActivity.this, DataDisplayActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
 
     }//displayData(回傳值都在這邊操作)
@@ -207,7 +211,7 @@ public class DeviceControlActivity extends Activity {
     }
 
     private void clearUI() {
-        mDataField.setText("no_data");
+        mDataField.setText(R.string.no_data);
     }
 
     @Override
@@ -221,7 +225,9 @@ public class DeviceControlActivity extends Activity {
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         mDataField = (TextView) findViewById(R.id.data_value);
 
-        getActionBar().setTitle(R.string.Connecting);
+
+
+        getActionBar().setTitle(R.string.Connecting3);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);

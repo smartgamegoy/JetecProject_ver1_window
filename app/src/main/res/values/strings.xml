@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JetecPro_ver1</string>
+    <string name="app_name">藍芽控制器正式版</string>
 
 
     <!--MainActivity-->
@@ -20,12 +20,16 @@
     <string name="Connect_Progress">連接進度: </string>
     <string name="Connect_true">已連線</string>
     <string name="Connect_false">未連線</string>
-    <string name="Connecting">連線裝置中...</string>
+    <string name="Connecting1">連線裝置中.</string>
+    <string name="Connecting2">連線裝置中..</string>
+    <string name="Connecting3">連線裝置中...</string>
     <string name="Pz_input_psw">請輸入密碼</string>
     <string name="Correct">輸入正確！</string>
     <string name="Error">傳輸錯誤?</string>
     <string name="OK">確定</string>
     <string name="cancel">取消</string>
+    <string name="no_data">如果沒反應，請手動幫我點右上的連線</string>
+
 
 
 </resources>

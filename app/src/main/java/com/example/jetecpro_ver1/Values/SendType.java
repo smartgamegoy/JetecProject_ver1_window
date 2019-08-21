@@ -14,7 +14,7 @@ public class SendType {
     public static char TherdWord;//大顯字3
     public static String DeviceName;//裝置名稱
     public static String DeviceAddress;//裝置位址
-    public static BluetoothGattCharacteristic Mycharacteristic;//每次連接資料用的
+    public static BluetoothGattCharacteristic Mycharacteristic;//每次傳輸資料用的
     public static BluetoothLeService getSendBluetoothLeService;
 
 

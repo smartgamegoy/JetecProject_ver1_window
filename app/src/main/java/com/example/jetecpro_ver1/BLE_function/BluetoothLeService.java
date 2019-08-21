@@ -32,6 +32,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.jetecpro_ver1.Values.GetDisplayData;
 import com.example.jetecpro_ver1.Values.SendType;
 
 import java.util.List;
@@ -327,15 +328,11 @@ public class BluetoothLeService extends Service {
 
 //        SystemClock.sleep(100);
 
-            BreakString();
 
 
 
     }
-    private void BreakString(){
 
-//       這裡讀取
-    }
 
     /**
      * Enables or disables notification on a give characteristic.

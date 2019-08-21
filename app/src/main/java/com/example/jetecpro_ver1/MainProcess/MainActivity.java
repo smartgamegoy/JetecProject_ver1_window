@@ -1,21 +1,18 @@
-package com.example.jetecpro_ver1;
+package com.example.jetecpro_ver1.MainProcess;
 
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.example.jetecpro_ver1.MainProcess.DeviceScanActivity;
+import com.example.jetecpro_ver1.R;
 
 public class MainActivity extends Activity {
     private static final int REQUEST_FINE_LOCATION_PERMISSION = 102;
