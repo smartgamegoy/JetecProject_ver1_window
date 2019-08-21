@@ -14,5 +14,17 @@
     <string name="menu_connect">連線</string>
     <string name="menu_disconnect">斷線</string>
 
+    <!--DeviceControlActivity-->
+    <string name="Device_name">裝置名稱: </string>
+    <string name="Status">連接狀態: </string>
+    <string name="Connect_Progress">連接進度: </string>
+    <string name="Connect_true">已連線</string>
+    <string name="Connect_false">未連線</string>
+    <string name="Connecting">連線裝置中...</string>
+    <string name="Pz_input_psw">請輸入密碼</string>
+    <string name="Correct">輸入正確！</string>
+    <string name="OK">確定</string>
+    <string name="cancel">取消</string>
+
 
 </resources>

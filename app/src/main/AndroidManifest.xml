@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Base">
         <activity android:name=".MainProcess.DeviceScanActivity"></activity>
-        <activity android:name=".DeviceControlActivity"></activity>
+        <activity android:name=".MainProcess.DeviceControlActivity"></activity>
         <activity android:name=".MainActivity">
 
             <intent-filter>

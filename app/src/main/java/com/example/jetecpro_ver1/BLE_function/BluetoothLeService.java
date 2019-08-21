@@ -32,6 +32,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.jetecpro_ver1.Values.SendType;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -351,7 +353,7 @@ public class BluetoothLeService extends Service {
             return;
         }
 
-        Log.v("BT","開始寫入或讀取程序(setCharacteristicNotification),現在的讀取裝置為: ");
+        Log.v("BT","開始寫入或讀取程序(setCharacteristicNotification) ");
         UUID ServiceUUID = UUID.fromString(Service_uuid);
         UUID TXUUID = UUID.fromString(Characteristic_uuid_TX);
         if (!mBluetoothGatt.equals(null)) {
@@ -359,13 +361,11 @@ public class BluetoothLeService extends Service {
             if (service != null) {
                 BluetoothGattCharacteristic chara = service.getCharacteristic(TXUUID);
                 if (chara != null) {
-                    boolean success = mBluetoothGatt.setCharacteristicNotification(chara, enabled);
 
                     BluetoothGattDescriptor descriptor = chara.getDescriptor(UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG));
                     if (descriptor != null) {
                     }
                     if (enabled) {
-                        Log.v("BT", "訂閱(enable)= " + enabled);
                         descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
                     } else {
                         descriptor.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
@@ -382,8 +382,6 @@ public class BluetoothLeService extends Service {
             }
         }//All if
     }
-
-
     public void writeCustomCharacteristic() {
         BluetoothGattService RxService = mBluetoothGatt.getService(UUID.fromString(Service_uuid));
         if (RxService == null) {
@@ -395,26 +393,10 @@ public class BluetoothLeService extends Service {
             Log.v("BT", "Rx char not found on RxService!");
             return;
         }
-        String j = "Jetec";
-        byte[] strBytes =j.getBytes();
+
+        byte[] strBytes = SendType.SendForBLEDataType.getBytes();
         RxChar.setValue(strBytes);
         mBluetoothGatt.writeCharacteristic(RxChar);
-        /*Log.v("BT","SendType = "+DeviceControlActivity.Sendtype);
-        Log.v("BT","FromDataDisplaySendValue= "+DataDisplayActivity.FromDataDisplaySendValue);
-
-            if(DeviceControlActivity.Sendtype != "") {
-                byte[] strBytes = DeviceControlActivity.Sendtype.getBytes();
-                RxChar.setValue(strBytes);
-                mBluetoothGatt.writeCharacteristic(RxChar);
-                DeviceControlActivity.Sendtype = "";
-            }else if(DataDisplayActivity.FromDataDisplaySendValue != ""){
-                byte[] strBytes = DataDisplayActivity.FromDataDisplaySendValue.getBytes();
-                RxChar.setValue(strBytes);
-                mBluetoothGatt.writeCharacteristic(RxChar);
-                DataDisplayActivity.FromDataDisplaySendValue ="";
-            }
-            這裡寫入
-            */
 
     }
 

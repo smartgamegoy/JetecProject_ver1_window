@@ -1,24 +1,14 @@
 package com.example.jetecpro_ver1.MainProcess;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
-import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,24 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
-import com.example.jetecpro_ver1.BLE_function.SampleGattAttributes;
-import com.example.jetecpro_ver1.DeviceControlActivity;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
 
 public class DeviceScanActivity extends ListActivity {
     private LeDeviceListAdapter mLeDeviceListAdapter;
@@ -54,16 +35,6 @@ public class DeviceScanActivity extends ListActivity {
     private static final long SCAN_PERIOD = 3000;
     private static final int REQUEST_ENABLE_BT = 1;
 
-    private BluetoothLeService mBluetoothLeService;
-    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
-            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-
-    private boolean mConnected = false;
-    private BluetoothGattCharacteristic mNotifyCharacteristic;
-    private final String LIST_NAME = "NAME";
-    private final String LIST_UUID = "UUID";
-    public static String Devicename;
-    public static String DeviceAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,18 +105,12 @@ public class DeviceScanActivity extends ListActivity {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         Log.v("BT", mLeDeviceListAdapter.getDevice(position).toString());
         if (device == null) return;
-        scanLeDevice(false);
-        final Intent intent = new Intent(this, DeviceControlActivity.class);
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
-        Devicename = device.getName();
-        DeviceAddress = device.getAddress();
-        if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;
-        }
         SendType.DeviceName = device.getName();
         SendType.DeviceAddress = device.getAddress();
+        Intent intent = new Intent(DeviceScanActivity.this,
+                DeviceControlActivity.class);
         startActivity(intent);
     }
 
@@ -169,11 +134,6 @@ public class DeviceScanActivity extends ListActivity {
         }
         invalidateOptionsMenu();
     }
-
-
-
-
-
 
     private class LeDeviceListAdapter extends BaseAdapter {
         private ArrayList<BluetoothDevice> mLeDevices;

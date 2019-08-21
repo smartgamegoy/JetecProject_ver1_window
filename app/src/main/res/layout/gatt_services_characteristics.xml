@@ -11,7 +11,7 @@
                   android:layout_margin="10dp">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="label_device_address"
+                  android:text="@string/Device_name"
                   android:textSize="18sp"/>
         <Space android:layout_width="5dp"
                android:layout_height="wrap_content"/>
@@ -26,7 +26,7 @@
                   android:layout_margin="10dp">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="label_state"
+                  android:text="@string/Status"
                   android:textSize="18sp"/>
         <Space android:layout_width="5dp"
                android:layout_height="wrap_content"/>
@@ -42,7 +42,7 @@
                   android:layout_margin="10dp">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="label_data"
+                  android:text="@string/Connect_Progress"
                   android:textSize="18sp"/>
         <Space android:layout_width="5dp"
                android:layout_height="wrap_content"/>
@@ -54,15 +54,4 @@
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/SendDataButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="開始連線"
-        android:textSize="20dp"
-        android:onClick="sendData"/>
-
-    <ExpandableListView android:id="@+id/gatt_services_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 </LinearLayout>
