@@ -57,14 +57,12 @@ import java.util.List;
 public class DeviceControlActivity extends Activity {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
 
-    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     public static Activity OptionThis;
 
 
     private TextView mConnectionState;
     private TextView mDataField;
-    private  BluetoothLeService mBluetoothLeService;
+    private BluetoothLeService mBluetoothLeService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 
@@ -73,6 +71,7 @@ public class DeviceControlActivity extends Activity {
 
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
+    String mGetData;
 
     // Code to manage Service lifecycle.
 
@@ -89,6 +88,7 @@ public class DeviceControlActivity extends Activity {
             // Automatically connects to the device upon successful start-up initialization.
             mBluetoothLeService.connect(SendType.DeviceAddress);
         }
+
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             mBluetoothLeService = null;
@@ -98,18 +98,28 @@ public class DeviceControlActivity extends Activity {
     private void displayData(final String data) {
         if (data != null) {
             mDataField.setText(data);
+
         }
         GetDisplayData get = new GetDisplayData(data);
-        if (data.contains("OK")){
+        if (data.contains("OK")) {
             get.GetOK();
         }
-        if (data.contains("BT-")){
+        if (data.contains("BT-")) {
             SendType.DeviceType = data;
+            SendType.FirstWord = data.charAt(5);
+            SendType.SecendWord = data.charAt(6);
+            SendType.row = data.charAt(3);
+            if (data.charAt(3) == '3') {
+                SendType.TherdWord = data.charAt(7);
+            } else {
+                Log.v("BT", "裝置只有兩個輸入");
+            }
+
         }
-        if(data.contains("PASS")){
+        if (data.contains("PASS")) {
             mDataField.setText(R.string.Pz_input_psw);
             AlertDialog.Builder mBuidler = new AlertDialog.Builder(DeviceControlActivity.this);
-            View v = getLayoutInflater().inflate(R.layout.device_control_dialog,null);
+            View v = getLayoutInflater().inflate(R.layout.device_control_dialog, null);
             final EditText edInput = (EditText) v.findViewById(R.id.editTextInput);
             mBuidler.setTitle("請輸入裝置密碼");
             mBuidler.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
@@ -131,9 +141,9 @@ public class DeviceControlActivity extends Activity {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.v("BT",data.substring(4));
+                    Log.v("BT", data.substring(4));
                     if (!edInput.getText().toString().isEmpty() &&
-                            edInput.getText().toString().contains(data.substring(4,10))) {
+                            edInput.getText().toString().contains(data.substring(4, 10))) {
                         Toast.makeText(getBaseContext(), "登入成功", Toast.LENGTH_LONG).show();
                         mDataField.setText(R.string.Correct);
                         GetDisplayData get = new GetDisplayData(data);
@@ -142,9 +152,15 @@ public class DeviceControlActivity extends Activity {
                     }
                 }
             });
-        }
+        }//PSW
+        /**接收其他數據並分析*/
+        String getMain = data.substring(0, 3);
+        GetDisplayData get1 = new GetDisplayData(data);
+        get1.analysisData(getMain);
+
 
     }//displayData(回傳值都在這邊操作)
+
 
     // Handles various events fired by the Service.處理服務所激發的各種事件
     // ACTION_GATT_CONNECTED: connected to a GATT server. 連接一個GATT服務
@@ -179,7 +195,8 @@ public class DeviceControlActivity extends Activity {
             }
         }
     };//onReceive
-    private void sendData(){
+
+    private void sendData() {
         final BluetoothGattCharacteristic characteristic =
                 mGattCharacteristics.get(2).get(0);
         mNotifyCharacteristic = characteristic;
@@ -265,6 +282,7 @@ public class DeviceControlActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void updateConnectionState(final int resourceId) {
         runOnUiThread(new Runnable() {
             @Override
@@ -279,7 +297,9 @@ public class DeviceControlActivity extends Activity {
     // In this sample, we populate the data structure that is bound to the ExpandableListView
     // on the UI.
 
-    /**以下示範如何將搜尋到的服務顯示至ExpandableListView上*/
+    /**
+     * 以下示範如何將搜尋到的服務顯示至ExpandableListView上
+     */
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         String uuid = null;
@@ -323,6 +343,7 @@ public class DeviceControlActivity extends Activity {
         }
 
     }
+
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);//連接一個GATT服務

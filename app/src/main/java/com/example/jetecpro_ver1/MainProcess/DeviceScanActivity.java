@@ -19,9 +19,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-
-import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
 
