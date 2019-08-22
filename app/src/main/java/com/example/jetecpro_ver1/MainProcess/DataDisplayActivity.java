@@ -1,21 +1,21 @@
 package com.example.jetecpro_ver1.MainProcess;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
+import com.example.jetecpro_ver1.Values.DDA_SendData;
 import com.example.jetecpro_ver1.Values.GetDisplayData;
 import com.example.jetecpro_ver1.Values.SendType;
 import com.example.jetecpro_ver1.Values.SortData;
@@ -50,7 +51,7 @@ public class DataDisplayActivity extends Activity {
     }
 
 
-    private void displayListView(){
+    private void displayListView(){//這個副程式應該可以直接跟新資料吧
         /**從類別取得資料*/
         SortData sortData = new SortData(SendType.DeviceType,getBaseContext());
         String[] nameItems =  sortData.getNames();
@@ -67,7 +68,7 @@ public class DataDisplayActivity extends Activity {
 
         int[] to = {R.id.TitleName, R.id.ResultValue};
         simpleAdapter =
-                new SimpleAdapter(this, arrayList, R.layout.style_listview, from, to);
+                new SimpleAdapter(this, arrayList, R.layout.activity_data_display_style_listview, from, to);
         SimpleListView.setAdapter(simpleAdapter);
         SimpleListView.setOnItemClickListener(onItemClickListener);
 
@@ -79,10 +80,31 @@ public class DataDisplayActivity extends Activity {
             String[] nameItems =  sortData.getNames();
             String[] valueItems = sortData.getValues();
             String GetName = nameItems[position];
-            Log.v("BT",GetName);
+            String GetValues = valueItems[position];
+            View v;
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+            if (GetName.contains(SendType.SPK)){
+                 v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog,null);
+            }else{
+                v  = getLayoutInflater().inflate(R.layout.activity_display_activity_dialog,null);
+            }
+
+            final EditText edInput = (EditText) v.findViewById(R.id.editValueInput);
+
+
+                mBuilder.setTitle(GetName);
+                mBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) { }});
+                mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) { }});
+                mBuilder.setView(v);
+                DDA_SendData dda_sendData = new DDA_SendData(GetName,GetValues,edInput,getBaseContext());
+                dda_sendData.mAlertDialog(mBuilder);
+
+
+
         }
     });
-
 
 
 

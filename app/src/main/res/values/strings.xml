@@ -11,8 +11,8 @@
     <string name="menu_scan">掃描裝置</string>
     <string name="menu_stop">停止掃描</string>
     <string name="title_devices">裝置掃描</string>
-    <string name="menu_connect">連線</string>
-    <string name="menu_disconnect">斷線</string>
+    <string name="menu_connect">連接裝置</string>
+    <string name="menu_disconnect">斷開裝置</string>
 
     <!--DeviceControlActivity-->
     <string name="Device_name">裝置名稱: </string>
@@ -50,6 +50,9 @@
     <string name="SecondRow">第二排</string>
     <string name="ThirdRow">第三排</string>
     <string name="decimal_point">小數點</string>
+
+    <!--DataDisplayActivity-->
+    <string name="dont_blank">表格請勿空白！</string>
 
 
 

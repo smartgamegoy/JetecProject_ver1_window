@@ -33,7 +33,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,7 +120,7 @@ public class DeviceControlActivity extends Activity {
         if (data.contains("PASS")) {
             mDataField.setText(R.string.Pz_input_psw);
             AlertDialog.Builder mBuidler = new AlertDialog.Builder(DeviceControlActivity.this);
-            View v = getLayoutInflater().inflate(R.layout.device_control_dialog, null);
+            View v = getLayoutInflater().inflate(R.layout.activity_input_psw_dialog, null);
             final EditText edInput = (EditText) v.findViewById(R.id.editTextInput);
             mBuidler.setTitle("請輸入裝置密碼");
             mBuidler.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
@@ -222,7 +221,7 @@ public class DeviceControlActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gatt_services_characteristics);
+        setContentView(R.layout.activity_device_control);
         OptionThis = this;
 
         // Sets up UI references.

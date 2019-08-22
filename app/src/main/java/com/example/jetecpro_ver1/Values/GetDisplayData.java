@@ -1,5 +1,7 @@
 package com.example.jetecpro_ver1.Values;
 
+import android.util.Log;
+
 public class GetDisplayData {
 
     String data;
@@ -22,12 +24,12 @@ public class GetDisplayData {
 
     public void analysisData(String getMain) {
         GetDisplayData d = new GetDisplayData(data);
-//用的副程式在最底下....transform 跟 transformToswitch
+//用的副程式在最底下....transform 跟 transformToswitch,inter是轉時間用的
         switch (getMain) {
             case "PV1":
                 SendType.PV1 = getMain;
                 transform(data);
-                SendType.mPV1 = d.transform(data);
+                SendType.mPV1 = transform(data);
                 break;
 
             case "PV2":
@@ -165,9 +167,8 @@ public class GetDisplayData {
 
         }else if(data.contains("INTER")){
             SendType.INTER = data.substring(0,5);
-            Double count = Double.valueOf(data.substring(5,10));
-            String co    = String.valueOf(count);
-            SendType.mINTER = co;
+            inter(data);
+            SendType.mINTER = inter(data);
 
         }else if(data.contains("DATE")){
             SendType.DATE = data.substring(0,4);
@@ -188,6 +189,37 @@ public class GetDisplayData {
         }
 
 
+    }
+    private String inter (String in){
+        String to = in.substring(6,10);
+        int origin = Integer.parseInt(to);
+        int sec = 0;
+        int min = 0;
+        int hour = 0;
+
+        min = origin/60;
+        sec = origin%60;
+        if (min>=60){
+            hour = min/60;
+            min = min%60;
+        }
+         if(hour == 0 && min == 0){//0小時0分鐘x秒
+             String strSec = String.valueOf(sec);
+             return strSec+"s";
+        }else if (hour == 0 && sec == 0){//0小時x分鐘0秒
+             String strMin = String.valueOf(min);
+             return strMin+"m";
+
+         }else if(hour == 0 && sec != 0 && min != 0){//0小時x分鐘x秒
+             String strSec = String.valueOf(sec);
+             String strMin = String.valueOf(min);
+             return strMin+"m"+strSec+"s";
+         }else if(hour != 0 && min == 0 &sec == 0){//1小時0分鐘0秒 ->最大就1h了
+             String strHour = String.valueOf(hour);
+             return strHour+"h";
+         }
+
+        return "怪怪的";
     }
 
     private String transform(String in) {//偶很懶所以就...多寫這點鳥東西,

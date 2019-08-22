@@ -19,23 +19,6 @@ public class SortData {
 
     }
 
-    public String[] TH() {
-
-        String[] b = {"不", "給", "它", "錯"};
-        String[] a = {"些", "東", "西"};
-        String[] bo = ArrayUtils.addAll(b, a);
-
-        return bo;
-    }
-
-
-    public String[] TH_2() {
-        String[] a = {"不", "給", "它", "錯"};
-        String[] b = {"些", "東", "西", "西"};
-        String[] vv = ArrayUtils.addAll(a, b);
-        return vv;
-    }
-
     public String trans(int name) {//不是我在講...每個都要寫ctx.getResources().getString(R.string.??);真的會死人
         String str = ctx.getResources().getString(name);
         return str;

@@ -19,21 +19,21 @@ public class SendType {
 
 
 //    以下是所有會出現的資料
-    public static String PV1;//補正
-    public static String PV2;//補正
-    public static String PV3;//補正
+    public static String PV1 ;//補正
+    public static String PV2 ;//補正
+    public static String PV3 ;//補正
 
-    public static String EH1;//警報上限
-    public static String EL1;//警報下限
+    public static String EH1 ;//警報上限
+    public static String EL1 ;//警報下限
 
-    public static String EH2;//警報上限
-    public static String EL2;//警報下限
+    public static String EH2 ;//警報上限
+    public static String EL2 ;//警報下限
 
-    public static String EH3;//警報上限
-    public static String EL3;//警報下限
+    public static String EH3 ;//警報上限
+    public static String EL3 ;//警報下限
 
-    public static String IH1;//量程上限
-    public static String IL1;//量程下限
+    public static String IH1 ;//量程上限
+    public static String IL1 ;//量程下限
 
     public static String IH2;//量程上限
     public static String IL2;//量程下限
