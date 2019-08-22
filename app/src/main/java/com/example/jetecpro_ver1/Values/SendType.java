@@ -10,8 +10,8 @@ public class SendType {
     public static String DeviceType;//大顯型號
     public static char row;//大顯排數
     public static char FirstWord;//大顯字1
-    public static char SecendWord;//大顯字2
-    public static char TherdWord;//大顯字3
+    public static char SecondWord;//大顯字2
+    public static char ThirdWord;//大顯字3
     public static String DeviceName;//裝置名稱
     public static String DeviceAddress;//裝置位址
     public static BluetoothGattCharacteristic Mycharacteristic;//每次傳輸資料用的

@@ -14,12 +14,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
+import com.example.jetecpro_ver1.Values.GetDisplayData;
 import com.example.jetecpro_ver1.Values.SendType;
 import com.example.jetecpro_ver1.Values.SortData;
 
@@ -41,18 +45,22 @@ public class DataDisplayActivity extends Activity {
         getActionBar().setTitle(SendType.DeviceName);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        displayListView();
+
+    }
 
 
+    private void displayListView(){
         /**從類別取得資料*/
-        SortData sortData = new SortData(SendType.DeviceType);
-        String[] at =  sortData.TH();
-        String[] bt = sortData.TH_2();
+        SortData sortData = new SortData(SendType.DeviceType,getBaseContext());
+        String[] nameItems =  sortData.getNames();
+        String[] valuesItems = sortData.getValues();
         SimpleListView = findViewById(R.id.listView);
         final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
-        for (int i = 0; i < at.length; i++) {
+        for (int i = 0; i < nameItems.length; i++) {
             HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put("name", at[i]);
-            hashMap.put("values",bt[i]);
+            hashMap.put("name", nameItems[i]);
+            hashMap.put("values",valuesItems[i]);
             arrayList.add(hashMap);
         }
         String[] from = {"name", "values"};
@@ -61,8 +69,21 @@ public class DataDisplayActivity extends Activity {
         simpleAdapter =
                 new SimpleAdapter(this, arrayList, R.layout.style_listview, from, to);
         SimpleListView.setAdapter(simpleAdapter);
+        SimpleListView.setOnItemClickListener(onItemClickListener);
 
     }
+    private AdapterView.OnItemClickListener onItemClickListener = (new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            SortData sortData = new SortData(SendType.DeviceType,getBaseContext());
+            String[] nameItems =  sortData.getNames();
+            String[] valueItems = sortData.getValues();
+            String GetName = nameItems[position];
+            Log.v("BT",GetName);
+        }
+    });
+
+
 
 
 
@@ -145,7 +166,10 @@ public class DataDisplayActivity extends Activity {
     };//onReceive
 
     private void displayData(String data) {
-
+        GetDisplayData display = new GetDisplayData(data);
+        String getMain = data.substring(0, 3);
+        display.analysisData(getMain);
+        displayListView();
     }
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {

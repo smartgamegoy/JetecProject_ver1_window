@@ -100,7 +100,7 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
-        Log.v("BT", mLeDeviceListAdapter.getDevice(position).toString());
+        Log.v("BT","取得裝置編號: "+ mLeDeviceListAdapter.getDevice(position).toString());
         if (device == null) return;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;

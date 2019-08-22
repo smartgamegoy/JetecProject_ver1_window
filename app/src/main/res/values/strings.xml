@@ -29,6 +29,29 @@
     <string name="OK">確定</string>
     <string name="cancel">取消</string>
     <string name="no_data">如果沒反應，請手動幫我點右上的連線</string>
+    
+    <!--所有的資料中文名稱-->
+    <string name="PV">補正</string>
+    <string name="EH">上限警報</string>
+    <string name="EL">下限警報</string>
+    <string name="CR">顏色轉換</string>
+    <string name="SPK">警報聲</string>
+    <string name="IH">最大量程</string>
+    <string name="IL">最小量程</string>
+    <string name="INTER">記錄間隔</string>
+    <string name="device_name">裝置名稱</string>
+    
+    <!--TH-->
+    <string name="Temperature">溫度</string>
+    <string name="Humidity">濕度</string>
+    
+    <!--II-->
+    <string name="FirstRow">第一排</string>
+    <string name="SecondRow">第二排</string>
+    <string name="ThirdRow">第三排</string>
+    <string name="decimal_point">小數點</string>
+
+
 
 
 

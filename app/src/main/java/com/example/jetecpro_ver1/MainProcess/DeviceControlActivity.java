@@ -106,11 +106,14 @@ public class DeviceControlActivity extends Activity {
         if (data.contains("BT-")) {
             SendType.DeviceType = data;
             SendType.FirstWord = data.charAt(5);
-            SendType.SecendWord = data.charAt(6);
+            SendType.SecondWord = data.charAt(6);
             SendType.row = data.charAt(3);
             if (data.charAt(3) == '3') {
-                SendType.TherdWord = data.charAt(7);
-            } else {
+                SendType.ThirdWord = data.charAt(7);
+            }else if(data.length() == 33) {
+                SendType.ThirdWord = data.charAt(7);
+            }
+            else if (data.charAt(3) == '2'){
                 Log.v("BT", "裝置只有兩個輸入");
             }
 
@@ -140,7 +143,7 @@ public class DeviceControlActivity extends Activity {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.v("BT", data.substring(4));
+                    Log.v("BT","取得裝置密碼: "+ data.substring(4));
                     if (!edInput.getText().toString().isEmpty() &&
                             edInput.getText().toString().contains(data.substring(4, 10))) {
                         Toast.makeText(getBaseContext(), "登入成功", Toast.LENGTH_LONG).show();
@@ -148,6 +151,8 @@ public class DeviceControlActivity extends Activity {
                         GetDisplayData get = new GetDisplayData(data);
                         get.sendGet();
                         dialog.dismiss();
+                    }else{
+                        Toast.makeText(getBaseContext(), "輸入錯誤", Toast.LENGTH_LONG).show();
                     }
                 }
             });
