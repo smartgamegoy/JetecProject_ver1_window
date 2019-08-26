@@ -3,11 +3,13 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="Black">#000000</color>
+    <color name="Black">#B5000000</color>
     <color name="Blue">#0000FF</color>
     <color name="dodBlue">#005ABB</color>
     <color name="Yellow_Yamafuki">#FFB11B</color>
     <color name="Red_Syojyohi">#E83015</color>
     <color name="Green_Yanagizome">#91AD70</color>
+    <color name="define">#868686</color>
+    <color name="White">#FFFFFF</color>
 
 </resources>

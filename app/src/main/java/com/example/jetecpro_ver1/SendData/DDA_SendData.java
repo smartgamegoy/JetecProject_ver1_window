@@ -17,9 +17,6 @@ public class DDA_SendData {
     String selectName;
     String selectValues;
     EditText edInput;
-    EditText edInputHr;
-    EditText edInputMin;
-    EditText edInputSec;
     Switch swInput;
     Context cox;
     NumberPicker npHour;
@@ -28,12 +25,8 @@ public class DDA_SendData {
 
 
     public DDA_SendData(String selectName, String selectValues, EditText edInput, Switch swInput, Context cox
-            , EditText edInputHr, EditText edInputMin, EditText edInputSec, NumberPicker npHour,
-                        NumberPicker npMin,NumberPicker npSec) {
+            ,NumberPicker npHour,NumberPicker npMin,NumberPicker npSec) {
 
-        this.edInputHr = edInputHr;
-        this.edInputMin = edInputMin;
-        this.edInputSec = edInputSec;
         this.selectName = selectName;
         this.selectValues = selectValues;
         this.edInput = edInput;
@@ -173,7 +166,7 @@ public class DDA_SendData {
                             || selectName.contains(SendType.DP2)) {
                         dialog.dismiss();
                     }
-                } else if (SendType.ThirdWord == 'L' && SendType.INTER.contains(SendType.INTER)) {
+                } else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
                     timeSend();
                     dialog.dismiss();
 
@@ -234,9 +227,6 @@ public class DDA_SendData {
         int hour2Sec = hour*3600;
         int min2Sec  = min*60;
         int totleSec = hour2Sec+min2Sec+sec;
-
-
-        Log.v("BT",hour+", "+min+", "+sec+", 總秒數為: "+totleSec);
         String out = String.valueOf(totleSec);
         if(totleSec >= 1000){
             SendType.SendForBLEDataType = "INTER0"+out;

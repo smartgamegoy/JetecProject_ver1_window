@@ -93,9 +93,46 @@ public class DeviceControlActivity extends Activity {
         }
     };//serviceConnection
 
+
+
+
+    // Handles various events fired by the Service.處理服務所激發的各種事件
+    // ACTION_GATT_CONNECTED: connected to a GATT server. 連接一個GATT服務
+    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.從GATT服務中斷開連接
+    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.查找GATT服務
+    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
+    //                        or notification operations.從服務中接受(收?)數據
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                mConnected = true;
+                updateConnectionState(R.string.Connect_true,getBaseContext().getResources().getColor(R.color.Green_Yanagizome));
+                invalidateOptionsMenu();
+
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                mConnected = false;
+                updateConnectionState(R.string.Connect_false,getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
+                invalidateOptionsMenu();
+                clearUI();
+
+                /**接下來是重點===============*/
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+                /**送出資訊*/
+                sendData();
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                /**接收來自Service的訊息*/
+                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            }
+        }
+    };//onReceive
     private void displayData(final String data) {
         if (data != null) {
             mDataField.setText(data);
+            mDataField.setTextColor(getBaseContext().getResources().getColor(R.color.define));
 
         }
         GetDisplayData get = new GetDisplayData(data);
@@ -111,9 +148,13 @@ public class DeviceControlActivity extends Activity {
                 SendType.ThirdWord = data.charAt(7);
             }else if(data.length() == 33) {
                 SendType.ThirdWord = data.charAt(7);
+                String getTable = data.substring(0,7);
+                SendType.DB_TABLE = getTable.replace("-","");
             }
             else if (data.charAt(3) == '2'){
                 Log.v("BT", "裝置只有兩個輸入");
+                String getTable = data.substring(0,6);
+                SendType.DB_TABLE = getTable.replace("-","");
             }
 
         }
@@ -168,41 +209,6 @@ public class DeviceControlActivity extends Activity {
 
 
     }//displayData(回傳值都在這邊操作)
-
-
-    // Handles various events fired by the Service.處理服務所激發的各種事件
-    // ACTION_GATT_CONNECTED: connected to a GATT server. 連接一個GATT服務
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.從GATT服務中斷開連接
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.查找GATT服務
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.從服務中接受(收?)數據
-    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-
-            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                mConnected = true;
-                updateConnectionState(R.string.Connect_true,getBaseContext().getResources().getColor(R.color.Green_Yanagizome));
-                invalidateOptionsMenu();
-
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mConnected = false;
-                updateConnectionState(R.string.Connect_false,getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
-                invalidateOptionsMenu();
-                clearUI();
-
-                /**接下來是重點===============*/
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                displayGattServices(mBluetoothLeService.getSupportedGattServices());
-                /**送出資訊*/
-                sendData();
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                /**接收來自Service的訊息*/
-                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-            }
-        }
-    };//onReceive
 
     private void sendData() {
         final BluetoothGattCharacteristic characteristic =

@@ -11,11 +11,14 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -30,6 +33,7 @@ import com.example.jetecpro_ver1.SendData.DDA_SendData;
 import com.example.jetecpro_ver1.SendData.GetDisplayData;
 import com.example.jetecpro_ver1.Values.SendType;
 import com.example.jetecpro_ver1.SendData.SortData;
+import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,21 +43,99 @@ public class DataDisplayActivity extends Activity {
     private boolean mConnected = true;
     ListView SimpleListView;
     private SimpleAdapter simpleAdapter;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_display);
+        //使用BluetoothLeService的Service功能
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        //取得Action Bar 抬頭顯示
         getActionBar().setTitle(SendType.DeviceName);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        //載入ListView
         displayListView();
+        //DrawerLayout內的活動
+        setDrawerFunction();
+        Stetho.initializeWithDefaults(this);
+
+
+
 
     }
+    /**取得所有Drawer內功能*/
+    private void setDrawerFunction(){
+        drawerLayout            = (DrawerLayout) findViewById(R.id.drawerLayout);
+        Button btSave           = (Button) findViewById(R.id.Go_saveData);
+        Button btLoad           = (Button) findViewById(R.id.Go_LoadData);
+        Button btDownloadData   = (Button) findViewById(R.id.Go_DownloadData);
+        Button btChart          = (Button) findViewById(R.id.Go_Chart);
+        Button btModifyPSW      = (Button) findViewById(R.id.Go_ModifyPSW);
+        Button btRecord         = (Button) findViewById(R.id.Go_Record);
+        Button btStartRecord    = (Button) findViewById(R.id.Go_StartRecord);
+        btSave.setOnClickListener(mListener);
+        btLoad.setOnClickListener(mListener);
+        btDownloadData.setOnClickListener(mListener);
+        btChart.setOnClickListener(mListener);
+        btModifyPSW.setOnClickListener(mListener);
+        btRecord.setOnClickListener(mListener);
+        btStartRecord.setOnClickListener(mListener);
+    }
+
+    private Button.OnClickListener mListener = new Button.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+            View view ;
+            switch (v.getId()){
+                case R.id.Go_saveData:
+                    view = getLayoutInflater().inflate(R.layout.activity_data_display_save_setting_dialog,null);
+                    mBuilder.setView(view);
+                    DrawerFunction drawerFunction = new DrawerFunction(getBaseContext(),view,mBuilder);
+                    drawerFunction.SaveFunction();
+                    break;
+                case R.id.Go_LoadData:
+                    view = getLayoutInflater().inflate(R.layout.activity_data_display_load_setting_dialog,null);
+                    DrawerFunction drawerFunctionLoad = new DrawerFunction(getBaseContext(),view,mBuilder);
+                    drawerFunctionLoad.LoadFunction();
+                    break;
+                case R.id.Go_DownloadData:
+
+                    break;
+                case R.id.Go_Chart:
+
+                    break;
+                case R.id.Go_ModifyPSW:
+
+                    break;
+                case R.id.Go_Record:
+
+                    break;
+                case R.id.Go_StartRecord:
+
+                    break;
+            }
 
 
+        }
+    };
+    /**獲取返回鍵活動*/
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            drawerLayout.closeDrawers();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**載入ListView功能*/
     private void displayListView(){//設置ListView內容
         /**從類別取得資料*/
         SortData sortData = new SortData(SendType.DeviceType,getBaseContext());
@@ -76,6 +158,8 @@ public class DataDisplayActivity extends Activity {
         SimpleListView.setOnItemClickListener(onItemClickListener);
 
     }
+
+    /**設置ListView點擊活動*/
     private AdapterView.OnItemClickListener onItemClickListener = (new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +173,6 @@ public class DataDisplayActivity extends Activity {
 
             if (GetName.contains(SendType.SPK)){
                  v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog,null);
-                Log.v("BT","跑警報");
             }else if(SendType.FirstWord == 'I'
                         ||SendType.SecondWord == 'I'
                         ||SendType.ThirdWord  == 'I'){
@@ -100,22 +183,18 @@ public class DataDisplayActivity extends Activity {
                 }
                 
             }else if(SendType.ThirdWord == 'L' && GetName.contains(SendType.INTER)){
-                    v = getLayoutInflater().inflate(R.layout.activity_data_display_record_function_dialog,null);
+                    v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog,null);
                     mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override public void onClick(DialogInterface dialog, int which) { }});  }
 
             else{
                 v  = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog,null);
-                Log.v("BT","其他選項");
                 mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) { }});
             }
 
             final EditText edInput = (EditText) v.findViewById(R.id.editValueInput);
             final Switch   swInput = (Switch)   v.findViewById(R.id.switch1);
-            final EditText edHour  = (EditText) v.findViewById(R.id.editTextHr);
-            final EditText edMin   = (EditText) v.findViewById(R.id.editTextMin);
-            final EditText edSec   = (EditText) v.findViewById(R.id.editTextSec);
             final NumberPicker npHour = (NumberPicker) v.findViewById(R.id.hourPic);
             final NumberPicker npMin  = (NumberPicker) v.findViewById(R.id.minPic);
             final NumberPicker npSec  = (NumberPicker) v.findViewById(R.id.secPick);
@@ -126,10 +205,8 @@ public class DataDisplayActivity extends Activity {
                     @Override public void onClick(DialogInterface dialog, int which) { }});
                 mBuilder.setView(v);
                 DDA_SendData dda_sendData = new DDA_SendData(GetName,GetValues,edInput,swInput,getBaseContext()
-                                                            ,edHour,edMin,edSec
-                                                            ,npHour,npMin,npSec);
+                        ,npHour,npMin,npSec);
                 dda_sendData.mAlertDialog(mBuilder);
-
         }
     });
 
@@ -139,6 +216,7 @@ public class DataDisplayActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(SendType.DeviceAddress);
@@ -165,6 +243,7 @@ public class DataDisplayActivity extends Activity {
         return true;
     }
 
+    /**設置Action Bar的活動*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -178,7 +257,7 @@ public class DataDisplayActivity extends Activity {
                 finish();
                 return true;
             case android.R.id.home:
-                //drawerLayout.openDrawer(GravityCompat.START);
+                drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -189,24 +268,27 @@ public class DataDisplayActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+                //如果有連接
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 invalidateOptionsMenu();
-
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+            }
+            //如果沒有連接
+            else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 invalidateOptionsMenu();
-
-                /**接下來是重點===============*/
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+            }
+            //如果找到GATT服務
+            else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+            }
+            //接收來自藍芽傳回的資料
+            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 /**接收來自Service的訊息*/
                 displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
         }
     };//onReceive
-
+    /**管理來自藍芽的資料*/
     private void displayData(String data) {
         GetDisplayData display = new GetDisplayData(data);
         String getMain = data.substring(0, 3);
