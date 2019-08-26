@@ -53,6 +53,13 @@
 
     <!--DataDisplayActivity-->
     <string name="dont_blank">表格請勿空白！</string>
+    <!--DataDisplayActivityRecordFunction-->
+    <string name="hour">小時: </string>
+    <string name="min">分鐘: </string>
+    <string name="sec">秒鐘: </string>
+    <string name="hour1">小時</string>
+    <string name="min1">分鐘</string>
+    <string name="sec1">秒鐘</string>
 
 
 

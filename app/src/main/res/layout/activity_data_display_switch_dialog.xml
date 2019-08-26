@@ -11,5 +11,7 @@
         android:ellipsize="middle"
         android:gravity="center"
         android:scrollbarSize="6dp"
-        android:textSize="30sp" />
+        android:textSize="1sp"
+        android:text="switch"
+        />
 </LinearLayout>

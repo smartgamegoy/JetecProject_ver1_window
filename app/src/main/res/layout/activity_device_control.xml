@@ -12,9 +12,8 @@
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="@string/Device_name"
-                  android:textSize="18sp"/>
-        <Space android:layout_width="5dp"
-               android:layout_height="wrap_content"/>
+                  android:textSize="26sp"/>
+
         <TextView android:id="@+id/device_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,30 +26,36 @@
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="@string/Status"
-                  android:textSize="18sp"/>
-        <Space android:layout_width="5dp"
-               android:layout_height="wrap_content"/>
+                  android:textSize="26sp"/>
+
         <TextView android:id="@+id/connection_state"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:text="disconnected"
+                  android:textColor="@color/Red_Syojyohi"
+                  android:text="@string/Connect_false"
                   android:textSize="18sp"/>
     </LinearLayout>
-    <LinearLayout android:orientation="horizontal"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_margin="10dp">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/Connect_Progress"
-                  android:textSize="18sp"/>
-        <Space android:layout_width="5dp"
-               android:layout_height="wrap_content"/>
-        <TextView android:id="@+id/data_value"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="@string/no_data"
-                  android:textSize="18sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Connect_Progress"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/data_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:text="@string/no_data"
+            android:textColor="@color/Yellow_Yamafuki"
+            android:textSize="18sp" />
     </LinearLayout>
 
 

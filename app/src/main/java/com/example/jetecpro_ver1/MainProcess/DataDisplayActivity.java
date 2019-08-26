@@ -11,22 +11,25 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.SimpleAdapter;
+import android.widget.Switch;
 import android.widget.Toast;
 
 
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
-import com.example.jetecpro_ver1.Values.DDA_SendData;
-import com.example.jetecpro_ver1.Values.GetDisplayData;
+import com.example.jetecpro_ver1.SendData.DDA_SendData;
+import com.example.jetecpro_ver1.SendData.GetDisplayData;
 import com.example.jetecpro_ver1.Values.SendType;
-import com.example.jetecpro_ver1.Values.SortData;
+import com.example.jetecpro_ver1.SendData.SortData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +54,7 @@ public class DataDisplayActivity extends Activity {
     }
 
 
-    private void displayListView(){//這個副程式應該可以直接跟新資料吧
+    private void displayListView(){//設置ListView內容
         /**從類別取得資料*/
         SortData sortData = new SortData(SendType.DeviceType,getBaseContext());
         String[] nameItems =  sortData.getNames();
@@ -81,37 +84,54 @@ public class DataDisplayActivity extends Activity {
             String[] valueItems = sortData.getValues();
             String GetName = nameItems[position];
             String GetValues = valueItems[position];
-            View v;
+            View v = null;
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+
             if (GetName.contains(SendType.SPK)){
                  v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog,null);
-            }else{
-                v  = getLayoutInflater().inflate(R.layout.activity_display_activity_dialog,null);
+                Log.v("BT","跑警報");
+            }else if(SendType.FirstWord == 'I'
+                        ||SendType.SecondWord == 'I'
+                        ||SendType.ThirdWord  == 'I'){
+                if (GetName.contains(SendType.DP1) 
+                        ||GetName.contains(SendType.DP2) 
+                        ||GetName.contains(SendType.DP2)){
+                    v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog,null);
+                }
+                
+            }else if(SendType.ThirdWord == 'L' && GetName.contains(SendType.INTER)){
+                    v = getLayoutInflater().inflate(R.layout.activity_data_display_record_function_dialog,null);
+                    mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override public void onClick(DialogInterface dialog, int which) { }});  }
+
+            else{
+                v  = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog,null);
+                Log.v("BT","其他選項");
+                mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) { }});
             }
 
             final EditText edInput = (EditText) v.findViewById(R.id.editValueInput);
+            final Switch   swInput = (Switch)   v.findViewById(R.id.switch1);
+            final EditText edHour  = (EditText) v.findViewById(R.id.editTextHr);
+            final EditText edMin   = (EditText) v.findViewById(R.id.editTextMin);
+            final EditText edSec   = (EditText) v.findViewById(R.id.editTextSec);
+            final NumberPicker npHour = (NumberPicker) v.findViewById(R.id.hourPic);
+            final NumberPicker npMin  = (NumberPicker) v.findViewById(R.id.minPic);
+            final NumberPicker npSec  = (NumberPicker) v.findViewById(R.id.secPick);
 
 
                 mBuilder.setTitle(GetName);
                 mBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) { }});
-                mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) { }});
                 mBuilder.setView(v);
-                DDA_SendData dda_sendData = new DDA_SendData(GetName,GetValues,edInput,getBaseContext());
+                DDA_SendData dda_sendData = new DDA_SendData(GetName,GetValues,edInput,swInput,getBaseContext()
+                                                            ,edHour,edMin,edSec
+                                                            ,npHour,npMin,npSec);
                 dda_sendData.mAlertDialog(mBuilder);
-
-
 
         }
     });
-
-
-
-
-
-
-
 
 
 

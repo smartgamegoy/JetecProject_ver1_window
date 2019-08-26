@@ -40,7 +40,7 @@ import android.widget.Toast;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.BLE_function.SampleGattAttributes;
 import com.example.jetecpro_ver1.R;
-import com.example.jetecpro_ver1.Values.GetDisplayData;
+import com.example.jetecpro_ver1.SendData.GetDisplayData;
 import com.example.jetecpro_ver1.Values.SendType;
 
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class DeviceControlActivity extends Activity {
         if (data.contains("PASS")) {
             mDataField.setText(R.string.Pz_input_psw);
             AlertDialog.Builder mBuidler = new AlertDialog.Builder(DeviceControlActivity.this);
-            View v = getLayoutInflater().inflate(R.layout.activity_input_psw_dialog, null);
+            View v = getLayoutInflater().inflate(R.layout.activity_device_control_input_psw_dialog, null);
             final EditText edInput = (EditText) v.findViewById(R.id.editTextInput);
             mBuidler.setTitle("請輸入裝置密碼");
             mBuidler.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
@@ -183,12 +183,12 @@ public class DeviceControlActivity extends Activity {
 
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-                updateConnectionState(R.string.Connect_true);
+                updateConnectionState(R.string.Connect_true,getBaseContext().getResources().getColor(R.color.Green_Yanagizome));
                 invalidateOptionsMenu();
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-                updateConnectionState(R.string.Connect_false);
+                updateConnectionState(R.string.Connect_false,getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
                 invalidateOptionsMenu();
                 clearUI();
 
@@ -216,6 +216,7 @@ public class DeviceControlActivity extends Activity {
 
     private void clearUI() {
         mDataField.setText(R.string.no_data);
+        mDataField.setTextColor(getBaseContext().getResources().getColor(R.color.Yellow_Yamafuki));
     }
 
     @Override
@@ -293,11 +294,12 @@ public class DeviceControlActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateConnectionState(final int resourceId) {
+    private void updateConnectionState(final int resourceId,final int colorId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mConnectionState.setText(resourceId);
+                mConnectionState.setTextColor(colorId);
             }
         });
     }

@@ -1,11 +1,11 @@
-package com.example.jetecpro_ver1.Values;
+package com.example.jetecpro_ver1.SendData;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.apache.commons.lang3.ArrayUtils;//字元陣列合併
 
 import com.example.jetecpro_ver1.R;
+import com.example.jetecpro_ver1.Values.SendType;
 
 public class SortData {
 

@@ -1,6 +1,6 @@
-package com.example.jetecpro_ver1.Values;
+package com.example.jetecpro_ver1.SendData;
 
-import android.util.Log;
+import com.example.jetecpro_ver1.Values.SendType;
 
 public class GetDisplayData {
 
