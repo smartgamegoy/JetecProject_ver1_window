@@ -96,7 +96,7 @@
             android:text="刪除資料" />
 
         <Button
-            android:id="@+id/LoadButton"
+            android:id="@+id/modifyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

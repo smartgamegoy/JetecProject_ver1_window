@@ -4,16 +4,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,11 +49,13 @@ public class DataDisplayActivity extends Activity {
     ListView SimpleListView;
     private SimpleAdapter simpleAdapter;
     private DrawerLayout drawerLayout;
+    public static Activity DisplayData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_display);
+        DisplayData = this;
         //使用BluetoothLeService的Service功能
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -86,11 +93,13 @@ public class DataDisplayActivity extends Activity {
         btStartRecord.setOnClickListener(mListener);
     }
 
+    /**分類按鈕點擊事件*/
     private Button.OnClickListener mListener = new Button.OnClickListener() {
 
         @Override
         public void onClick(View v) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+            View view2;
             View view ;
             switch (v.getId()){
                 case R.id.Go_saveData:
@@ -103,6 +112,7 @@ public class DataDisplayActivity extends Activity {
                     view = getLayoutInflater().inflate(R.layout.activity_data_display_load_setting_dialog,null);
                     DrawerFunction drawerFunctionLoad = new DrawerFunction(getBaseContext(),view,mBuilder);
                     drawerFunctionLoad.LoadFunction();
+
                     break;
                 case R.id.Go_DownloadData:
 
@@ -120,7 +130,7 @@ public class DataDisplayActivity extends Activity {
 
                     break;
             }
-
+            drawerLayout.closeDrawers();
 
         }
     };
@@ -322,5 +332,47 @@ public class DataDisplayActivity extends Activity {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);//查找GATT服務
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);//從服務中接受(收?)數據
         return intentFilter;
+    }
+
+    /**這是來自DrawerFunction.java的副程式，在類別裡多寫一個AlertDialog問題太多了==*/
+    public void  getModifySQLiteFunctionViewFromDrawerFunction(final SQLiteDatabase mCustomDb, final String DB_TABLE,
+                                                               final int GET_ITEM_POSITION, final ListView listView
+                                                                , final View origonView, final Context context
+    , final AlertDialog.Builder mBuilder){
+        LayoutInflater layoutInflater = LayoutInflater.from(DataDisplayActivity.DisplayData);
+        View v = layoutInflater.inflate(R.layout.dialog_input_modift_function,null);
+        final AlertDialog.Builder modifyDialog = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
+        final EditText edModify = (EditText) v.findViewById(R.id.editTextINput);
+        modifyDialog.setView(v);
+        modifyDialog.setTitle(R.string.plzInputModifyName);
+        final Cursor c = mCustomDb.rawQuery("SELECT *  FROM " + DB_TABLE + " WHERE _id=" + GET_ITEM_POSITION, null);
+        while (c.moveToNext()) {
+            edModify.setText(c.getString(1));
+        }
+        modifyDialog.setPositiveButton(R.string.modify, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) {}});
+        modifyDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) {}});
+        final AlertDialog dialog = modifyDialog.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edModify.getText().toString().length()>0){
+                    ContentValues values = new ContentValues();
+                    values.put("name",edModify.getText().toString().trim());
+                    mCustomDb.update(DB_TABLE, values,"_id="+ GET_ITEM_POSITION,null);
+                    //UPDATE BT2TH SET  WHERE
+                    //UPDATE "表格" SET "欄位1" = [值1], "欄位2" = [值2]WHERE "條件";
+                    DrawerFunction drawerFunction = new DrawerFunction(context,origonView,mBuilder);
+                    drawerFunction.setListView(listView);
+
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(DataDisplayActivity.DisplayData,R.string.Dont_blank1,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
     }
 }
