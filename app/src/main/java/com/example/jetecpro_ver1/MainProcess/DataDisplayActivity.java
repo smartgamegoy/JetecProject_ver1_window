@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.os.IBinder;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -394,6 +395,7 @@ public class DataDisplayActivity extends Activity {
 
 
     }
+    /**匯入所儲存資料的副程式*/
     public void getLoadSQLiteFunctionViewFromDrawerFunction(final SQLiteDatabase mCustomDb, final String DB_TABLE,
                                                             final int GET_ITEM_POSITION, final ListView listView
                                                             ,final View origonView, final Context context
@@ -419,7 +421,9 @@ public class DataDisplayActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+
                         try {
+
                             final Cursor c = mCustomDb.rawQuery("SELECT Description FROM "
                                     + DB_TABLE + " WHERE _id=" + GET_ITEM_POSITION, null);
                             String str = "";
@@ -445,13 +449,12 @@ public class DataDisplayActivity extends Activity {
                         } finally {
                             d.dismiss();
                             dialog.dismiss();
+                            Looper.prepare();
+                            Toast.makeText(context,R.string.loadFinal,Toast.LENGTH_LONG).show();
+                            Looper.loop();
                         }
                     }
                 }).start();
-
-                Toast.makeText(context,R.string.loadFinal,Toast.LENGTH_LONG).show();
-
-
             }
         });
 
