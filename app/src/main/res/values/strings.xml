@@ -68,6 +68,8 @@
     <string name="plzInputModifyName">請輸入修改的名稱</string>
     <string name="modify">修改</string>
     <string name="Dont_blank1">此處不可為空</string>
+    <string name="plzSelectDeleteItem">請選擇欲刪除之物件</string>
+    <string name="deleteSuccess">刪除成功！</string>
 
     <!--DataDisplayActivityRecordFunction-->
     <string name="hour">小時: </string>
@@ -77,6 +79,16 @@
     <string name="min1">分鐘</string>
     <string name="sec1">秒鐘</string>
 
+    <!--setting dialog-->
+    <string name="btCreate">新增</string>
+    <string name="btModify">修改命名</string>
+    <string name="btDelete">刪除資料</string>
+    <string name="btClose">關閉視窗</string>
+
+    <!--finalCheckDialog-->
+    <string name="finalCheckTitle">確定要匯入嗎?</string>
+    <string name="loading">匯入中..</string>
+    <string name="loadFinal">已匯入</string>
 
 
 

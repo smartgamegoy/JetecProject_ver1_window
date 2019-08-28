@@ -192,6 +192,7 @@ public class GetDisplayData {
     }
     private String inter (String in){
         String to = in.substring(6,10);
+        SendType.INTER2SQL = to;
         int origin = Integer.parseInt(to);
         int sec = 0;
         int min = 0;

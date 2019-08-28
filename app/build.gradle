@@ -27,5 +27,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'org.apache.commons:commons-lang3:3.6'//組合字串陣列
     implementation 'com.facebook.stetho:stetho:1.4.1'//觀察SQLite使用情形
+    implementation 'com.google.code.gson:gson:2.8.5'//使用GSON
 
 }

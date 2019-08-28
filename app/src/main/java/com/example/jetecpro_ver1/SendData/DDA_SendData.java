@@ -382,10 +382,7 @@ public class DDA_SendData {
         }
         switch (SendType.SecondWord) {
             case 'T':
-                SendType.PV2 = trans(R.string.Temperature) + trans(R.string.PV);
-                SendType.EH2 = trans(R.string.Temperature) + trans(R.string.EH);
-                SendType.EL2 = trans(R.string.Temperature) + trans(R.string.EL);
-                SendType.CR2 = trans(R.string.Temperature) + trans(R.string.CR);
+
                 break;
             case 'H':
                 if (input.contains(trans(R.string.Humidity) + trans(R.string.PV))) {
@@ -399,13 +396,7 @@ public class DDA_SendData {
                 }
                 break;
             case 'I':
-                SendType.PV2 = trans(R.string.SecondRow) + trans(R.string.PV);
-                SendType.IH2 = trans(R.string.SecondRow) + trans(R.string.IH);
-                SendType.IL2 = trans(R.string.SecondRow) + trans(R.string.IL);
-                SendType.EH2 = trans(R.string.SecondRow) + trans(R.string.EH);
-                SendType.EL2 = trans(R.string.SecondRow) + trans(R.string.EL);
-                SendType.CR2 = trans(R.string.SecondRow) + trans(R.string.CR);
-                SendType.DP2 = trans(R.string.SecondRow) + trans(R.string.decimal_point);
+
                 break;
             case 'C':
 

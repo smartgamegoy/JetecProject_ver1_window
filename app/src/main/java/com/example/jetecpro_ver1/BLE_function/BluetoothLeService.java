@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.jetecpro_ver1.Values.SendType;
@@ -325,10 +326,7 @@ public class BluetoothLeService extends Service {
         record = characteristic.getStringValue(0);
         Log.v("BT", "readCharacteristic回傳: " + record);
 
-//        SystemClock.sleep(100);
-
-
-
+        SystemClock.sleep(100);
 
     }
 

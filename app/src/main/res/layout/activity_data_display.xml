@@ -78,6 +78,14 @@
             android:text="@string/Load" />
 
         <Button
+            android:id="@+id/Go_ModifyPSW"
+            style="@android:style/Widget.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/White"
+            android:text="@string/ModifyPSW" />
+
+        <Button
             android:id="@+id/Go_DownloadData"
             style="@android:style/Widget.Button"
             android:layout_width="match_parent"
@@ -92,14 +100,6 @@
             android:layout_height="wrap_content"
             android:background="@color/White"
             android:text="@string/DisplayChart" />
-
-        <Button
-            android:id="@+id/Go_ModifyPSW"
-            style="@android:style/Widget.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/White"
-            android:text="@string/ModifyPSW" />
 
         <Button
             android:id="@+id/Go_Record"

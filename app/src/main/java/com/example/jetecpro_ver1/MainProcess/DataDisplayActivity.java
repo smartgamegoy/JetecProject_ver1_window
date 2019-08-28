@@ -2,6 +2,8 @@ package com.example.jetecpro_ver1.MainProcess;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -12,8 +14,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
 import android.os.IBinder;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -27,8 +31,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -36,9 +42,15 @@ import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SendData.DDA_SendData;
 import com.example.jetecpro_ver1.SendData.GetDisplayData;
+import com.example.jetecpro_ver1.SendData.LoadingSend;
 import com.example.jetecpro_ver1.Values.SendType;
 import com.example.jetecpro_ver1.SendData.SortData;
 import com.facebook.stetho.Stetho;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +71,7 @@ public class DataDisplayActivity extends Activity {
         //使用BluetoothLeService的Service功能
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
         //取得Action Bar 抬頭顯示
         getActionBar().setTitle(SendType.DeviceName);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -69,10 +81,6 @@ public class DataDisplayActivity extends Activity {
         //DrawerLayout內的活動
         setDrawerFunction();
         Stetho.initializeWithDefaults(this);
-
-
-
-
     }
     /**取得所有Drawer內功能*/
     private void setDrawerFunction(){
@@ -91,6 +99,17 @@ public class DataDisplayActivity extends Activity {
         btModifyPSW.setOnClickListener(mListener);
         btRecord.setOnClickListener(mListener);
         btStartRecord.setOnClickListener(mListener);
+
+       if ( SendType.ThirdWord == 'L'){
+
+       }else if(SendType.SecondWord == 'L'){
+
+       } else{
+           btChart.setEnabled(false);
+           btDownloadData.setEnabled(false);
+           btRecord.setEnabled(false);
+           btStartRecord.setEnabled(false);
+       }
     }
 
     /**分類按鈕點擊事件*/
@@ -99,8 +118,8 @@ public class DataDisplayActivity extends Activity {
         @Override
         public void onClick(View v) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
-            View view2;
             View view ;
+            drawerLayout.closeDrawers();
             switch (v.getId()){
                 case R.id.Go_saveData:
                     view = getLayoutInflater().inflate(R.layout.activity_data_display_save_setting_dialog,null);
@@ -110,6 +129,7 @@ public class DataDisplayActivity extends Activity {
                     break;
                 case R.id.Go_LoadData:
                     view = getLayoutInflater().inflate(R.layout.activity_data_display_load_setting_dialog,null);
+                    mBuilder.setView(view);
                     DrawerFunction drawerFunctionLoad = new DrawerFunction(getBaseContext(),view,mBuilder);
                     drawerFunctionLoad.LoadFunction();
 
@@ -130,7 +150,6 @@ public class DataDisplayActivity extends Activity {
 
                     break;
             }
-            drawerLayout.closeDrawers();
 
         }
     };
@@ -336,11 +355,11 @@ public class DataDisplayActivity extends Activity {
 
     /**這是來自DrawerFunction.java的副程式，在類別裡多寫一個AlertDialog問題太多了==*/
     public void  getModifySQLiteFunctionViewFromDrawerFunction(final SQLiteDatabase mCustomDb, final String DB_TABLE,
-                                                               final int GET_ITEM_POSITION, final ListView listView
-                                                                , final View origonView, final Context context
-    , final AlertDialog.Builder mBuilder){
+                                                                final int GET_ITEM_POSITION, final ListView listView
+                                                                    ,final View origonView, final Context context
+                                                                    ,final AlertDialog.Builder mBuilder){
         LayoutInflater layoutInflater = LayoutInflater.from(DataDisplayActivity.DisplayData);
-        View v = layoutInflater.inflate(R.layout.dialog_input_modift_function,null);
+        View v = layoutInflater.inflate(R.layout.activity_data_display_modify_data,null);
         final AlertDialog.Builder modifyDialog = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
         final EditText edModify = (EditText) v.findViewById(R.id.editTextINput);
         modifyDialog.setView(v);
@@ -373,6 +392,68 @@ public class DataDisplayActivity extends Activity {
             }
         });
 
+
+    }
+    public void getLoadSQLiteFunctionViewFromDrawerFunction(final SQLiteDatabase mCustomDb, final String DB_TABLE,
+                                                            final int GET_ITEM_POSITION, final ListView listView
+                                                            ,final View origonView, final Context context
+                                                            ,final AlertDialog.Builder mBuilder){
+        LayoutInflater layoutInflater = LayoutInflater.from(DataDisplayActivity.DisplayData);
+        View v = layoutInflater.inflate(R.layout.activity_data_display_load_final_dialog,null);
+        final AlertDialog.Builder finalCheck = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
+
+        finalCheck.setView(v);
+        finalCheck.setTitle(R.string.finalCheckTitle);
+
+
+        finalCheck.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { }});
+        finalCheck.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { }});
+        final AlertDialog dialog = finalCheck.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Dialog d = ProgressDialog.show(DataDisplayActivity.DisplayData,
+                        context.getString(R.string.loading),"",true);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final Cursor c = mCustomDb.rawQuery("SELECT Description FROM "
+                                    + DB_TABLE + " WHERE _id=" + GET_ITEM_POSITION, null);
+                            String str = "";
+                            while (c.moveToNext()) {
+                                Log.v("BT", c.getString(0));
+                                str = c.getString(0);
+                                try {
+                                    JSONArray array = new JSONArray(str);
+                                    for(int i =0;i<array.length();i++){
+                                        JSONObject jsonObject = array.getJSONObject(i);
+                                        String id       = jsonObject.getString("id");
+                                        String value    = jsonObject.getString("value");
+                                        Log.v("BT","id= "+id+" value= "+value);
+                                        LoadingSend loadingSend = new LoadingSend(id,value,context);
+                                        loadingSend.ChickData();
+                                        SystemClock.sleep(500);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        } finally {
+                            d.dismiss();
+                            dialog.dismiss();
+                        }
+                    }
+                }).start();
+
+                Toast.makeText(context,R.string.loadFinal,Toast.LENGTH_LONG).show();
+
+
+            }
+        });
 
     }
 }

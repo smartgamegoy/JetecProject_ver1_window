@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="新增"
+            android:text="@string/btCreate"
             android:textSize="24sp" />
     </LinearLayout>
 
@@ -86,21 +86,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="關閉視窗" />
+            android:text="@string/btClose" />
 
         <Button
             android:id="@+id/deleteDataButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="刪除資料" />
+            android:text="@string/btDelete" />
 
         <Button
             android:id="@+id/modifyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="修改資料" />
+            android:text="@string/btModify" />
     </LinearLayout>
 
 </LinearLayout>

@@ -100,4 +100,5 @@ public class SendType {
     public static String mLOG;//記錄功能(ON或OFF)
     public static String mCOUNT;//多少筆資料
     public static String mINTER;//秒數設定
+    public static String INTER2SQL;
 }

@@ -74,6 +74,140 @@ public class SortData {
 /**************************************************************************************************/
 
 
+    public String[] getSQLiteTrs(){
+        switch (SendType.FirstWord){
+            case 'T':
+                SendType.PV1 = "PV1";
+                SendType.EH1 = "EH1";
+                SendType.EL1 = "EL1";
+                SendType.CR1 = "CR1";
+                break;
+
+            case 'H':
+
+                break;
+
+            case 'I':
+
+                break;
+
+            case 'C':
+
+                break;
+
+            case 'D':
+
+                break;
+
+            case 'E':
+
+                break;
+        }
+        switch (SendType.SecondWord){
+            case 'T':
+
+                break;
+
+            case 'H':
+                SendType.PV2 = "PV2";
+                SendType.EH2 = "EH2";
+                SendType.EL2 = "EL2";
+                SendType.CR2 = "CR2";
+                break;
+
+            case 'I':
+
+                break;
+
+            case 'C':
+
+                break;
+
+            case 'D':
+
+                break;
+
+            case 'E':
+
+                break;
+        }
+        if (SendType.row == '2'){
+            switch (SendType.ThirdWord) {
+                case 'L':
+                    SendType.INTER = "INTER";
+                    break;
+            }
+        }
+        if (SendType.row == '3') {
+            switch (SendType.ThirdWord) {
+                case 'T':
+
+                    break;
+                case 'H':
+
+                    break;
+                case 'I':
+
+                    break;
+                case 'C':
+
+                    break;
+                case 'D':
+
+                    break;
+                case 'E':
+
+                    break;
+            }
+        }
+
+        SendType.SPK = "SPK";
+        String[] TH = {trans(R.string.device_name)
+                , SendType.PV1, SendType.PV2
+                , SendType.EH1, SendType.EL1
+                , SendType.EH2, SendType.EL2
+                , SendType.CR1, SendType.CR2
+                , SendType.SPK};
+
+        String[] II = {trans(R.string.device_name)
+                , SendType.IH1, SendType.IL1
+                , SendType.IH2, SendType.IL2
+                , SendType.PV1, SendType.PV2
+                , SendType.EH1, SendType.EL1
+                , SendType.EH2, SendType.EL2
+                , SendType.CR1, SendType.CR2
+                , SendType.DP1,SendType.DP2
+                , SendType.SPK};
+
+        String[] L = {SendType.INTER};
+        String[] n = {"這", "是", "我", "不", "知", "道", "的", "型","號"};
+
+        if (SendType.FirstWord == 'T') {
+            if (SendType.SecondWord == 'H') {
+                if (SendType.ThirdWord == 'L') {
+                    String[] THL = ArrayUtils.addAll(TH, L);
+                    return THL;
+                }//THL
+                return TH;
+            }//TH
+            return n;
+        }//T
+        else if (SendType.FirstWord == 'I') {
+            if (SendType.SecondWord == 'I') {
+                if (SendType.ThirdWord == 'L') {
+                    String[] IIL = ArrayUtils.addAll(II, L);
+                    return IIL;
+                }//IIL
+                return II;
+            }//II
+            return n;
+        }//I
+
+
+        return n;
+    }
+
+
 
 
 
@@ -241,6 +375,54 @@ public class SortData {
 
         return n;
     }//getNames End
+    public String[] getSQLiteData(){
+
+        String[] TH = {SendType.DeviceName
+                , SendType.mPV1, SendType.mPV2
+                , SendType.mEH1, SendType.mEL1
+                , SendType.mEH2, SendType.mEL2
+                , SendType.mCR1, SendType.mCR2
+                , SendType.mSPK};
+
+        String[] II = {SendType.DeviceName
+                , SendType.mIH1, SendType.mIL1
+                , SendType.mIH2, SendType.mIL2
+                , SendType.mPV1, SendType.mPV2
+                , SendType.mEH1, SendType.mEL1
+                , SendType.mEH2, SendType.mEL2
+                , SendType.mCR1, SendType.mCR2
+                , SendType.mDP1,SendType.mDP2
+                , SendType.mSPK};
+
+        String[] L = {SendType.INTER2SQL};
+        String[] n = {"這", "是", "我", "不", "知", "道", "的", "型","號"};
+
+        if (SendType.FirstWord == 'T') {
+            if (SendType.SecondWord == 'H') {
+                if (SendType.ThirdWord == 'L') {
+                    String[] THL = ArrayUtils.addAll(TH, L);
+                    return THL;
+                }//THL
+                return TH;
+            }//TH
+            return n;
+        }//T
+        else if (SendType.FirstWord == 'I') {
+            if (SendType.SecondWord == 'I') {
+                if (SendType.ThirdWord == 'L') {
+                    String[] IIL = ArrayUtils.addAll(II, L);
+                    return IIL;
+                }//IIL
+                return II;
+            }//II
+            return n;
+        }//I
+
+
+        return n;
+    }
+
+
 
 
 
