@@ -1,4 +1,4 @@
-package com.example.jetecpro_ver1.MainProcess;
+package com.example.jetecpro_ver1.SQLite;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.example.jetecpro_ver1.MainProcess.DataDisplayActivity;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SQLite.DBHelper;
 import com.example.jetecpro_ver1.SendData.SortData;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DrawerFunction {
+public class SQLiteFunction {
 
     AlertDialog.Builder mBuilder;
     Context              context;
@@ -43,7 +44,7 @@ public class DrawerFunction {
     private int          GET_ITEM_POSITION = 100;
     private SimpleAdapter simpleAdapter;
 
-    public DrawerFunction(Context context ,View view,AlertDialog.Builder mBuilder){
+    public SQLiteFunction(Context context , View view, AlertDialog.Builder mBuilder){
         this.context        = context;
         this.view           = view;
         this.mBuilder       = mBuilder;

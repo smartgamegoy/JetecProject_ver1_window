@@ -16,6 +16,7 @@ public class SendType {
     public static String DeviceAddress;//裝置位址
     public static BluetoothGattCharacteristic Mycharacteristic;//每次傳輸資料用的
     public static BluetoothLeService getSendBluetoothLeService;
+    public static String DevicePSW;
 
 //    SQLite會用到的資料
     public static String DB_Name = "LeCustomDB.db";

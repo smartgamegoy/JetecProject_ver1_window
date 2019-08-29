@@ -32,16 +32,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
+import com.example.jetecpro_ver1.ModifyPassword.ModifyPSW;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.RecordData.DDA_RecordData;
+import com.example.jetecpro_ver1.SQLite.SQLiteFunction;
 import com.example.jetecpro_ver1.SendData.DDA_SendData;
 import com.example.jetecpro_ver1.SendData.GetDisplayData;
 import com.example.jetecpro_ver1.SendData.LoadingSend;
@@ -52,7 +52,6 @@ import com.facebook.stetho.Stetho;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +75,14 @@ public class DataDisplayActivity extends Activity {
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
         //取得Action Bar 抬頭顯示
-        getActionBar().setTitle(SendType.DeviceName);
+        if (SendType.mLOG.contains("ON")){
+            getActionBar().setTitle(SendType.DeviceName+getBaseContext().getResources().getString(R.string.isRecoeding));
+        }else if(SendType.mLOG.contains("OFF")){
+            getActionBar().setTitle(SendType.DeviceName);
+        }
+        DeviceScanActivity.DeviceScan.finish();
+
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         //載入ListView
@@ -132,15 +138,15 @@ public class DataDisplayActivity extends Activity {
                 case R.id.Go_saveData:
                     view = getLayoutInflater().inflate(R.layout.activity_data_display_save_setting_dialog,null);
                     mBuilder.setView(view);
-                    DrawerFunction drawerFunction = new DrawerFunction(getBaseContext(),view,mBuilder);
-                    drawerFunction.SaveFunction();
+                    SQLiteFunction SQLiteFunction = new SQLiteFunction(getBaseContext(),view,mBuilder);
+                    SQLiteFunction.SaveFunction();
 
                     break;
                 case R.id.Go_LoadData:
                     view = getLayoutInflater().inflate(R.layout.activity_data_display_load_setting_dialog,null);
                     mBuilder.setView(view);
-                    DrawerFunction drawerFunctionLoad = new DrawerFunction(getBaseContext(),view,mBuilder);
-                    drawerFunctionLoad.LoadFunction();
+                    SQLiteFunction SQLiteFunctionLoad = new SQLiteFunction(getBaseContext(),view,mBuilder);
+                    SQLiteFunctionLoad.LoadFunction();
 
                     break;
                 case R.id.Go_DownloadData:
@@ -152,7 +158,10 @@ public class DataDisplayActivity extends Activity {
                     break;
 
                 case R.id.Go_ModifyPSW:
-
+                    view = getLayoutInflater().inflate(R.layout.activity_data_display_modify_password,null);
+                    mBuilder.setView(view);
+                    ModifyPSW modifyPSW = new ModifyPSW(getBaseContext(),view,mBuilder);
+                    modifyPSW.modifyDialog();
                     break;
 
                 case R.id.Go_StartRecord:
@@ -169,6 +178,8 @@ public class DataDisplayActivity extends Activity {
                                         }else if(SendType.mLOG.contains("ON")){
                                             btStartRecord.setText(R.string.StartRecord);
                                         }
+                                        getActionBar().setTitle(SendType.DeviceName+
+                                                getBaseContext().getResources().getString(R.string.isRecoeding));
                                         Toast.makeText(getBaseContext(),R.string.opened,Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -189,6 +200,7 @@ public class DataDisplayActivity extends Activity {
                                         }else if(SendType.mLOG.contains("ON")){
                                             btStartRecord.setText(R.string.StartRecord);
                                         }
+                                        getActionBar().setTitle(SendType.DeviceName);
                                         Toast.makeText(getBaseContext(),R.string.closed,Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -430,8 +442,8 @@ public class DataDisplayActivity extends Activity {
                     mCustomDb.update(DB_TABLE, values,"_id="+ GET_ITEM_POSITION,null);
                     //UPDATE BT2TH SET  WHERE
                     //UPDATE "表格" SET "欄位1" = [值1], "欄位2" = [值2]WHERE "條件";
-                    DrawerFunction drawerFunction = new DrawerFunction(context,origonView,mBuilder);
-                    drawerFunction.setListView(listView);
+                    SQLiteFunction SQLiteFunction = new SQLiteFunction(context,origonView,mBuilder);
+                    SQLiteFunction.setListView(listView);
 
                     dialog.dismiss();
                 }else{

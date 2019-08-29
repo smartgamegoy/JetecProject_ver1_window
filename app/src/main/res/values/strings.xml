@@ -96,6 +96,19 @@
     <string name="opened">已開啟紀錄</string>
     <string name="closed">已停止紀錄</string>
 
+    <!--ModifyPassWord-->
+    <string name="oldPSW">舊密碼: </string>
+    <string name="newPSW">新密碼: </string>
+    <string name="modifytitle">修改密碼</string>
+    <string name="oldPSWHint">請輸入舊密碼(6個字)</string>
+    <string name="newPSWHint">請輸入新密碼(6個字，不含中文)</string>
+    <string name="oldPSWError">舊密碼輸入錯誤</string>
+    <string name="lessSixWord">密碼必須為六個字!</string>
+    <string name="modifySuccess">修改完成! 新密碼為: </string>
+
+    <!--ActionBar-->
+    <string name="isRecoeding">(設備紀錄中)</string>
+
 
 
 

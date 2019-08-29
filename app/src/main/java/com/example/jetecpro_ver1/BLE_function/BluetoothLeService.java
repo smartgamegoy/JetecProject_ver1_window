@@ -326,7 +326,6 @@ public class BluetoothLeService extends Service {
         record = characteristic.getStringValue(0);
         Log.v("BT", "readCharacteristic回傳: " + record);
 
-        SystemClock.sleep(20);
 
     }
 

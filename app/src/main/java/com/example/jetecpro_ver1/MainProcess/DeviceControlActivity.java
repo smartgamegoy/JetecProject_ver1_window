@@ -185,6 +185,7 @@ public class DeviceControlActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Log.v("BT","取得裝置密碼: "+ data.substring(4));
+                    SendType.DevicePSW = data.substring(4,10);
                     if (!edInput.getText().toString().isEmpty() &&
                             edInput.getText().toString().contains(data.substring(4, 10))) {
                         Toast.makeText(getBaseContext(), "登入成功", Toast.LENGTH_LONG).show();

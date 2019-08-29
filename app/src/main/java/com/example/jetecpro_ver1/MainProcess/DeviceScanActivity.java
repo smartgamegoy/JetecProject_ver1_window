@@ -31,6 +31,7 @@ public class DeviceScanActivity extends ListActivity {
     private Handler mHandler;
     private static final long SCAN_PERIOD = 1000;
     private static final int REQUEST_ENABLE_BT = 1;
+    public static Activity DeviceScan;
 
 
     @Override
@@ -38,6 +39,7 @@ public class DeviceScanActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         getActionBar().setTitle(R.string.title_devices);
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
+        DeviceScan = this;
         mHandler = new Handler();
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
