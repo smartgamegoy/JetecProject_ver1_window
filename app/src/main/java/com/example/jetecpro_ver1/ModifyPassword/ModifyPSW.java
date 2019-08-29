@@ -57,6 +57,10 @@ public class ModifyPSW {
                 }else if (edOldPSW.getText().toString().length() < 6
                         || edNewPSW.getText().toString().length() < 6) {
                     Toast.makeText(context, R.string.lessSixWord, Toast.LENGTH_SHORT).show();
+                }else if(edNewPSW.getText().toString().contains("111111")){
+                    Toast.makeText(context,R.string.noUseThePSW,Toast.LENGTH_LONG).show();
+                }else if(edNewPSW.getText().toString().contains("@JETEC")){
+                    Toast.makeText(context,R.string.noUseThePSW2,Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(context,R.string.oldPSWError,Toast.LENGTH_SHORT).show();
                 }
@@ -67,6 +71,5 @@ public class ModifyPSW {
         SendType.SendForBLEDataType = "PWR="+newPSW;
         SendType.getSendBluetoothLeService.
                 setCharacteristicNotification(SendType.Mycharacteristic, true);
-
     }
 }

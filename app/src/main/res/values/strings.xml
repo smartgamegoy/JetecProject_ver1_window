@@ -55,13 +55,13 @@
     <string name="dont_blank">表格請勿空白！</string>
     <string name="DWTitle">Jetec Remote</string>
     <string name="DWweb">www.jetec.com.tw</string>
-    <string name="Save">儲存設定</string>
-    <string name="Load">匯入設定</string>
-    <string name="Download">資料下載</string>
-    <string name="DisplayChart">顯示圖表</string>
-    <string name="ModifyPSW">修改密碼</string>
-    <string name="stopRecord">停止紀錄</string>
-    <string name="StartRecord">開始記錄</string>
+    <string name="Save">  儲存設定</string>
+    <string name="Load">  匯入設定</string>
+    <string name="Download">  資料下載</string>
+    <string name="DisplayChart">  顯示圖表</string>
+    <string name="ModifyPSW">  修改密碼</string>
+    <string name="stopRecord">  停止紀錄</string>
+    <string name="StartRecord">  開始記錄</string>
     <string name="plzGetName">請取個喜歡的名字吧</string>
     <string name="createSuccess">新增成功</string>
     <string name="plzSelectModifyItem">請選擇欲修改之物件</string>
@@ -105,9 +105,22 @@
     <string name="oldPSWError">舊密碼輸入錯誤</string>
     <string name="lessSixWord">密碼必須為六個字!</string>
     <string name="modifySuccess">修改完成! 新密碼為: </string>
+    <string name="noUseThePSW">因為某些不可告人的原因～不能用這組密碼喔(´ｖ｀)</string>
+    <string name="noUseThePSW2">Gosh，這種密碼也能被你猜中！可是這組密碼不能用(•ﾟдﾟ•)</string>
 
     <!--ActionBar-->
     <string name="isRecoeding">(設備紀錄中)</string>
+    
+    <!--DownloadDataAlert-->
+    <string name="alertTitle">注意！</string>
+    <string name="itWillStopRecord">即將停止紀錄，並開始下載</string>
+    <string name="downloadDataTitle">資料下載</string>
+    <string name="notify">注意！該功能可能會花費大量時間</string>
+    <string name="chooseDownModeTitle">請選擇下載方式</string>
+    <string name="notifyToDevice">高速下載僅適用高階支手機設備</string>
+    <string name="stableMode">穩定</string>
+    <string name="HighMode">高速</string>
+
 
 
 

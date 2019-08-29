@@ -29,11 +29,13 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:src="@mipmap/ic_launcher" />
+                android:background="@mipmap/icon"
+
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -60,22 +62,31 @@
             </LinearLayout>
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/textViewc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
             android:text="一般功能:"
-            android:layout_marginLeft="10dp"
             android:textColor="@color/Black2"
             android:textSize="18sp" />
+
 
         <Button
             android:id="@+id/Go_saveData"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
             android:background="@color/White"
+            android:drawableLeft="@drawable/ic_save_black_24dp"
+            android:drawablePadding="20dp"
+            android:gravity="left|center_vertical"
             android:text="@string/Save"
+            android:textSize="16dp"
             />
 
         <Button
@@ -83,24 +94,37 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
             android:background="@color/White"
-            android:text="@string/Load" />
+            android:drawableLeft="@drawable/ic_file_upload_black_24dp"
+            android:drawablePadding="20dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/Load"
+            android:textSize="16dp" />
 
         <Button
             android:id="@+id/Go_ModifyPSW"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:background="@color/White"
-            android:text="@string/ModifyPSW" />
+            android:drawableLeft="@drawable/noun_edit_password_1688576"
+            android:drawablePadding="20dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/ModifyPSW"
+            android:textSize="16dp" />
 
 
         <TextView
             android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="紀錄功能:"
-            android:layout_marginLeft="10dp"
             android:textColor="@color/Black2"
             android:textSize="18sp" />
 
@@ -109,23 +133,42 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
             android:background="@color/White"
-            android:text="@string/StartRecord" />
+            android:drawableLeft="@drawable/noun_record_2822351"
+            android:drawablePadding="20dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/StartRecord"
+            android:textSize="16dp" />
+
         <Button
             android:id="@+id/Go_DownloadData"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
             android:background="@color/White"
-            android:text="@string/Download" />
+            android:drawableLeft="@drawable/noun_download_792104"
+            android:drawablePadding="20dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/Download"
+            android:textSize="16dp" />
 
         <Button
             android:id="@+id/Go_Chart"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
             android:background="@color/White"
-            android:text="@string/DisplayChart" />
+            android:drawableLeft="@drawable/noun_chart_283088"
+            android:drawablePadding="20dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/DisplayChart"
+            android:textSize="16dp" />
 
 
     </LinearLayout>

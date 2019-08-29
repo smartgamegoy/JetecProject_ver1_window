@@ -93,8 +93,14 @@ public class DataDisplayActivity extends Activity {
 
         if (SendType.mLOG.contains("ON")){
             btStartRecord.setText(R.string.stopRecord);
+            btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                            .getDrawable(R.drawable.noun_record_2822351_red)
+                    ,null,null,null);
         }else if(SendType.mLOG.contains("OFF")){
             btStartRecord.setText(R.string.StartRecord);
+            btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                            .getDrawable(R.drawable.noun_record_2822351)
+                    ,null,null,null);
         }
     }
     /**取得所有Drawer內功能*/
@@ -151,6 +157,7 @@ public class DataDisplayActivity extends Activity {
                     break;
                 case R.id.Go_DownloadData:
 
+
                     break;
 
                 case R.id.Go_Chart:
@@ -177,7 +184,11 @@ public class DataDisplayActivity extends Activity {
                                             btStartRecord.setText(R.string.stopRecord);
                                         }else if(SendType.mLOG.contains("ON")){
                                             btStartRecord.setText(R.string.StartRecord);
+
                                         }
+                                        btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                                        .getDrawable(R.drawable.noun_record_2822351_red)
+                                                ,null,null,null);
                                         getActionBar().setTitle(SendType.DeviceName+
                                                 getBaseContext().getResources().getString(R.string.isRecoeding));
                                         Toast.makeText(getBaseContext(),R.string.opened,Toast.LENGTH_SHORT).show();
@@ -200,6 +211,9 @@ public class DataDisplayActivity extends Activity {
                                         }else if(SendType.mLOG.contains("ON")){
                                             btStartRecord.setText(R.string.StartRecord);
                                         }
+                                        btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                                        .getDrawable(R.drawable.noun_record_2822351)
+                                                ,null,null,null);
                                         getActionBar().setTitle(SendType.DeviceName);
                                         Toast.makeText(getBaseContext(),R.string.closed,Toast.LENGTH_SHORT).show();
                                     }
