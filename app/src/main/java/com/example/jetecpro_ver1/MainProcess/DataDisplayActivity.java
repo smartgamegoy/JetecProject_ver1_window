@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
+import com.example.jetecpro_ver1.RecordData.DDA_RecordData;
 import com.example.jetecpro_ver1.SendData.DDA_SendData;
 import com.example.jetecpro_ver1.SendData.GetDisplayData;
 import com.example.jetecpro_ver1.SendData.LoadingSend;
@@ -63,6 +64,7 @@ public class DataDisplayActivity extends Activity {
     private SimpleAdapter simpleAdapter;
     private DrawerLayout drawerLayout;
     public static Activity DisplayData;
+    Button btStartRecord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,12 @@ public class DataDisplayActivity extends Activity {
         //DrawerLayout內的活動
         setDrawerFunction();
         Stetho.initializeWithDefaults(this);
+
+        if (SendType.mLOG.contains("ON")){
+            btStartRecord.setText(R.string.stopRecord);
+        }else if(SendType.mLOG.contains("OFF")){
+            btStartRecord.setText(R.string.StartRecord);
+        }
     }
     /**取得所有Drawer內功能*/
     private void setDrawerFunction(){
@@ -91,14 +99,12 @@ public class DataDisplayActivity extends Activity {
         Button btDownloadData   = (Button) findViewById(R.id.Go_DownloadData);
         Button btChart          = (Button) findViewById(R.id.Go_Chart);
         Button btModifyPSW      = (Button) findViewById(R.id.Go_ModifyPSW);
-        Button btRecord         = (Button) findViewById(R.id.Go_Record);
-        Button btStartRecord    = (Button) findViewById(R.id.Go_StartRecord);
+        btStartRecord    = (Button) findViewById(R.id.Go_StartRecord);
         btSave.setOnClickListener(mListener);
         btLoad.setOnClickListener(mListener);
         btDownloadData.setOnClickListener(mListener);
         btChart.setOnClickListener(mListener);
         btModifyPSW.setOnClickListener(mListener);
-        btRecord.setOnClickListener(mListener);
         btStartRecord.setOnClickListener(mListener);
 
        if ( SendType.ThirdWord == 'L'){
@@ -108,9 +114,9 @@ public class DataDisplayActivity extends Activity {
        } else{
            btChart.setEnabled(false);
            btDownloadData.setEnabled(false);
-           btRecord.setEnabled(false);
            btStartRecord.setEnabled(false);
        }
+
     }
 
     /**分類按鈕點擊事件*/
@@ -120,6 +126,7 @@ public class DataDisplayActivity extends Activity {
         public void onClick(View v) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
             View view ;
+            final DDA_RecordData dda_recordData = new DDA_RecordData(getBaseContext());
             drawerLayout.closeDrawers();
             switch (v.getId()){
                 case R.id.Go_saveData:
@@ -127,6 +134,7 @@ public class DataDisplayActivity extends Activity {
                     mBuilder.setView(view);
                     DrawerFunction drawerFunction = new DrawerFunction(getBaseContext(),view,mBuilder);
                     drawerFunction.SaveFunction();
+
                     break;
                 case R.id.Go_LoadData:
                     view = getLayoutInflater().inflate(R.layout.activity_data_display_load_setting_dialog,null);
@@ -138,17 +146,56 @@ public class DataDisplayActivity extends Activity {
                 case R.id.Go_DownloadData:
 
                     break;
+
                 case R.id.Go_Chart:
 
                     break;
+
                 case R.id.Go_ModifyPSW:
 
                     break;
-                case R.id.Go_Record:
 
-                    break;
                 case R.id.Go_StartRecord:
+                    if (SendType.mLOG.contains("OFF")){
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dda_recordData.sendRecordMessage();
+                                runOnUiThread(new Runnable() {
+                                    public void run()
+                                    {
+                                        if (SendType.mLOG.contains("OFF")){
+                                            btStartRecord.setText(R.string.stopRecord);
+                                        }else if(SendType.mLOG.contains("ON")){
+                                            btStartRecord.setText(R.string.StartRecord);
+                                        }
+                                        Toast.makeText(getBaseContext(),R.string.opened,Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }).start();
 
+
+                    }else if(SendType.mLOG.contains("ON")){
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dda_recordData.stopRecordMessage();
+                                runOnUiThread(new Runnable() {
+                                    public void run()
+                                    {
+                                        if (SendType.mLOG.contains("OFF")){
+                                            btStartRecord.setText(R.string.stopRecord);
+                                        }else if(SendType.mLOG.contains("ON")){
+                                            btStartRecord.setText(R.string.StartRecord);
+                                        }
+                                        Toast.makeText(getBaseContext(),R.string.closed,Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }).start();
+
+                    }
                     break;
             }
 

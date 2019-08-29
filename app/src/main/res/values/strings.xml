@@ -60,7 +60,7 @@
     <string name="Download">資料下載</string>
     <string name="DisplayChart">顯示圖表</string>
     <string name="ModifyPSW">修改密碼</string>
-    <string name="Record">紀錄</string>
+    <string name="stopRecord">停止紀錄</string>
     <string name="StartRecord">開始記錄</string>
     <string name="plzGetName">請取個喜歡的名字吧</string>
     <string name="createSuccess">新增成功</string>
@@ -90,7 +90,11 @@
     <string name="loading">匯入中..</string>
     <string name="loadFinal">已匯入</string>
 
-
+    <!--RecordFunction-->
+    <string name="opening">開啟紀錄中...</string>
+    <string name="closing">關閉紀錄中...</string>
+    <string name="opened">已開啟紀錄</string>
+    <string name="closed">已停止紀錄</string>
 
 
 

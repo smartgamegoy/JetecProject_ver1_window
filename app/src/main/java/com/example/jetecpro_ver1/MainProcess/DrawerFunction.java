@@ -214,31 +214,7 @@ public class DrawerFunction {
 
     }
 
-    /**資料下載功能*/
-    public void DownLoadFunction(){
 
-    }
-
-    /**顯示圖表功能*/
-    public void ChartFunction(){
-
-    }
-
-    /**修改密碼功能*/
-    public void ModifyPSWFunction(){
-
-
-    }
-
-    /**紀錄*/
-    public void Record(){
-
-    }
-
-    /**開始記錄*/
-    public void StartRecord(){
-
-    }
 
     private void searchTABLE(){
         Cursor cursor = mCustomDb.rawQuery(

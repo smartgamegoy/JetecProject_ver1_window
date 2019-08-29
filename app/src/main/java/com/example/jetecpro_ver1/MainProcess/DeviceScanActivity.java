@@ -29,7 +29,7 @@ public class DeviceScanActivity extends ListActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
     private Handler mHandler;
-    private static final long SCAN_PERIOD = 3000;
+    private static final long SCAN_PERIOD = 1000;
     private static final int REQUEST_ENABLE_BT = 1;
 
 

@@ -60,18 +60,27 @@
             </LinearLayout>
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/textViewc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="一般功能:"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/Black2"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/Go_saveData"
-            style="@android:style/Widget.Button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/White"
-            android:text="@string/Save" />
+            android:text="@string/Save"
+            />
 
         <Button
             android:id="@+id/Go_LoadData"
-            style="@android:style/Widget.Button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/White"
@@ -79,15 +88,32 @@
 
         <Button
             android:id="@+id/Go_ModifyPSW"
-            style="@android:style/Widget.Button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/White"
             android:text="@string/ModifyPSW" />
 
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="紀錄功能:"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/Black2"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/Go_StartRecord"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/White"
+            android:text="@string/StartRecord" />
         <Button
             android:id="@+id/Go_DownloadData"
-            style="@android:style/Widget.Button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/White"
@@ -95,27 +121,11 @@
 
         <Button
             android:id="@+id/Go_Chart"
-            style="@android:style/Widget.Button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/White"
             android:text="@string/DisplayChart" />
-
-        <Button
-            android:id="@+id/Go_Record"
-            style="@android:style/Widget.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/White"
-            android:text="@string/Record" />
-
-        <Button
-            android:id="@+id/Go_StartRecord"
-            style="@android:style/Widget.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/White"
-            android:text="@string/StartRecord" />
 
 
     </LinearLayout>
