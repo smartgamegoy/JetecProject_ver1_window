@@ -474,13 +474,20 @@ public class DataDisplayActivity extends Activity {
      * 管理來自藍芽的資料
      */
     private void displayData(String data) {
+        //將取得的數據分門別類放到定位
         GetDisplayData display = new GetDisplayData(data);
         String getMain = data.substring(0, 3);
         display.analysisData(getMain);
+        //載入列表
         displayListView();
+
+        //取得發送過來紀錄的值
         dataResult = data;
         GetRecord get = new GetRecord(dataResult);
         get.getRecord();
+
+        //如果有改名字
+        getActionBar().setTitle(SendType.DeviceName);
 
     }
 

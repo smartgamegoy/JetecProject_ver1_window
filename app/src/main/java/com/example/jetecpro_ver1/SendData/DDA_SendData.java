@@ -2,6 +2,8 @@ package com.example.jetecpro_ver1.SendData;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.net.sip.SipSession;
+import android.text.method.DialerKeyListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -12,6 +14,9 @@ import android.widget.Toast;
 
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 public class DDA_SendData {
     String selectName;
@@ -25,7 +30,7 @@ public class DDA_SendData {
 
 
     public DDA_SendData(String selectName, String selectValues, EditText edInput, Switch swInput, Context cox
-            ,NumberPicker npHour,NumberPicker npMin,NumberPicker npSec) {
+            , NumberPicker npHour, NumberPicker npMin, NumberPicker npSec) {
 
         this.selectName = selectName;
         this.selectValues = selectValues;
@@ -132,6 +137,7 @@ public class DDA_SendData {
 
 
         }
+
         transSreing(selectName);
         mSwitch();
         if (selectName.contains(SendType.SPK)) {
@@ -146,12 +152,14 @@ public class DDA_SendData {
             }
         } else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
             timeSelect();
-
+        } else if (selectName.contains(trans(R.string.device_name))) {
+            edInput.setText(selectValues);
+            edInput.setKeyListener(new EditText(cox).getKeyListener());
         }
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
-
+        //分流功能＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -170,6 +178,8 @@ public class DDA_SendData {
                     timeSend();
                     dialog.dismiss();
 
+                } else if (selectName.contains(trans(R.string.device_name))) {
+                    modifyDeviceName(dialog);
                 } else {
                     RunEditText(dialog);
                 }
@@ -178,6 +188,35 @@ public class DDA_SendData {
             }//onClick
         });
     }//mAlertDialog
+
+    /**
+     * 傳送修改的裝置名稱
+     */
+    private void modifyDeviceName(AlertDialog dialog) {
+        try {
+            String s = "NAME"+edInput.getText().toString();
+            byte[] b3 = s.getBytes("UTF-8");
+            Log.v("BT", String.valueOf(b3.length));
+            if (b3.length > 20) {
+                Toast.makeText(cox, trans(R.string.NameIsTooLong), Toast.LENGTH_LONG).show();
+            } else {
+                switch (b3.length) {
+                    default:
+                        SendType.SendForBLEDataType = s;
+                        break;
+
+                }//switch
+                SendType.getSendBluetoothLeService.
+                        setCharacteristicNotification(SendType.Mycharacteristic, true);
+                dialog.dismiss();
+
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     /**
      * 處理記錄間隔功能之運作
@@ -189,12 +228,12 @@ public class DDA_SendData {
         npHour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if(newVal == 1){
+                if (newVal == 1) {
                     npMin.setMaxValue(0);
                     npMin.setMinValue(0);
                     npSec.setMaxValue(0);
                     npSec.setMinValue(0);
-                }else{
+                } else {
                     npMin.setMaxValue(60);
                     npMin.setMinValue(0);
                     npSec.setMaxValue(60);
@@ -202,10 +241,10 @@ public class DDA_SendData {
                     npMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
                         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                            if(newVal == 0){
+                            if (newVal == 0) {
                                 npSec.setMaxValue(60);
                                 npSec.setMinValue(30);
-                            }else{
+                            } else {
                                 npSec.setMaxValue(60);
                                 npSec.setMinValue(0);
                             }
@@ -224,20 +263,20 @@ public class DDA_SendData {
         int hour = npHour.getValue();
         int min = npMin.getValue();
         int sec = npSec.getValue();
-        int hour2Sec = hour*3600;
-        int min2Sec  = min*60;
-        int totleSec = hour2Sec+min2Sec+sec;
+        int hour2Sec = hour * 3600;
+        int min2Sec = min * 60;
+        int totleSec = hour2Sec + min2Sec + sec;
         String out = String.valueOf(totleSec);
-        if(totleSec >= 1000){
-            SendType.SendForBLEDataType = "INTER0"+out;
+        if (totleSec >= 1000) {
+            SendType.SendForBLEDataType = "INTER0" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else if(totleSec <=999 && totleSec >=100){
-            SendType.SendForBLEDataType = "INTER00"+out;
+        } else if (totleSec <= 999 && totleSec >= 100) {
+            SendType.SendForBLEDataType = "INTER00" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else if(totleSec <99){
-            SendType.SendForBLEDataType = "INTER000"+out;
+        } else if (totleSec < 99) {
+            SendType.SendForBLEDataType = "INTER000" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
         }
@@ -333,9 +372,9 @@ public class DDA_SendData {
     }
 
     /**
-     * 將取得的選項名稱轉回至英文代號
+     * 將取得的選項名稱轉回至英文代號（未完工），2019/9/3號記載
      */
-    public String transSreing(String input) {//將文字轉回原貌
+    public String transSreing(String input) {
 
         switch (SendType.FirstWord) {
 

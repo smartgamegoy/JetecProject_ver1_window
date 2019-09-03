@@ -70,6 +70,7 @@
     <string name="Dont_blank1">此處不可為空</string>
     <string name="plzSelectDeleteItem">請選擇欲刪除之物件</string>
     <string name="deleteSuccess">刪除成功！</string>
+    <string name="NameIsTooLong">名字長度不得大於5中文字與15個英數字</string>
 
     <!--DataDisplayActivityRecordFunction-->
     <string name="hour">小時: </string>

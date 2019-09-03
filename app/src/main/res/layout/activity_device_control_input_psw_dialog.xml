@@ -12,6 +12,7 @@
         android:ems="10"
         android:hint="請輸入密碼"
         android:inputType="textPersonName"
+        android:maxLength="6"
         android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         />
 </LinearLayout>

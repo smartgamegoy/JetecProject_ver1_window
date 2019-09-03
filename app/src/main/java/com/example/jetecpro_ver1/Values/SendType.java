@@ -7,6 +7,7 @@ import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 public class SendType {
 
     public static String SendForBLEDataType;//要送出的指令
+    public static byte[] SendForBLEbyteType;//要送出的指令(byte)
     public static String DeviceType;//大顯型號
     public static char row;//大顯排數
     public static char FirstWord;//大顯字1

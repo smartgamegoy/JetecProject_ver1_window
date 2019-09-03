@@ -1,5 +1,7 @@
 package com.example.jetecpro_ver1.SendData;
 
+import android.util.Log;
+
 import com.example.jetecpro_ver1.Values.SendType;
 
 public class GetDisplayData {
@@ -187,6 +189,12 @@ public class GetDisplayData {
             SendType.LOG = data.substring(0,3);
             SendType.mLOG = data.substring(3);
 
+        }else if(data.contains("NAME")){
+
+            String dataaaa = data.replace("\n","$");
+            String dateeee = dataaaa.substring(4,dataaaa.indexOf("$"));
+
+            SendType.DeviceName = dateeee;
         }
 
 

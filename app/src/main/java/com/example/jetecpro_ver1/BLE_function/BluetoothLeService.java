@@ -388,6 +388,7 @@ public class BluetoothLeService extends Service {
         }
 
         byte[] strBytes = SendType.SendForBLEDataType.getBytes();
+        RxChar.setValue(SendType.SendForBLEbyteType);
         RxChar.setValue(strBytes);
         mBluetoothGatt.writeCharacteristic(RxChar);
 

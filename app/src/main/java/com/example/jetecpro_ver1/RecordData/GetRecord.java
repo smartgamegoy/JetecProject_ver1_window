@@ -22,6 +22,12 @@ public class GetRecord {
             Log.v("BC","序號: "+i+" ,資料: "+data.substring(0,12));
             getDataSave();
 
+        }else if (data!= null&&data.substring(0,1).contains("-")){
+            Log.v("BC","OVER");
+            i++;
+            Log.v("BC","序號: "+i+" ,資料: "+data.substring(0,12));
+            getDataSave();
+
         }else if (data!= null&& data.contains("OVER")){
             Log.v("BC","OVER");
             i=-1;
