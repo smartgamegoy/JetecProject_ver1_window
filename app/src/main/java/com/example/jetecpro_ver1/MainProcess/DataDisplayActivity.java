@@ -477,6 +477,7 @@ public class DataDisplayActivity extends Activity {
         GetDisplayData display = new GetDisplayData(data);
         String getMain = data.substring(0, 3);
         display.analysisData(getMain);
+        displayListView();
         dataResult = data;
         GetRecord get = new GetRecord(dataResult);
         get.getRecord();
