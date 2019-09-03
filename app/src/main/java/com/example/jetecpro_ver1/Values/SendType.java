@@ -16,11 +16,20 @@ public class SendType {
     public static String DeviceAddress;//裝置位址
     public static BluetoothGattCharacteristic Mycharacteristic;//每次傳輸資料用的
     public static BluetoothLeService getSendBluetoothLeService;
-    public static String DevicePSW;
+    public static String DevicePSW;//裝置密碼
+    public static String NormalData;//顯示不經任何分類的回傳值
+    public static String DownloadData;//處理下載下來的資料
 
 //    SQLite會用到的資料
     public static String DB_Name = "LeCustomDB.db";
     public static String DB_TABLE;
+
+//    DownLoad下來的資料分類
+    public static String FirstRecordData;
+    public static String SecondRecordData;
+    public static String ThirdRecordData;
+    public static int TemperatureInt;
+    public static int HumidityInt;
 
 
 //    以下是所有會出現的資料
@@ -102,4 +111,5 @@ public class SendType {
     public static String mCOUNT;//多少筆資料
     public static String mINTER;//秒數設定
     public static String INTER2SQL;
+    public static String Count2Send;
 }

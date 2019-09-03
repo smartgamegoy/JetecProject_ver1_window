@@ -30,6 +30,7 @@ import android.content.ServiceConnection;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -133,6 +134,7 @@ public class DeviceControlActivity extends Activity {
     private void displayData(final String data) {
         if (data != null) {
             mDataField.setText(data);
+            SendType.NormalData = data;
             mDataField.setTextColor(getBaseContext().getResources().getColor(R.color.define));
 
         }
@@ -203,10 +205,20 @@ public class DeviceControlActivity extends Activity {
         String getMain = data.substring(0, 3);
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
+
+
         if (data.contains("OVER")) {
-            Intent intent = new Intent(DeviceControlActivity.this, DataDisplayActivity.class);
-            startActivity(intent);
-            finish();
+            if (SendType.LOG == null){
+                Log.v("BT","出現null了");
+                SendType.SendForBLEDataType = "get";
+                SendType.getSendBluetoothLeService.
+                        setCharacteristicNotification(SendType.Mycharacteristic, true);
+            }else{
+                Intent intent = new Intent(DeviceControlActivity.this, DataDisplayActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
         }
 
 

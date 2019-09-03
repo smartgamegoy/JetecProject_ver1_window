@@ -161,7 +161,8 @@ public class GetDisplayData {
         }//Switch
         if (data.contains("COUNT")) {
             SendType.COUNT = data.substring(0,5);
-            Double count = Double.valueOf(data.substring(5,10));
+            int count = Integer.parseInt(data.substring(5,10));
+            SendType.Count2Send = data.substring(5,10);
             String co    = String.valueOf(count);
             SendType.mCOUNT = co;
 
