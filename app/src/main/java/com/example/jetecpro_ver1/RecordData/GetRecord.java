@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.jetecpro_ver1.MainProcess.DataDisplayActivity;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GetRecord {
     String data;
@@ -36,10 +40,10 @@ public class GetRecord {
         return i;
     }
     public void getDataSave(){
-        if (data != null&&data.substring(0,1).contains("+")){
 
 
-        }
+
+
     }
 
 
