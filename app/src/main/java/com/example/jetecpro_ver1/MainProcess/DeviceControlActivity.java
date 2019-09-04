@@ -190,7 +190,7 @@ public class DeviceControlActivity extends Activity {
                     SendType.DevicePSW = data.substring(4,10);
                     if (!edInput.getText().toString().isEmpty() &&
                             edInput.getText().toString().contains(data.substring(4, 10))) {
-                        Toast.makeText(getBaseContext(), "登入成功", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "登入成功", Toast.LENGTH_SHORT).show();
                         mDataField.setText(R.string.Correct);
                         GetDisplayData get = new GetDisplayData(data);
                         get.sendGet();

@@ -26,7 +26,7 @@ public class GetRecordDataAndDownload {
     Context context;
     View view;
     AlertDialog.Builder mBuilder;
-    int choose;
+     int choose;
     Button btDownload,btCencel;
     TextView tvMonitor;
 

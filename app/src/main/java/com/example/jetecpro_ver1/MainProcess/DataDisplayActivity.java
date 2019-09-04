@@ -44,6 +44,7 @@ import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.RecordData.DDA_RecordData;
 import com.example.jetecpro_ver1.RecordData.GetRecord;
 import com.example.jetecpro_ver1.RecordData.GetRecordDataAndDownload;
+import com.example.jetecpro_ver1.SQLite.DBHelper;
 import com.example.jetecpro_ver1.SQLite.SQLiteFunction;
 import com.example.jetecpro_ver1.SendData.DDA_SendData;
 import com.example.jetecpro_ver1.SendData.GetDisplayData;
@@ -109,6 +110,9 @@ public class DataDisplayActivity extends Activity {
                             .getDrawable(R.drawable.noun_record_2822351)
                     , null, null, null);
         }
+        GetRecord getRecord = new GetRecord(dataResult,getBaseContext());
+        getRecord.deleteAllData();
+
     }
 
     /**
@@ -226,6 +230,43 @@ public class DataDisplayActivity extends Activity {
                     break;
 
                 case R.id.Go_Chart:
+                    SQLiteDatabase mCustomDb;
+                    String DB_NAME = SendType.DB_Name;
+                    String DB_TABLE = SendType.DB_TABLE + "GETRecord";
+                    DBHelper db = new DBHelper(getBaseContext(),DB_NAME,null,1);
+                    mCustomDb = db.getWritableDatabase();
+                    Cursor cursor = mCustomDb.rawQuery(
+                            "select DISTINCT tbl_name from sqlite_master where tbl_name = '" + DB_TABLE + "'", null);
+                    if (cursor != null) {
+                        if (cursor.getCount() == 0)
+                            mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
+                                    + "_id INTEGER PRIMARY KEY," + "First TEXT," + "SecondData TEXT);");
+                        cursor.close();
+                    }
+
+                    try{
+                        Cursor mData = mCustomDb.rawQuery(
+                                "SELECT * FROM " + DB_TABLE , null);
+                        final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
+                        String a = "巴拉巴巴巴";
+                        while (mData.moveToNext()){
+                            HashMap<String, String> hashMap = new HashMap<>();
+                            hashMap.put("id",mData.getString(0));
+                            Log.v("BT","資料"+mData.getString(0));
+                            arrayList.add(hashMap);
+                            a = mData.getString(0);
+                        }
+                        Log.v("BT","RRR"+a);
+                        if(a.contains("巴拉巴巴巴")){
+                            Toast.makeText(getBaseContext(),R.string.noData,Toast.LENGTH_LONG).show();
+                        }else{
+
+                        }
+
+                    }catch (Exception e){
+                        Toast.makeText(getBaseContext(),"Boooooooooooom",Toast.LENGTH_LONG).show();
+                    }
+
 
                     break;
 
@@ -237,53 +278,85 @@ public class DataDisplayActivity extends Activity {
                     break;
 
                 case R.id.Go_StartRecord:
-                    if (SendType.mLOG.contains("OFF")) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dda_recordData.sendRecordMessage();
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        if (SendType.mLOG.contains("OFF")) {
-                                            btStartRecord.setText(R.string.stopRecord);
-                                        } else if (SendType.mLOG.contains("ON")) {
-                                            btStartRecord.setText(R.string.StartRecord);
-                                        }
-                                        btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
-                                                        .getDrawable(R.drawable.noun_record_2822351_red)
-                                                , null, null, null);
-                                        getActionBar().setTitle(SendType.DeviceName +
-                                                getBaseContext().getResources().getString(R.string.isRecoeding));
-                                        Toast.makeText(getBaseContext(), R.string.opened, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }).start();
 
+
+                    if (SendType.mLOG.contains("OFF")) {
+                        new AlertDialog.Builder(DataDisplayActivity.this)
+                                .setTitle(R.string.alertTitle)
+                                .setMessage(R.string.itWillDeleteAllofData)
+                                .setPositiveButton(R.string.OK,new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                dda_recordData.sendRecordMessage();
+                                                runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        if (SendType.mLOG.contains("OFF")) {
+                                                            btStartRecord.setText(R.string.stopRecord);
+                                                        } else if (SendType.mLOG.contains("ON")) {
+                                                            btStartRecord.setText(R.string.StartRecord);
+                                                        }
+                                                        btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                                                        .getDrawable(R.drawable.noun_record_2822351_red)
+                                                                , null, null, null);
+                                                        getActionBar().setTitle(SendType.DeviceName +
+                                                                getBaseContext().getResources().getString(R.string.isRecoeding));
+                                                        Toast.makeText(getBaseContext(), R.string.opened, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+                                        }).start();
+                                    }
+                                })
+                                .setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
 
                     } else if (SendType.mLOG.contains("ON")) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dda_recordData.stopRecordMessage();
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        if (SendType.mLOG.contains("OFF")) {
-                                            btStartRecord.setText(R.string.stopRecord);
-                                        } else if (SendType.mLOG.contains("ON")) {
-                                            btStartRecord.setText(R.string.StartRecord);
-                                        }
-                                        btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
-                                                        .getDrawable(R.drawable.noun_record_2822351)
-                                                , null, null, null);
-                                        getActionBar().setTitle(SendType.DeviceName);
-                                        Toast.makeText(getBaseContext(), R.string.closed, Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(DataDisplayActivity.this)
+                                .setTitle(R.string.alertTitle)
+                                .setMessage(R.string.recordWillStop)
+                                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                dda_recordData.stopRecordMessage();
+                                                runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        if (SendType.mLOG.contains("OFF")) {
+                                                            btStartRecord.setText(R.string.stopRecord);
+                                                        } else if (SendType.mLOG.contains("ON")) {
+                                                            btStartRecord.setText(R.string.StartRecord);
+                                                        }
+                                                        btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                                                        .getDrawable(R.drawable.noun_record_2822351)
+                                                                , null, null, null);
+                                                        getActionBar().setTitle(SendType.DeviceName);
+                                                        Toast.makeText(getBaseContext(), R.string.closed, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+                                        }).start();
                                     }
-                                });
-                            }
-                        }).start();
+                                })
+                                .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
 
                     }
+
+
                     break;
             }
 
@@ -483,7 +556,7 @@ public class DataDisplayActivity extends Activity {
 
         //取得發送過來紀錄的值
         dataResult = data;
-        GetRecord get = new GetRecord(dataResult);
+        GetRecord get = new GetRecord(dataResult,getBaseContext());
         get.getRecord();
 
         //如果有改名字
@@ -650,7 +723,7 @@ public class DataDisplayActivity extends Activity {
      * 處理資料下載相關
      */
     public void getDownloadData() {
-        final GetRecord getRecord = new GetRecord(dataResult);
+        final GetRecord getRecord = new GetRecord(dataResult,DataDisplayActivity.DisplayData);
         AlertDialog.Builder finalDialog = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
         LayoutInflater layoutInflater = LayoutInflater.from(DataDisplayActivity.DisplayData);
         View mView = layoutInflater.inflate(R.layout.activity_data_display_data_download_count, null);
@@ -658,13 +731,17 @@ public class DataDisplayActivity extends Activity {
         final Button btCencel = mView.findViewById(R.id.CencelButtonCount);
         finalDialog.setView(mView);
         final AlertDialog dialog = finalDialog.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
 
         new Thread(new Runnable() {
 
             @Override
             public void run() {
+//                開始前先重置所有數據
                 GetRecord.i = 0;
+                getRecord.deleteAllData();
                 for (getRecord.getRecord();getRecord.getRecord()< Integer.parseInt(SendType.mCOUNT);){
                     SystemClock.sleep(20);
                     Log.v("Bz", String.valueOf(getRecord.getRecord()));
@@ -692,14 +769,38 @@ public class DataDisplayActivity extends Activity {
             public void onClick(View v) {
                 if(tvMonitor.getText().toString().contains(
                         DataDisplayActivity.DisplayData.getResources().getString(R.string.dataDownloadfield))){
+                    SendType.SendForBLEDataType = "END";
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    SystemClock.sleep(500);
+                    SendType.SendForBLEDataType = "get";
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    SystemClock.sleep(500);
+                    SendType.SendForBLEDataType = "Count" + SendType.Count2Send;
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    SystemClock.sleep(500);
+                    SendType.SendForBLEDataType = "Delay00080";//穩定
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    SystemClock.sleep(500);
                     SendType.SendForBLEDataType = "DOWNLOAD";
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    GetRecord.i = 0;
+                    getRecord.deleteAllData();
                 }else{
                     SendType.SendForBLEDataType = "STOP";
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    GetRecord.i = Integer.parseInt(SendType.mCOUNT)+1;
+                    SystemClock.sleep(2000);
+                    getRecord.takeOutSQLite();
+//                    getRecord.deleteAllData();
+                    Toast.makeText(DataDisplayActivity.DisplayData,R.string.itHaveData,Toast.LENGTH_LONG).show();
                     dialog.dismiss();
+
                 }
 
             }
