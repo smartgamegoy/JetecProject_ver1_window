@@ -110,7 +110,7 @@ public class DataDisplayActivity extends Activity {
                             .getDrawable(R.drawable.noun_record_2822351)
                     , null, null, null);
         }
-        GetRecord getRecord = new GetRecord(dataResult,getBaseContext());
+        GetRecord getRecord = new GetRecord(dataResult, getBaseContext());
         getRecord.deleteAllData();
 
     }
@@ -209,13 +209,10 @@ public class DataDisplayActivity extends Activity {
                                             View view = getLayoutInflater().inflate(R.layout.activity_data_display_data_download, null);
                                             GetRecordDataAndDownload getRecordDataAndDownload = new GetRecordDataAndDownload(getBaseContext(), view, mBuilder);
                                             getRecordDataAndDownload.MainCheck();
-
                                         }
                                     });
                                 }
                             }).start();
-
-
                         }
                     });
                     mBuilder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -225,15 +222,13 @@ public class DataDisplayActivity extends Activity {
                         }
                     });
                     mBuilder.show();
-
-
                     break;
 
                 case R.id.Go_Chart:
                     SQLiteDatabase mCustomDb;
                     String DB_NAME = SendType.DB_Name;
                     String DB_TABLE = SendType.DB_TABLE + "GETRecord";
-                    DBHelper db = new DBHelper(getBaseContext(),DB_NAME,null,1);
+                    DBHelper db = new DBHelper(getBaseContext(), DB_NAME, null, 1);
                     mCustomDb = db.getWritableDatabase();
                     Cursor cursor = mCustomDb.rawQuery(
                             "select DISTINCT tbl_name from sqlite_master where tbl_name = '" + DB_TABLE + "'", null);
@@ -244,29 +239,28 @@ public class DataDisplayActivity extends Activity {
                         cursor.close();
                     }
 
-                    try{
+                    try {
                         Cursor mData = mCustomDb.rawQuery(
-                                "SELECT * FROM " + DB_TABLE , null);
+                                "SELECT * FROM " + DB_TABLE, null);
                         final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
                         String a = "巴拉巴巴巴";
-                        while (mData.moveToNext()){
+                        while (mData.moveToNext()) {
                             HashMap<String, String> hashMap = new HashMap<>();
-                            hashMap.put("id",mData.getString(0));
-                            Log.v("BT","資料"+mData.getString(0));
+                            hashMap.put("id", mData.getString(0));
+                            Log.v("BT", "資料" + mData.getString(0));
                             arrayList.add(hashMap);
                             a = mData.getString(0);
                         }
-                        Log.v("BT","RRR"+a);
-                        if(a.contains("巴拉巴巴巴")){
-                            Toast.makeText(getBaseContext(),R.string.noData,Toast.LENGTH_LONG).show();
-                        }else{
+                        Log.v("BT", "RRR" + a);
+                        if (a.contains("巴拉巴巴巴")) {
+                            Toast.makeText(getBaseContext(), R.string.noData, Toast.LENGTH_LONG).show();
+                        } else {
 
                         }
 
-                    }catch (Exception e){
-                        Toast.makeText(getBaseContext(),"Boooooooooooom",Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getBaseContext(), "Boooooooooooom", Toast.LENGTH_LONG).show();
                     }
-
 
                     break;
 
@@ -284,7 +278,7 @@ public class DataDisplayActivity extends Activity {
                         new AlertDialog.Builder(DataDisplayActivity.this)
                                 .setTitle(R.string.alertTitle)
                                 .setMessage(R.string.itWillDeleteAllofData)
-                                .setPositiveButton(R.string.OK,new DialogInterface.OnClickListener() {
+                                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         new Thread(new Runnable() {
@@ -310,7 +304,7 @@ public class DataDisplayActivity extends Activity {
                                         }).start();
                                     }
                                 })
-                                .setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
+                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
@@ -352,14 +346,9 @@ public class DataDisplayActivity extends Activity {
 
                                     }
                                 }).show();
-
-
                     }
-
-
                     break;
             }
-
         }
     };
 
@@ -463,7 +452,6 @@ public class DataDisplayActivity extends Activity {
         }
     });
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -556,7 +544,7 @@ public class DataDisplayActivity extends Activity {
 
         //取得發送過來紀錄的值
         dataResult = data;
-        GetRecord get = new GetRecord(dataResult,getBaseContext());
+        GetRecord get = new GetRecord(dataResult, getBaseContext());
         get.getRecord();
 
         //如果有改名字
@@ -723,7 +711,7 @@ public class DataDisplayActivity extends Activity {
      * 處理資料下載相關
      */
     public void getDownloadData() {
-        final GetRecord getRecord = new GetRecord(dataResult,DataDisplayActivity.DisplayData);
+        final GetRecord getRecord = new GetRecord(dataResult, DataDisplayActivity.DisplayData);
         AlertDialog.Builder finalDialog = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
         LayoutInflater layoutInflater = LayoutInflater.from(DataDisplayActivity.DisplayData);
         View mView = layoutInflater.inflate(R.layout.activity_data_display_data_download_count, null);
@@ -742,33 +730,32 @@ public class DataDisplayActivity extends Activity {
 //                開始前先重置所有數據
                 GetRecord.i = 0;
                 getRecord.deleteAllData();
-                for (getRecord.getRecord();getRecord.getRecord()< Integer.parseInt(SendType.mCOUNT);){
+                for (getRecord.getRecord(); getRecord.getRecord() < Integer.parseInt(SendType.mCOUNT); ) {
                     SystemClock.sleep(20);
                     Log.v("Bz", String.valueOf(getRecord.getRecord()));
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                                tvMonitor.setText(getRecord.getRecord()+"/"+ SendType.mCOUNT);
-                            if (getRecord.getRecord()== Integer.parseInt(SendType.mCOUNT)){
+                            tvMonitor.setText(getRecord.getRecord() + "/" + SendType.mCOUNT);
+                            if (getRecord.getRecord() == Integer.parseInt(SendType.mCOUNT)) {
                                 btCencel.setText(R.string.Final);
-                            }else if(getRecord.getRecord() == -1 && getRecord.getRecord()< Integer.parseInt(SendType.mCOUNT)){
+                            } else if (getRecord.getRecord() == -1 && getRecord.getRecord() < Integer.parseInt(SendType.mCOUNT)) {
                                 tvMonitor.setText(R.string.dataDownloadfield);
                                 btCencel.setText(R.string.reTry);
                             }
 
                         }
                     });
-            }
+                }
             }//run
 
         }).start();
 
-
         btCencel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tvMonitor.getText().toString().contains(
-                        DataDisplayActivity.DisplayData.getResources().getString(R.string.dataDownloadfield))){
+                if (tvMonitor.getText().toString().contains(
+                        DataDisplayActivity.DisplayData.getResources().getString(R.string.dataDownloadfield))) {
                     SendType.SendForBLEDataType = "END";
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
@@ -789,16 +776,23 @@ public class DataDisplayActivity extends Activity {
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
                     GetRecord.i = 0;
+                    btCencel.setText(R.string.cancel);
                     getRecord.deleteAllData();
-                }else{
+                } else if(btCencel.getText().toString().contains(
+                        DataDisplayActivity.DisplayData.getResources().getString(R.string.Final))){
+                    GetRecord.i = Integer.parseInt(SendType.mCOUNT) + 1;
+                    getRecord.takeOutSQLite();
+                    Toast.makeText(DataDisplayActivity.DisplayData, R.string.Final, Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }else {
                     SendType.SendForBLEDataType = "STOP";
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
-                    GetRecord.i = Integer.parseInt(SendType.mCOUNT)+1;
-                    SystemClock.sleep(2000);
+                    GetRecord.i = Integer.parseInt(SendType.mCOUNT) + 1;
+                    SystemClock.sleep(1000);
                     getRecord.takeOutSQLite();
 //                    getRecord.deleteAllData();
-                    Toast.makeText(DataDisplayActivity.DisplayData,R.string.itHaveData,Toast.LENGTH_LONG).show();
+                    Toast.makeText(DataDisplayActivity.DisplayData, R.string.itHaveData, Toast.LENGTH_LONG).show();
                     dialog.dismiss();
 
                 }
@@ -807,6 +801,5 @@ public class DataDisplayActivity extends Activity {
         });
 
     }
-
 
 }

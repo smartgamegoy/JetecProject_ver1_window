@@ -20,6 +20,11 @@ import com.example.jetecpro_ver1.Values.SendType;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class GetRecordDataAndDownload {
     static int i = 0;
     AlertDialog dialog;
@@ -147,6 +152,7 @@ public class GetRecordDataAndDownload {
                 SendType.SendForBLEDataType = "DOWNLOAD";
                 SendType.getSendBluetoothLeService.
                         setCharacteristicNotification(SendType.Mycharacteristic, true);
+
                 d.dismiss();
                 Looper.prepare();
                 DataDisplayActivity dataDisplayActivity = new DataDisplayActivity();
@@ -158,7 +164,6 @@ public class GetRecordDataAndDownload {
 
 
     }
-
 
 
     private String trans(int name) {//不是我在講...每個都要寫ctx.getResources().getString(R.string.??);真的會死人

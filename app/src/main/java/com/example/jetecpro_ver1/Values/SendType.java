@@ -25,12 +25,6 @@ public class SendType {
     public static String DB_Name = "LeCustomDB.db";
     public static String DB_TABLE;
 
-//    DownLoad下來的資料分類
-    public static String FirstRecordData;
-    public static String SecondRecordData;
-    public static String ThirdRecordData;
-    public static int TemperatureInt;
-    public static int HumidityInt;
 
 
 //    以下是所有會出現的資料
@@ -108,9 +102,14 @@ public class SendType {
     //記錄系列
     public static String mDATE;//日期
     public static String mTIME;//時間
+    public static String mTIME2COUNT;//時間
     public static String mLOG;//記錄功能(ON或OFF)
     public static String mCOUNT;//多少筆資料
     public static String mINTER;//秒數設定
     public static String INTER2SQL;
     public static String Count2Send;
+
+    //紀錄時間計算
+    public static String arrayDate;
+    public static String arrayTime;
 }

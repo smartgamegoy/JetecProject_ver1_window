@@ -171,6 +171,7 @@ public class GetDisplayData {
         }else if(data.contains("INTER")){
             SendType.INTER = data.substring(0,5);
             inter(data);
+//            SendType.mINTER = inter(data);
             SendType.mINTER = inter(data);
 
         }else if(data.contains("DATE")){
@@ -184,6 +185,7 @@ public class GetDisplayData {
             Double count = Double.valueOf(data.substring(4,10));
             String co    = String.valueOf(count);
             SendType.mTIME = co;
+            SendType.mTIME2COUNT = data.substring(4,10);
 
         }else if(data.contains("LOG")){
             SendType.LOG = data.substring(0,3);
