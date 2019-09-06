@@ -43,6 +43,7 @@ import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.BLE_function.SampleGattAttributes;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SendData.GetDisplayData;
+import com.example.jetecpro_ver1.Values.ClearAllData;
 import com.example.jetecpro_ver1.Values.SendType;
 
 import java.util.ArrayList;
@@ -96,8 +97,6 @@ public class DeviceControlActivity extends Activity {
     };//serviceConnection
 
 
-
-
     // Handles various events fired by the Service.處理服務所激發的各種事件
     // ACTION_GATT_CONNECTED: connected to a GATT server. 連接一個GATT服務
     // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.從GATT服務中斷開連接
@@ -111,12 +110,12 @@ public class DeviceControlActivity extends Activity {
 
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-                updateConnectionState(R.string.Connect_true,getBaseContext().getResources().getColor(R.color.Green_Yanagizome));
+                updateConnectionState(R.string.Connect_true, getBaseContext().getResources().getColor(R.color.Green_Yanagizome));
                 invalidateOptionsMenu();
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-                updateConnectionState(R.string.Connect_false,getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
+                updateConnectionState(R.string.Connect_false, getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
                 invalidateOptionsMenu();
                 clearUI();
 
@@ -131,6 +130,7 @@ public class DeviceControlActivity extends Activity {
             }
         }
     };//onReceive
+
     private void displayData(final String data) {
         if (data != null) {
             mDataField.setText(data);
@@ -149,15 +149,14 @@ public class DeviceControlActivity extends Activity {
             SendType.row = data.charAt(3);
             if (data.charAt(3) == '3') {
                 SendType.ThirdWord = data.charAt(7);
-            }else if(data.length() == 33) {
+            } else if (data.length() == 33) {
                 SendType.ThirdWord = data.charAt(7);
-                String getTable = data.substring(0,7);
-                SendType.DB_TABLE = getTable.replace("-","");
-            }
-            else if (data.charAt(3) == '2'){
+                String getTable = data.substring(0, 7);
+                SendType.DB_TABLE = getTable.replace("-", "");
+            } else if (data.charAt(3) == '2') {
                 Log.v("BT", "裝置只有兩個輸入");
-                String getTable = data.substring(0,6);
-                SendType.DB_TABLE = getTable.replace("-","");
+                String getTable = data.substring(0, 6);
+                SendType.DB_TABLE = getTable.replace("-", "");
             }
 
         }
@@ -186,8 +185,8 @@ public class DeviceControlActivity extends Activity {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.v("BT","取得裝置密碼: "+ data.substring(4));
-                    SendType.DevicePSW = data.substring(4,10);
+                    Log.v("BT", "取得裝置密碼: " + data.substring(4));
+                    SendType.DevicePSW = data.substring(4, 10);
                     if (!edInput.getText().toString().isEmpty() &&
                             edInput.getText().toString().contains(data.substring(4, 10))) {
                         Toast.makeText(getBaseContext(), "登入成功", Toast.LENGTH_SHORT).show();
@@ -195,7 +194,7 @@ public class DeviceControlActivity extends Activity {
                         GetDisplayData get = new GetDisplayData(data);
                         get.sendGet();
                         dialog.dismiss();
-                    }else{
+                    } else {
                         Toast.makeText(getBaseContext(), "輸入錯誤", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -206,23 +205,44 @@ public class DeviceControlActivity extends Activity {
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
 
-
-        if (data.contains("OVER")) {
-            if (SendType.LOG == null){
-                Log.v("BT","出現null了");
-                SendType.SendForBLEDataType = "get";
-                SendType.getSendBluetoothLeService.
-                        setCharacteristicNotification(SendType.Mycharacteristic, true);
-            }else{
-                Intent intent = new Intent(DeviceControlActivity.this, DataDisplayActivity.class);
-                startActivity(intent);
-                finish();
+        if (data.contains("OVER")){
+            switch (SendType.ThirdWord) {
+                case 'L':
+                    if (SendType.SecondWord == 'L' || SendType.ThirdWord == 'L') {
+                        if (SendType.LOG == null) {
+                            Log.v("BT", "出現null了");
+                            SendType.SendForBLEDataType = "get";
+                            SendType.getSendBluetoothLeService.
+                                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+                        }
+                        break;
+                    }
             }
+            switch (SendType.SecondWord) {
+                case 'L':
+                    if (SendType.SecondWord == 'L' || SendType.ThirdWord == 'L') {
+                        if (SendType.LOG == null) {
+                            Log.v("BT", "出現null了");
+                            SendType.SendForBLEDataType = "get";
+                            SendType.getSendBluetoothLeService.
+                                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+                        }
+                    }
+                    break;
+
+            }
+                goNextActivity();
 
         }
 
 
+
     }//displayData(回傳值都在這邊操作)
+    private void goNextActivity(){
+        Intent intent = new Intent(DeviceControlActivity.this, DataDisplayActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private void sendData() {
         final BluetoothGattCharacteristic characteristic =
@@ -232,6 +252,8 @@ public class DeviceControlActivity extends Activity {
         SendType.getSendBluetoothLeService = mBluetoothLeService;
         SendType.Mycharacteristic = characteristic;
         SendType.SendForBLEDataType = "Jetec";
+        ClearAllData clearAllData = new ClearAllData();
+        clearAllData.clearAllData();
     }
 
     private void clearUI() {
@@ -250,7 +272,6 @@ public class DeviceControlActivity extends Activity {
         ((TextView) findViewById(R.id.device_address)).setText(SendType.DeviceName);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         mDataField = (TextView) findViewById(R.id.data_value);
-
 
 
         getActionBar().setTitle(R.string.Connecting3);
@@ -315,7 +336,7 @@ public class DeviceControlActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateConnectionState(final int resourceId,final int colorId) {
+    private void updateConnectionState(final int resourceId, final int colorId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

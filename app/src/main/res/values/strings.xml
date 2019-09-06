@@ -29,7 +29,7 @@
     <string name="OK">確定</string>
     <string name="cancel">取消</string>
     <string name="no_data">如果沒反應，請手動幫我點右上的連線</string>
-    
+
     <!--所有的資料中文名稱-->
     <string name="PV">補正</string>
     <string name="EH">上限警報</string>
@@ -40,11 +40,11 @@
     <string name="IL">最小量程</string>
     <string name="INTER">記錄間隔</string>
     <string name="device_name">裝置名稱</string>
-    
+
     <!--TH-->
     <string name="Temperature">溫度</string>
     <string name="Humidity">濕度</string>
-    
+
     <!--II-->
     <string name="FirstRow">第一排</string>
     <string name="SecondRow">第二排</string>
@@ -111,7 +111,7 @@
 
     <!--ActionBar-->
     <string name="isRecoeding">(設備紀錄中)</string>
-    
+
     <!--DownloadDataAlert-->
     <string name="alertTitle">注意:</string>
     <string name="itWillStopRecord">即將停止紀錄，並開始下載</string>
@@ -125,6 +125,7 @@
     <string name="progressing">處理中...</string>
     <string name="plzWait">請稍候</string>
     <string name="Final">完成</string>
+    <string name="FinalINput">資料已成功匯入！</string>
     <string name="option">本操作大約會費時:</string>
     <string name="dataDownloadfield">資料擷取失敗</string>
     <string name="reTry">重試</string>
@@ -133,9 +134,11 @@
     <string name="itWillDeleteAllofData">開啟功能後，將會清除顯示器上已紀錄的資料，確定要繼續嗎?</string>
     <string name="recordWillStop">即將停止紀錄，繼續嗎?</string>
 
-
-
-
+    <!--ChartActivity-->
+    <string name="btlist">列表</string>
+    <string name="btChoose">選擇圖表</string>
+    <string name="btOutPut">匯出</string>
+    <string name="btLookPDF">查看報表</string>
 
 
 </resources>

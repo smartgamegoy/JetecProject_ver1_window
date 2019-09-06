@@ -82,15 +82,6 @@ public class DataDisplayActivity extends Activity {
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
         //取得Action Bar 抬頭顯示
-
-        if (SendType.mLOG.contains("ON")) {
-            getActionBar().setTitle(SendType.DeviceName + getBaseContext().getResources().getString(R.string.isRecoeding));
-            DeviceScanActivity.DeviceScan.finish();
-        } else if (SendType.mLOG.contains("OFF")) {
-            getActionBar().setTitle(SendType.DeviceName);
-            DeviceScanActivity.DeviceScan.finish();
-        }
-
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         //載入ListView
@@ -99,19 +90,37 @@ public class DataDisplayActivity extends Activity {
         setDrawerFunction();
         Stetho.initializeWithDefaults(this);
 
-        if (SendType.mLOG.contains("ON")) {
-            btStartRecord.setText(R.string.stopRecord);
-            btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
-                            .getDrawable(R.drawable.noun_record_2822351_red)
-                    , null, null, null);
-        } else if (SendType.mLOG.contains("OFF")) {
-            btStartRecord.setText(R.string.StartRecord);
-            btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
-                            .getDrawable(R.drawable.noun_record_2822351)
-                    , null, null, null);
+
+        if (SendType.mLOG != null){
+            switch (SendType.mLOG.substring(0,3)){
+                case "ON":
+                    getActionBar().setTitle(SendType.DeviceName + getBaseContext().getResources().getString(R.string.isRecoeding));
+                    DeviceScanActivity.DeviceScan.finish();
+                    btStartRecord.setText(R.string.stopRecord);
+                    btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                    .getDrawable(R.drawable.noun_record_2822351_red)
+                            , null, null, null);
+
+                    break;
+                case "OFF":
+                    getActionBar().setTitle(SendType.DeviceName);
+                    DeviceScanActivity.DeviceScan.finish();
+                    btStartRecord.setText(R.string.StartRecord);
+                    btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                    .getDrawable(R.drawable.noun_record_2822351)
+                            , null, null, null);
+                    break;
+
+            }
+        }else{
+            getActionBar().setTitle(SendType.DeviceName);
+            DeviceScanActivity.DeviceScan.finish();
         }
-        GetRecord getRecord = new GetRecord(dataResult, getBaseContext());
-        getRecord.deleteAllData();
+
+
+
+//        GetRecord getRecord = new GetRecord(dataResult, getBaseContext());
+//        getRecord.deleteAllData();
 
     }
 
@@ -254,8 +263,10 @@ public class DataDisplayActivity extends Activity {
                         Log.v("BT", "RRR" + a);
                         if (a.contains("巴拉巴巴巴")) {
                             Toast.makeText(getBaseContext(), R.string.noData, Toast.LENGTH_LONG).show();
-                        } else {
 
+                        } else {
+                            Intent intent = new Intent(DataDisplayActivity.this, ChartActivity.class);
+                            startActivity(intent);
                         }
 
                     } catch (Exception e) {
@@ -756,6 +767,7 @@ public class DataDisplayActivity extends Activity {
             public void onClick(View v) {
                 if (tvMonitor.getText().toString().contains(
                         DataDisplayActivity.DisplayData.getResources().getString(R.string.dataDownloadfield))) {
+
                     SendType.SendForBLEDataType = "END";
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
@@ -776,24 +788,33 @@ public class DataDisplayActivity extends Activity {
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
                     GetRecord.i = 0;
+
                     btCencel.setText(R.string.cancel);
                     getRecord.deleteAllData();
-                } else if(btCencel.getText().toString().contains(
-                        DataDisplayActivity.DisplayData.getResources().getString(R.string.Final))){
+
+
+                } else if (btCencel.getText().toString().contains(
+                        DataDisplayActivity.DisplayData.getResources().getString(R.string.Final))) {
                     GetRecord.i = Integer.parseInt(SendType.mCOUNT) + 1;
                     getRecord.takeOutSQLite();
-                    Toast.makeText(DataDisplayActivity.DisplayData, R.string.Final, Toast.LENGTH_LONG).show();
+                    Toast.makeText(DataDisplayActivity.DisplayData, R.string.FinalINput, Toast.LENGTH_LONG).show();
                     dialog.dismiss();
-                }else {
+                } else {
+
                     SendType.SendForBLEDataType = "STOP";
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
                     GetRecord.i = Integer.parseInt(SendType.mCOUNT) + 1;
-                    SystemClock.sleep(1000);
+                    SystemClock.sleep(400);
                     getRecord.takeOutSQLite();
-//                    getRecord.deleteAllData();
+
                     Toast.makeText(DataDisplayActivity.DisplayData, R.string.itHaveData, Toast.LENGTH_LONG).show();
+
+
                     dialog.dismiss();
+
+//                    getRecord.deleteAllData();
+
 
                 }
 
