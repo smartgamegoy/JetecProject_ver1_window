@@ -252,8 +252,7 @@ public class DeviceControlActivity extends Activity {
         SendType.getSendBluetoothLeService = mBluetoothLeService;
         SendType.Mycharacteristic = characteristic;
         SendType.SendForBLEDataType = "Jetec";
-        ClearAllData clearAllData = new ClearAllData();
-        clearAllData.clearAllData();
+
     }
 
     private void clearUI() {
@@ -267,6 +266,8 @@ public class DeviceControlActivity extends Activity {
         setContentView(R.layout.activity_device_control);
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
         OptionThis = this;
+        ClearAllData clearAllData = new ClearAllData();
+        clearAllData.clearAllData();//清除上一個裝置連線的所有資料
 
         // Sets up UI references.
         ((TextView) findViewById(R.id.device_address)).setText(SendType.DeviceName);

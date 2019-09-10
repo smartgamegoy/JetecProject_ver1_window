@@ -133,6 +133,7 @@
     <string name="noData">尚無資料；請點選資料下載取得資料</string>
     <string name="itWillDeleteAllofData">開啟功能後，將會清除顯示器上已紀錄的資料，確定要繼續嗎?</string>
     <string name="recordWillStop">即將停止紀錄，繼續嗎?</string>
+    <string name="downDataHint">提示:中途按下取消仍可查看部分已下載資料</string>
 
     <!--ChartActivity-->
     <string name="btlist">列表</string>

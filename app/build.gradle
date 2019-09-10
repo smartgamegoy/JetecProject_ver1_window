@@ -29,10 +29,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'org.apache.commons:commons-lang3:3.6'//組合字串陣列,找不到確切來源,但是是在這邊找到的->https://stackoverflow.com/questions/32835143/how-to-add-org-apache-commons-lang3-to-androidstudio-with-gradle/32835663
-    implementation 'com.facebook.stetho:stetho:1.4.1'//觀察SQLite使用情形,來源->https://github.com/facebook/stetho
+    implementation 'org.apache.commons:commons-lang3:3.6'
+//組合字串陣列,找不到確切來源,但是是在這邊找到的->https://stackoverflow.com/questions/32835143/how-to-add-org-apache-commons-lang3-to-androidstudio-with-gradle/32835663
+    implementation 'com.facebook.stetho:stetho:1.4.1'
+//觀察SQLite使用情形,來源->https://github.com/facebook/stetho
     implementation 'com.google.code.gson:gson:2.8.5'//使用GSON,來源->https://github.com/google/gson
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'//使用圖表,來源->https://github.com/PhilJay/MPAndroidChart#documentation
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+//使用圖表,來源->https://github.com/PhilJay/MPAndroidChart#documentation
 
 
 }

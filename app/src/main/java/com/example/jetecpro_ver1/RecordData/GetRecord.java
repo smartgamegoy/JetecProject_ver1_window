@@ -200,14 +200,23 @@ public class GetRecord {
             hashMap.put("id",cursor.getString(0));
             hashMap.put("First",cursor.getString(1));
             hashMap.put("Second",cursor.getString(2));
+            hashMap.put("RecordDate",cursor.getString(3));
+            hashMap.put("RecordTime",cursor.getString(4));
             arrayList.add(hashMap);
-//            Log.v("BT",cursor.getString(0)+", "+cursor.getString(1)+", "+cursor.getString(2));
         }
-        String json = new Gson().toJson(arrayList);
-//        Log.v("BT",json);
-        //先暫時不輸入JSON到資料庫，日後視情況使用
-        //嘗試輸出
-       /* try {
+
+        {//取出紀錄好的資料在輸出成json上傳回SQLite
+            String json = new Gson().toJson(arrayList);
+//            Log.v("GETJSON",json);
+            deleteAllData();
+            ContentValues newRow = new ContentValues();
+            newRow.put("First",json);
+            mCustomDb.insert(DB_TABLE,null,newRow);
+        }
+
+
+//        嘗試輸出
+        /*try {
             JSONArray array = new JSONArray(json);
             for (int l = 0;l<array.length();l++){
                 JSONObject jsonObject = array.getJSONObject(l);

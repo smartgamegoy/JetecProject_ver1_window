@@ -7,6 +7,18 @@ public class ClearAllData {
     }
 
     public void clearAllData(){
+        SendType.SendForBLEDataType = null;//要送出的指令
+        SendType.SendForBLEbyteType = null;//要送出的指令(byte)
+//        SendType.DeviceType = null;//大顯型號
+//        SendType.DeviceName = null;//裝置名稱
+//        SendType.DeviceAddress = null;//裝置位址
+        SendType.DevicePSW = null;//裝置密碼
+        SendType.NormalData = null;//顯示不經任何分類的回傳值
+
+//      SQLite會用到的資料
+//        SendType.DB_Name = null;
+
+//    以下是所有會出現的資料
         SendType.PV1 = null;
         SendType.PV2 = null;
         SendType.PV3 = null;
@@ -77,17 +89,21 @@ public class ClearAllData {
 
         SendType.mSPK = null;
 
-        SendType.mDATE = null;
-        SendType.mTIME = null;
-        SendType.mLOG = null;
-        SendType.mCOUNT = null;
-        SendType.mINTER = null;
-
+        SendType.mDATE = null;//日期
+        SendType.mTIME = null;//時間
+        SendType.mTIME2COUNT = null;//時間
+        SendType.mLOG = null;//記錄功能(ON或OFF)
+        SendType.mCOUNT = null;//多少筆資料
+        SendType.mINTER = null;//秒數設定
         SendType.INTER2SQL = null;
         SendType.Count2Send= null;
 
         SendType.arrayDate = null;
         SendType.arrayTime = null;
+
+
+
+
 
     }
 }

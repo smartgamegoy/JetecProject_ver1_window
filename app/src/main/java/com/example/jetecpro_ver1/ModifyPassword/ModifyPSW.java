@@ -71,5 +71,6 @@ public class ModifyPSW {
         SendType.SendForBLEDataType = "PWR="+newPSW;
         SendType.getSendBluetoothLeService.
                 setCharacteristicNotification(SendType.Mycharacteristic, true);
+        SendType.DevicePSW = newPSW;
     }
 }
