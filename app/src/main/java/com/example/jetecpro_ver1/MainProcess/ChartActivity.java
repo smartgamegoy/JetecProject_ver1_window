@@ -1,6 +1,7 @@
 package com.example.jetecpro_ver1.MainProcess;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -69,12 +70,15 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
      * 連接各按鈕
      */
     private void setButtons() {
-        Button btList = findViewById(R.id.buttonList);
-        Button btExport = findViewById(R.id.buttonExport);
-        Button btLookPDF = findViewById(R.id.buttonReport);
-        btList.setOnClickListener(mListener);
-        btExport.setOnClickListener(mListener);
-        btLookPDF.setOnClickListener(mListener);
+        Button btChooseData = findViewById(R.id.buttonChoose);
+        Button btList       = findViewById(R.id.buttonList);
+        Button btExport     = findViewById(R.id.buttonExport);
+        Button btLookPDF    = findViewById(R.id.buttonReport);
+
+        btChooseData.setOnClickListener(mListener);
+        btList      .setOnClickListener(mListener);
+        btExport    .setOnClickListener(mListener);
+        btLookPDF   .setOnClickListener(mListener);
     }//setButtons
 
     /**
@@ -84,7 +88,12 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.buttonChoose:
+
+                    break;
                 case R.id.buttonList:
+                    Intent intent = new Intent(ChartActivity.this,ListDownloadDataActivity.class);
+                    startActivity(intent);
 
                     break;
                 case R.id.buttonExport:
@@ -98,7 +107,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
             }//switch
         }//click
     });//Button.OnClickListener
-
+    /**圖表顯示*/
     private void chartView() {
 //        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun","Aug"};
         Button btChooseChart = findViewById(R.id.buttonChoose);
@@ -217,7 +226,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
 
 
-
+    /**轉float其一*/
     private float trans2Double1(String input) {
         String s1 = input.substring(0, 5);
         float d1 = Float.parseFloat(s1);
@@ -238,7 +247,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         return output;
     }
 
-
+    /**轉float其二*/
     private float trans2Double2(String input) {
         String s1 = input.substring(0, 5);
         float d1 = Float.parseFloat(s1);
@@ -259,7 +268,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         return output;
     }
 
-
+    /**點選圖表事件*/
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         Log.i("Entry selected", e.toString());
@@ -272,7 +281,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     public void onNothingSelected() {
 
     }
-
+    /**設置X軸(未完工)*/
     private class MyValueFormatter extends ValueFormatter {
 
 
@@ -303,7 +312,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
             Date dt1 = rightNow.getTime();
             newTime = sdf.format(dt1);
-            Log.v("BT","看如何執行");
+//            Log.v("BT","看如何執行");
             return newTime;
         }
     }

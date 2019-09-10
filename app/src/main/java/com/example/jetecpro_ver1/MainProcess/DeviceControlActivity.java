@@ -18,6 +18,8 @@ package com.example.jetecpro_ver1.MainProcess;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -29,6 +31,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
@@ -49,6 +52,8 @@ import com.example.jetecpro_ver1.Values.SendType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect, display data,
@@ -61,7 +66,7 @@ public class DeviceControlActivity extends Activity {
 
     public static Activity OptionThis;
 
-
+    public  Dialog waitdialog;
     private TextView mConnectionState;
     private TextView mDataField;
     private BluetoothLeService mBluetoothLeService;
@@ -69,6 +74,7 @@ public class DeviceControlActivity extends Activity {
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 
     private boolean mConnected = false;
+    int tt=0;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
 
     private final String LIST_NAME = "NAME";
@@ -87,12 +93,18 @@ public class DeviceControlActivity extends Activity {
             }
 
             // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(SendType.DeviceAddress);
+            waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
+                    getResources().getString(R.string.plzWait),getResources().getString(R.string.progressing),true);
+                Log.v("BT","自動連線第一次");
+                mBluetoothLeService.connect(SendType.DeviceAddress);
+
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             mBluetoothLeService = null;
+
+
         }
     };//serviceConnection
 
@@ -110,15 +122,23 @@ public class DeviceControlActivity extends Activity {
 
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
+                waitdialog.dismiss();
                 updateConnectionState(R.string.Connect_true, getBaseContext().getResources().getColor(R.color.Green_Yanagizome));
                 invalidateOptionsMenu();
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 updateConnectionState(R.string.Connect_false, getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
+                if (tt <= 0){
+                    Log.v("BT","自動連線第二次");
+                    mBluetoothLeService.connect(SendType.DeviceAddress);
+                    count();
+
+
+                }
+
                 invalidateOptionsMenu();
                 clearUI();
-
                 /**接下來是重點===============*/
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
@@ -130,8 +150,28 @@ public class DeviceControlActivity extends Activity {
             }
         }
     };//onReceive
+    private boolean count(){
+        new CountDownTimer(5000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                Log.v("BT","倒數中:"+millisUntilFinished / 1000);
+            }
+            public void onFinish() {
+                if (mConnected == false){
+                    Log.v("BT","自動連線第三次");
+                    mBluetoothLeService.connect(SendType.DeviceAddress);
+                    waitdialog.dismiss();
+                    Toast.makeText(getBaseContext(),"該裝置無法連接，可能距離太遠了",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }.start();
+
+
+        return false;
+    }
 
     private void displayData(final String data) {
+
         if (data != null) {
             mDataField.setText(data);
             SendType.NormalData = data;
@@ -194,6 +234,9 @@ public class DeviceControlActivity extends Activity {
                         GetDisplayData get = new GetDisplayData(data);
                         get.sendGet();
                         dialog.dismiss();
+                        waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
+                                getResources().getString(R.string.plzWait),getResources().getString(R.string.progressing),true);
+
                     } else {
                         Toast.makeText(getBaseContext(), "輸入錯誤", Toast.LENGTH_LONG).show();
                     }
@@ -204,6 +247,7 @@ public class DeviceControlActivity extends Activity {
         String getMain = data.substring(0, 3);
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
+
 
         if (data.contains("OVER")){
             switch (SendType.ThirdWord) {
@@ -241,6 +285,7 @@ public class DeviceControlActivity extends Activity {
     private void goNextActivity(){
         Intent intent = new Intent(DeviceControlActivity.this, DataDisplayActivity.class);
         startActivity(intent);
+        waitdialog.dismiss();
         finish();
     }
 
@@ -279,12 +324,12 @@ public class DeviceControlActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
         if (mBluetoothLeService != null) {
@@ -310,7 +355,6 @@ public class DeviceControlActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.gatt_services, menu);
         if (mConnected) {
-
             menu.findItem(R.id.menu_connect).setVisible(false);
             menu.findItem(R.id.menu_disconnect).setVisible(true);
 
@@ -325,10 +369,14 @@ public class DeviceControlActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_connect:
+                Log.v("BT","手動連線");
                 mBluetoothLeService.connect(SendType.DeviceAddress);
+                tt=0;
                 return true;
             case R.id.menu_disconnect:
                 mBluetoothLeService.disconnect();
+                tt=1;
+                Log.v("BT","手動取消");
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -341,6 +389,7 @@ public class DeviceControlActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 mConnectionState.setText(resourceId);
                 mConnectionState.setTextColor(colorId);
             }

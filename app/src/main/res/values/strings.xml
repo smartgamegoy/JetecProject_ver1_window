@@ -141,5 +141,8 @@
     <string name="btOutPut">匯出</string>
     <string name="btLookPDF">查看報表</string>
 
+    <!--ListDownloadDataActivity-->
+    <string name="listDisplay">資料列表</string>
+
 
 </resources>
