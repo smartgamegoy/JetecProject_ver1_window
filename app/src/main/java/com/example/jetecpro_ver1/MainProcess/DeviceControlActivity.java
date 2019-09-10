@@ -19,6 +19,7 @@ package com.example.jetecpro_ver1.MainProcess;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Presentation;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -131,6 +132,7 @@ public class DeviceControlActivity extends Activity {
                 updateConnectionState(R.string.Connect_false, getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
                 if (tt <= 0){
                     Log.v("BT","自動連線第二次");
+
                     mBluetoothLeService.connect(SendType.DeviceAddress);
                     count();
 
@@ -159,8 +161,21 @@ public class DeviceControlActivity extends Activity {
                 if (mConnected == false){
                     Log.v("BT","自動連線第三次");
                     mBluetoothLeService.connect(SendType.DeviceAddress);
-                    waitdialog.dismiss();
-                    Toast.makeText(getBaseContext(),"該裝置無法連接，可能距離太遠了",Toast.LENGTH_LONG).show();
+                    new CountDownTimer(5000,1000){
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            Log.v("BT","再次倒數中:"+millisUntilFinished / 1000);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            if (mConnected == false) {
+                                waitdialog.dismiss();
+                                Toast.makeText(getBaseContext(), R.string.maybeSoFair, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }.start();
+
                 }
 
             }
@@ -236,6 +251,22 @@ public class DeviceControlActivity extends Activity {
                         dialog.dismiss();
                         waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
                                 getResources().getString(R.string.plzWait),getResources().getString(R.string.progressing),true);
+                        new CountDownTimer(3000, 1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                Log.v("BT","讀秒中:"+millisUntilFinished / 1000);
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (SendType.NormalData.contains("OVER")){Log.v("BT","已正常連線取得數據");}else {
+                                    SendType.SendForBLEDataType = "get";
+                                    SendType.getSendBluetoothLeService.
+                                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                                }
+
+                            }
+                        }.start();
 
                     } else {
                         Toast.makeText(getBaseContext(), "輸入錯誤", Toast.LENGTH_LONG).show();
@@ -247,6 +278,7 @@ public class DeviceControlActivity extends Activity {
         String getMain = data.substring(0, 3);
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
+
 
 
         if (data.contains("OVER")){

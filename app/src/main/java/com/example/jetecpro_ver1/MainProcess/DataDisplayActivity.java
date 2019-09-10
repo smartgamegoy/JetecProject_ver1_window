@@ -562,7 +562,7 @@ public class DataDisplayActivity extends Activity {
         getActionBar().setTitle(SendType.DeviceName);
 
     }
-
+    /**連線狀態控制*/
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -805,7 +805,7 @@ public class DataDisplayActivity extends Activity {
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
                     GetRecord.i = Integer.parseInt(SendType.mCOUNT) + 1;
-                    SystemClock.sleep(400);
+                    SystemClock.sleep(600);
                     getRecord.takeOutSQLite();
 
                     Toast.makeText(DataDisplayActivity.DisplayData, R.string.itHaveData, Toast.LENGTH_LONG).show();

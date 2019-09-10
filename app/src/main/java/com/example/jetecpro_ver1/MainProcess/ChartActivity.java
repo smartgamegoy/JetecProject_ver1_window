@@ -132,7 +132,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         YAxis leftAxis = chart.getAxisLeft();//設置Y軸(左)
         YAxis rightAxis = chart.getAxisRight();//設置Y軸(右)
         rightAxis.setEnabled(false);//讓右邊Y消失
-        leftAxis.setAxisMaximum(100f);//顯示上限
+        leftAxis.setAxisMaximum(90f);//顯示上限
         leftAxis.setAxisMinimum(0f);//顯示下限
         XAxis xAxis = chart.getXAxis();//設定X軸
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//將x軸表示字移到底下

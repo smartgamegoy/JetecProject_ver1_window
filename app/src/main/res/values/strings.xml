@@ -13,6 +13,8 @@
     <string name="title_devices">裝置掃描</string>
     <string name="menu_connect">連接裝置</string>
     <string name="menu_disconnect">斷開裝置</string>
+    <string name="trySecond">嘗試第二次連線...</string>
+    <string name="maybeSoFair">該裝置無法連接，可能離裝置距離太遠了</string>
 
     <!--DeviceControlActivity-->
     <string name="Device_name">裝置名稱: </string>
@@ -143,6 +145,9 @@
 
     <!--ListDownloadDataActivity-->
     <string name="listDisplay">資料列表</string>
+    <string name="dataFilter">數據篩選</string>
+    <string name="freshSearch"><i>快速搜尋(例如 22:00)</i></string>
+    <string name="plzPushTwo">請點擊兩次退出列表</string>
 
 
 </resources>
