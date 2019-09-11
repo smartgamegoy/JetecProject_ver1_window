@@ -5,14 +5,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,6 +44,7 @@ public class ListDownloadDataActivity extends Activity {
     EditText edFilter;
     private SimpleAdapter simpleAdapter;
     long firstTime = 0;
+    private int currentIndex=0;  //记录当前ListView的索引
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,8 @@ public class ListDownloadDataActivity extends Activity {
         setActionBar();
         //取得SQLite資料
         getSQLdata();
+        //將Action上的item字體顏色設為白色
+        invalidateOptionsMenu();
 
 
     }//onCreate
@@ -58,12 +65,15 @@ public class ListDownloadDataActivity extends Activity {
      * 設置ActionBar
      */
     private void setActionBar() {
-        getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.yellowNAMAKABE)));
+
         TextView textView = new TextView(this);
         textView.setText(R.string.listDisplay);
         textView.setTextSize(24);
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 //        textView.setGravity(Gravity.CENTER);//文字置中
+        textView.setTextColor(Color.WHITE);
+        getActionBar().setHomeAsUpIndicator(R.drawable.ic_navigate_before_black_24dp);
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(textView);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,6 +134,41 @@ public class ListDownloadDataActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {}
+        });//edFilter
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {//上華下滑的設置
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+
+                    // 滚动之前,手还在屏幕上  记录滚动前的下标
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                        //view.getLastVisiblePosition()得到当前屏幕可见的第一个item在整个listview中的下标
+                        currentIndex = view.getLastVisiblePosition();
+                        break;
+
+                    //滚动停止
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        //记录滚动停止后 记录当前item的位置
+                        int scrolled = view.getLastVisiblePosition();
+                        //滚动后下标大于滚动前 向下滚动了
+                        if (scrolled > currentIndex) {
+                            edFilter.setVisibility(View.GONE);
+                        }
+                        //向上滚动了
+                        else if(scrolled<currentIndex) {
+                            edFilter.setVisibility(View.VISIBLE);
+                        }else if(scrolled == 3 &&currentIndex == 3){
+                            edFilter.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
         });
 
     }//getSQLdata
@@ -194,4 +239,16 @@ public class ListDownloadDataActivity extends Activity {
 
         return super.onKeyDown(keyCode, event);
     }
+
+    /**將ActionBar內字體設為白*/
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        View view = findViewById(R.id.dataFilter);
+        if (view != null && view instanceof TextView) {
+            ((TextView) view).setTextColor( Color.WHITE ); // Make text colour blue
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 }//結尾

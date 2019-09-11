@@ -16,6 +16,9 @@
     <color name="ActionBarColor">#72c2ff</color>
     <color name="greenTOKIWA">#00AA90</color>
     <color name="blueRUREI">#2EA9DF</color>
+    <color name="yellowNAMAKABE">#7D6C46</color>
+    <color name="redKABA">#C1693C</color>
+    <color name="none">#00000000</color>
 
 
 </resources>
