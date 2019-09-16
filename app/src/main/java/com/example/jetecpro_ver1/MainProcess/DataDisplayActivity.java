@@ -1,5 +1,6 @@
 package com.example.jetecpro_ver1.MainProcess;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -92,26 +93,23 @@ public class DataDisplayActivity extends Activity {
 
 
         if (SendType.mLOG != null){
-            switch (SendType.mLOG.substring(0,3)){
-                case "ON":
-                    getActionBar().setTitle(SendType.DeviceName + getBaseContext().getResources().getString(R.string.isRecoeding));
-                    DeviceScanActivity.DeviceScan.finish();
-                    btStartRecord.setText(R.string.stopRecord);
-                    btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
-                                    .getDrawable(R.drawable.noun_record_2822351_red)
-                            , null, null, null);
-
-                    break;
-                case "OFF":
-                    getActionBar().setTitle(SendType.DeviceName);
-                    DeviceScanActivity.DeviceScan.finish();
-                    btStartRecord.setText(R.string.StartRecord);
-                    btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
-                                    .getDrawable(R.drawable.noun_record_2822351)
-                            , null, null, null);
-                    break;
-
+            Log.v("BT", SendType.mLOG.substring(0,3));
+            if (SendType.mLOG.contains("ON")){
+                getActionBar().setTitle(SendType.DeviceName + getBaseContext().getResources().getString(R.string.isRecoeding));
+                DeviceScanActivity.DeviceScan.finish();
+                btStartRecord.setText(R.string.stopRecord);
+                btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                .getDrawable(R.drawable.noun_record_2822351_red)
+                        , null, null, null);
+            }else {
+                getActionBar().setTitle(SendType.DeviceName);
+                DeviceScanActivity.DeviceScan.finish();
+                btStartRecord.setText(R.string.StartRecord);
+                btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                .getDrawable(R.drawable.noun_record_2822351)
+                        , null, null, null);
             }
+
         }else{
             getActionBar().setTitle(SendType.DeviceName);
             DeviceScanActivity.DeviceScan.finish();
@@ -301,11 +299,11 @@ public class DataDisplayActivity extends Activity {
                                                         } else if (SendType.mLOG.contains("ON")) {
                                                             btStartRecord.setText(R.string.StartRecord);
                                                         }
+                                                        getActionBar().setTitle(SendType.DeviceName
+                                                                + getBaseContext().getResources().getString(R.string.isRecoeding));
                                                         btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
                                                                         .getDrawable(R.drawable.noun_record_2822351_red)
                                                                 , null, null, null);
-                                                        getActionBar().setTitle(SendType.DeviceName +
-                                                                getBaseContext().getResources().getString(R.string.isRecoeding));
                                                         Toast.makeText(getBaseContext(), R.string.opened, Toast.LENGTH_SHORT).show();
                                                     }
                                                 });

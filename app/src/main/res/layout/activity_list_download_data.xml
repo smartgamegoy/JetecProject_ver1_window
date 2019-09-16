@@ -15,12 +15,12 @@
         android:drawableLeft="@drawable/ic_search_black_24dp"
         android:ems="10"
         android:hint="@string/freshSearch"
-        android:inputType="textPersonName" />
+        android:digits="1234567890-~.:%"/>
 
     <ListView
         android:id="@+id/listView_down"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#91B493"
+        android:background="@color/greenUnKnowColor"
         />
 </LinearLayout>

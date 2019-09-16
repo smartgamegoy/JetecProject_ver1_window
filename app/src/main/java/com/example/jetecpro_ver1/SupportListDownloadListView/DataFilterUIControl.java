@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SQLite.DBHelper;
@@ -34,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class DataFilterUIControl {
     Context context;
@@ -46,11 +52,15 @@ public class DataFilterUIControl {
     String DB_NAME = SendType.DB_Name;
     String DB_TABLE = SendType.DB_TABLE + "GETRecord";
     SQLiteDatabase mCustomDb;
-    TextView tvIdResult;
+    TextView tvIdResult,tvResult;
     int startOld, endOld, startNew, endNew, NpMathFunction;
+    EditText editText;
 
-    String FirstID, LastID, FirstDateRecord, LastDateRecord, FirstTimeRecord, LastTimeRecord, getSelectedDate, getSelectedTime,selectType;
+    String FirstID, LastID, FirstDateRecord, LastDateRecord, FirstTimeRecord, LastTimeRecord, getSelectedDate, getSelectedTime, selectType;
     int f_YEAR, f_MONTH, f_DAY, l_YEAR, l_MONTH, l_DAY;
+
+    String selectedFirID, selectedSecID;
+
 
     public DataFilterUIControl(Context context, Button btGoSearch, Activity activity) {
         this.context = context;
@@ -105,12 +115,12 @@ public class DataFilterUIControl {
     /**
      * 日期與時間的選擇介面
      */
-    public void DateTimeSelect(LinearLayout liDTSelecter) {
-
+    public void DateTimeSelect(LinearLayout liDTSelecter, String selectType) {
+        this.selectType = selectType;
         this.liDTSelecter = liDTSelecter;
 
         getSQLite();
-        final TextView tvResult = activity.findViewById(R.id.dataFilter_textViewResult);
+        tvResult = activity.findViewById(R.id.dataFilter_textViewResult);
         Button selectDate = activity.findViewById(R.id.dataFilter_buttonSelectDate);
         Button selectTime = activity.findViewById(R.id.dataFilter_buttonSelectTime);
         selectDate.setOnClickListener(DateTimeFunction);
@@ -156,6 +166,7 @@ public class DataFilterUIControl {
 
             }
         });
+        buttonClickData();
 
     }
 
@@ -190,9 +201,16 @@ public class DataFilterUIControl {
                     Calendar b = Calendar.getInstance();
                     b.set(l_YEAR, l_MONTH - 1, l_DAY);//放大->F
                     c.set(f_YEAR, f_MONTH - 1, f_DAY);//Year,Mounth -1,Day//放小->L
-                    datePickerDialog.getDatePicker().setMaxDate(b.getTimeInMillis());
-                    datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
-                    datePickerDialog.show();
+                    try{
+                        datePickerDialog.getDatePicker().setMaxDate(b.getTimeInMillis());
+                        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+                        datePickerDialog.show();
+                    }catch (Exception e){
+                        Toast.makeText(context,R.string.ExMessage1,Toast.LENGTH_SHORT).show();
+                        tvResult.setText(trans(R.string.dataFilter_YouChoose)
+                                + "\n" + FirstDateRecord);
+                    }
+
                     break;
                 case R.id.dataFilter_buttonSelectTime:
                     timePickerDialog.show();
@@ -239,8 +257,8 @@ public class DataFilterUIControl {
     /**
      * 編號的選擇介面
      */
-    public void IdSelect(LinearLayout liIDSelecter) {
-
+    public void IdSelect(LinearLayout liIDSelecter, String selectType) {
+        this.selectType = selectType;
         this.liIDSelecter = liIDSelecter;
         getSQLite();
         tvIdResult = activity.findViewById(R.id.dataFilter_IdResult);
@@ -262,11 +280,15 @@ public class DataFilterUIControl {
                     numberPickerEnd.setMinValue(newVal);
                     tvIdResult.setText(trans(R.string.dataFilter_YouChoose) + "\n"
                             + newVal + "~" + newVal);
+                    selectedFirID = String.valueOf(newVal);
+                    selectedSecID = String.valueOf(newVal);
                 } else {
                     numberPickerEnd.setMinValue(newVal);
                     numberPickerEnd.setMaxValue(Integer.parseInt(FirstID));
                     tvIdResult.setText(trans(R.string.dataFilter_YouChoose) + "\n"
                             + newVal + "~" + endNew);
+                    selectedFirID = String.valueOf(newVal);
+                    selectedSecID = String.valueOf(endNew);
                 }
 
 
@@ -285,8 +307,11 @@ public class DataFilterUIControl {
                 }
                 tvIdResult.setText(trans(R.string.dataFilter_YouChoose) + "\n"
                         + startNew + "~" + newVal);
+                selectedFirID = String.valueOf(startNew);
+                selectedSecID = String.valueOf(newVal);
             }
         });
+        buttonClickData();
 
     }
 
@@ -319,9 +344,11 @@ public class DataFilterUIControl {
     }//end
 
     /**
-     * 選擇篩選溫度
+     * 選擇篩選溫濕度
      */
     private void mySelect(final EditText editText, NumberPicker numberPickerDataSelect, final TextView tvValueResult) {
+        this.editText = editText;
+        buttonClickData();
         numberPickerDataSelect.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -329,17 +356,17 @@ public class DataFilterUIControl {
                     case 0:
                         NpMathFunction = newVal;
                         tvValueResult.setText(trans(R.string.dataFilter_YouChoose)
-                                +trans(R.string.BBBBBig)+editText.getText().toString());
+                                + trans(R.string.BBBBBig) + editText.getText().toString());
                         break;
                     case 1:
                         NpMathFunction = newVal;
                         tvValueResult.setText(trans(R.string.dataFilter_YouChoose)
-                                +trans(R.string.SSSSmail)+editText.getText().toString());
+                                + trans(R.string.SSSSmail) + editText.getText().toString());
                         break;
                     case 2:
                         NpMathFunction = newVal;
                         tvValueResult.setText(trans(R.string.dataFilter_YouChoose)
-                                +trans(R.string.equal)+editText.getText().toString());
+                                + trans(R.string.equal) + editText.getText().toString());
                         break;
 
                 }
@@ -353,62 +380,64 @@ public class DataFilterUIControl {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editText.getHint().toString().contains("-10~65")){
-                    try{
-                        if (Integer.parseInt(String.valueOf(s))<-10){
+                editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_CLASS_NUMBER);
+                if (editText.getHint().toString().contains("-10~65")) {
+                    try {
+                        if (Double.valueOf(String.valueOf(s)) < -10.0) {
                             editText.setText("-10");
-                        }else if (Integer.parseInt(String.valueOf(s))>65){
+                        } else if (Double.valueOf(String.valueOf(s)) > 65.0) {
                             editText.setText("65");
-                        }else{
-                            setTextFunction(tvValueResult,s);
+                        } else {
+                            setTextFunction(tvValueResult, s);
                         }
-                    }catch (Exception e){
-                        tvValueResult.setText(trans(R.string.dataFilter_YouChoose)+"--");
+                    } catch (Exception e) {
+                        tvValueResult.setText(trans(R.string.dataFilter_YouChoose) + "--");
                     }
 
-                }else if (editText.getHint().toString().contains("0~100")){
-
+                } else if (editText.getHint().toString().contains("0~100")) {
                     try {
-                        if (Integer.parseInt(String.valueOf(s))<0){
+                        if (Double.valueOf(String.valueOf(s)) < 0) {
                             editText.setText("0");
-                        }else if (Integer.parseInt(String.valueOf(s))>100){
+                        } else if (Double.valueOf(String.valueOf(s)) > 100) {
                             editText.setText("100");
-                        }else{
-                            setTextFunction(tvValueResult,s);
+                        } else {
+                            setTextFunction(tvValueResult, s);
                         }
-                    }catch (Exception e){
-                        tvValueResult.setText(trans(R.string.dataFilter_YouChoose)+"--");
+                    } catch (Exception e) {
+                        tvValueResult.setText(trans(R.string.dataFilter_YouChoose) + "--");
                     }
 
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
-    private void setTextFunction(TextView tvValueResult,CharSequence s){
-        switch (NpMathFunction){
+
+    private void setTextFunction(TextView tvValueResult, CharSequence s) {
+        switch (NpMathFunction) {
             case 0:
                 tvValueResult.setText(trans(R.string.dataFilter_YouChoose)
-                        +trans(R.string.BBBBBig)+s);
+                        + trans(R.string.BBBBBig) + s);
                 break;
             case 1:
                 tvValueResult.setText(trans(R.string.dataFilter_YouChoose)
-                        +trans(R.string.SSSSmail)+s);
+                        + trans(R.string.SSSSmail) + s);
                 break;
             case 2:
                 tvValueResult.setText(trans(R.string.dataFilter_YouChoose)
-                        +trans(R.string.equal)+s);
+                        + trans(R.string.equal) + s);
                 break;
             default:
                 tvValueResult.setText(trans(R.string.dataFilter_YouChoose)
-                        +trans(R.string.equal)+"--");
+                        + trans(R.string.equal) + "--");
                 break;
 
         }
-    }
 
+    }
 
 
     //==============================分隔線
@@ -436,4 +465,65 @@ public class DataFilterUIControl {
 //        Log.v("BT",l_YEAR+" "+l_MONTH+" "+l_DAY+"大的");
 //        Log.v("BT",f_YEAR+" "+f_MONTH+" "+f_DAY+"小的");
     }
+
+    //==============================分隔線(按鈕送出事件)
+    private void buttonClickData() {
+        btGoSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DownloadDataFilteredActivity.mSelectType = selectType;
+                if (selectType.contains(trans(R.string.dataFilter_plzSelectDateAndTime))) {
+
+                } else if (selectType.contains(trans(R.string.dataFilter_plzSelectId))) {
+                    IDSelect();
+                } else if (selectType.contains(trans(R.string.Temperature))) {
+                    elseDataSelect();
+                } else if (selectType.contains(trans(R.string.Humidity))) {
+                    elseDataSelect();
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 其他數值篩選送出
+     */
+    private void elseDataSelect() {
+        //要傳的資料為>=<以及數值
+//        Log.v("BT", String.valueOf(NpMathFunction));
+        try{
+            Intent intent = new Intent(activity,DownloadDataFilteredActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putDouble("Value",Double.valueOf(editText.getText().toString()));
+            bundle.putInt("Method",NpMathFunction);
+            intent.putExtras(bundle);
+            activity.startActivity(intent);
+//            activity.finish();
+        }catch (Exception e){
+            Toast.makeText(context, R.string.dont_blank, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    /**
+     * ID篩選送出
+     */
+    private void IDSelect() {
+        if (selectType.contains(trans(R.string.dataFilter_plzSelectId))) {
+            if (selectedFirID == null || selectedSecID == null) {
+                Toast.makeText(context, R.string.dont_blank, Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(activity, DownloadDataFilteredActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("FirstId", selectedFirID);
+                bundle.putString("SecondId", selectedSecID);
+                intent.putExtras(bundle);
+                activity.startActivity(intent);
+//                activity.finish();
+            }
+        }
+    }
+
+
 }

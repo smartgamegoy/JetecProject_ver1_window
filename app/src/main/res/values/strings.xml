@@ -167,6 +167,8 @@
     <string name="BBBBBig">大於</string>
     <string name="SSSSmail">小於</string>
     <string name="equal">等於</string>
+    <string name="sorry">很抱歉，沒有相符的數據</string>
+    <string name="ExMessage1">因紀錄未超過一日，故以當日作為日期範圍之日期</string>
 
 
 

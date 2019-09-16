@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -54,10 +55,12 @@ public class DataFilterActivity extends Activity {
         textView.setText(R.string.dataFilter);
         textView.setTextSize(24);
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        textView.setGravity(Gravity.CENTER);//文字置中
+//        textView.setGravity(Gravity.CENTER);//文字置中
         textView.setTextColor(Color.WHITE);
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(textView);
+        getActionBar().setHomeAsUpIndicator(R.drawable.ic_navigate_before_black_24dp);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void spinnerSelect() {
@@ -83,10 +86,10 @@ public class DataFilterActivity extends Activity {
                 DataFilterUIControl dataFilterUIControl = new DataFilterUIControl(getBaseContext(),btGoSearch,DataFilterActivity.this);
                 if (selectArray[position].contains(trans(R.string.dataFilter_plzSelectDateAndTime))) {
                     setAllViewGONE();
-                    dataFilterUIControl.DateTimeSelect(liDTSelecter);
+                    dataFilterUIControl.DateTimeSelect(liDTSelecter,selectArray[position]);
                 } else if (selectArray[position].contains(trans(R.string.dataFilter_plzSelectId))) {
                     setAllViewGONE();
-                    dataFilterUIControl.IdSelect(liIdSelecter);
+                    dataFilterUIControl.IdSelect(liIdSelecter,selectArray[position]);
                 } else if (selectArray[position].contains(trans(R.string.Temperature))) {
                     setAllViewGONE();
                     dataFilterUIControl.valueSelect(liElseData,selectArray[position]);
@@ -121,4 +124,13 @@ public class DataFilterActivity extends Activity {
         return str;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                    finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
