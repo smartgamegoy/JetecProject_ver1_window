@@ -152,11 +152,21 @@
     <!--DataFilterActivity-->
     <string name="dataFilter_plzSelectDateTitle">請選擇日期</string>
     <string name="dataFilter_plzSelectTimeTitle">請選擇時間</string>
-    <string name="dataFilter_plzSelectIFTitle">請選擇篩選條件</string>
+    <string name="dataFilter_plzSelectIFTitle">請選擇篩選條件:</string>
+    <string name="dataFilter_plzSelectValueTitle">請輸入篩選數值:</string>
     <string name="dataFilter_plzSelect">請選擇項目</string>
     <string name="dataFilter_plzSelectId">紀錄編號</string>
     <string name="dataFilter_plzSelectDateAndTime">日期與時間</string>
     <string name="dataFilter_search">搜尋</string>
+    <string name="dataFilter_SelectRange">選取範圍: </string>
+    <string name="dataFilter_YouChoose">搜尋範圍: </string>
+    <string name="dataFilter_plzChooseDT">請選擇欲搜尋日期與時間</string>
+    <string name="dataFilter_StartValue">起始編號</string>
+    <string name="dataFilter_EndValue">結束編號</string>
+    <string name="dataFilter_IDSelectHint">提示：可直接點選轉輪輸入數字</string>
+    <string name="BBBBBig">大於</string>
+    <string name="SSSSmail">小於</string>
+    <string name="equal">等於</string>
 
 
 

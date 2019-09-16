@@ -256,11 +256,9 @@ public class DataDisplayActivity extends Activity {
                         while (mData.moveToNext()) {
                             HashMap<String, String> hashMap = new HashMap<>();
                             hashMap.put("id", mData.getString(0));
-                            Log.v("BT", "資料" + mData.getString(0));
                             arrayList.add(hashMap);
                             a = mData.getString(0);
                         }
-                        Log.v("BT", "RRR" + a);
                         if (a.contains("巴拉巴巴巴")) {
                             Toast.makeText(getBaseContext(), R.string.noData, Toast.LENGTH_LONG).show();
 
