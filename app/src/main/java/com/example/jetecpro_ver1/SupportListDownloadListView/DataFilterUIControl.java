@@ -121,12 +121,16 @@ public class DataFilterUIControl {
 
         getSQLite();
         tvResult = activity.findViewById(R.id.dataFilter_textViewResult);
+        TextView tvTiiiiiiiitle = activity.findViewById(R.id.textViewTTTTTTTTTititititi);
         Button selectDate = activity.findViewById(R.id.dataFilter_buttonSelectDate);
         Button selectTime = activity.findViewById(R.id.dataFilter_buttonSelectTime);
         selectDate.setOnClickListener(DateTimeFunction);
         selectTime.setOnClickListener(DateTimeFunction);
-        tvResult.setText(trans(R.string.dataFilter_SelectRange) + "\n" + FirstDateRecord + " " + FirstTimeRecord +
+        tvTiiiiiiiitle.setText(trans(R.string.dataFilter_SelectRange) + "\n" + FirstDateRecord + " " + FirstTimeRecord +
                 "~" + LastDateRecord + " " + LastTimeRecord);
+        tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                +"\n"
+                +"-- --");
         //載入TimePicker
         timeDataSelectEvent_TimePickerSupport();
         pickerrrrrsssssss();
@@ -137,27 +141,38 @@ public class DataFilterUIControl {
                 switch (newVal) {
                     case 0:
                         if (getSelectedTime == null || getSelectedDate == null) {
-                            tvResult.setText(R.string.dataFilter_plzChooseDT);
+                            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                                    +"\n"
+                                    +"-- --"
+                                    +trans(R.string.BBBBBefore));
                         } else {
-                            tvResult.setText(trans(R.string.dataFilter_YouChoose)
-                                    + "\n" + getSelectedDate + " " + getSelectedTime
-                                    + "~" + LastDateRecord + " " + LastTimeRecord);
+                            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                                    +"\n"
+                                    +getSelectedDate + " " + getSelectedTime
+                                    +trans(R.string.BBBBBefore));
                         }
                         break;
                     case 1:
                         if (getSelectedTime == null || getSelectedDate == null) {
-                            tvResult.setText(R.string.dataFilter_plzChooseDT);
+                            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                                    +"\n"
+                                    +"-- --"
+                                    +trans(R.string.AAAAAfter));
                         } else {
-                            tvResult.setText(trans(R.string.dataFilter_YouChoose)
-                                    + "\n" + FirstDateRecord + " " + FirstTimeRecord
-                                    + "~" + getSelectedDate + " " + getSelectedTime);
+                            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                                    +"\n"
+                                    +getSelectedDate + " " + getSelectedTime
+                                    +trans(R.string.AAAAAfter));
                         }
                         break;
                     case 2:
                         if (getSelectedTime == null || getSelectedDate == null) {
-                            tvResult.setText(R.string.dataFilter_plzChooseDT);
+                            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                                    +"\n"
+                                    +"-- --");
                         } else {
-                            tvResult.setText(trans(R.string.dataFilter_YouChoose) + "\n" + getSelectedDate + " " + getSelectedTime);
+                            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                                    + "\n" + getSelectedDate + " " + getSelectedTime+"~59");
                         }
 
                         break;
@@ -232,8 +247,9 @@ public class DataFilterUIControl {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         DecimalFormat decimalFormat = new DecimalFormat("00");
-                        Log.v("BT", "選擇日期為:" + decimalFormat.format(year) + decimalFormat.format(month + 1) + decimalFormat.format(dayOfMonth));
+//                        Log.v("BT", "選擇日期為:" + decimalFormat.format(year) + decimalFormat.format(month + 1) + decimalFormat.format(dayOfMonth));
                         getSelectedDate = decimalFormat.format(year) + "-" + decimalFormat.format(month + 1) + "-" + decimalFormat.format(dayOfMonth);
+                        tvResultDisplay();
 //                Log.v("BT","選擇日期為:"+year+month+dayOfMonth);
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -243,13 +259,43 @@ public class DataFilterUIControl {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 DecimalFormat decimalFormat = new DecimalFormat("00");
-                Log.v("BT", "選擇時間為:" + decimalFormat.format(hourOfDay) + decimalFormat.format(minute));
-                getSelectedTime = decimalFormat.format(hourOfDay) + ":00~" + decimalFormat.format(hourOfDay) + ":59";
+//                Log.v("BT", "選擇時間為:" + decimalFormat.format(hourOfDay) + decimalFormat.format(minute));
+                getSelectedTime = decimalFormat.format(hourOfDay) + ":00";
+                tvResultDisplay();
 //                Log.v("BT","選擇時間為:"+hourOfDay+minute);
             }
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(calendar.MINUTE), true);
 
 
+    }
+    private void tvResultDisplay(){
+        String method;
+        switch (numberPicker.getValue()){
+            case 0:
+                method = trans(R.string.BBBBBefore);
+                break;
+            case 1:
+                method = trans(R.string.AAAAAfter);
+                break;
+                default:
+                    method = "~59";
+                    break;
+        }
+        if (getSelectedTime == null){
+            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                    + "\n" + getSelectedDate + " " + "--");
+        }else if(getSelectedDate == null){
+            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                    + "\n" + "--" + " " + getSelectedTime+method);
+
+        }else if(getSelectedDate == null &&getSelectedTime == null){
+            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+
+                    + "\n" + "--" + " " + "--");
+        }else {
+            tvResult.setText(trans(R.string.dataFilter_YouChoose)+trans(R.string.plz_notify)
+                    + "\n" + getSelectedDate + " " + getSelectedTime+method);
+        }
     }
 
     //==============================分隔線(編號篩選)
@@ -467,13 +513,14 @@ public class DataFilterUIControl {
     }
 
     //==============================分隔線(按鈕送出事件)
+    /**按鈕按下後的篩選*/
     private void buttonClickData() {
         btGoSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DownloadDataFilteredActivity.mSelectType = selectType;
                 if (selectType.contains(trans(R.string.dataFilter_plzSelectDateAndTime))) {
-
+                    DateTimeSelect();
                 } else if (selectType.contains(trans(R.string.dataFilter_plzSelectId))) {
                     IDSelect();
                 } else if (selectType.contains(trans(R.string.Temperature))) {
@@ -524,6 +571,28 @@ public class DataFilterUIControl {
             }
         }
     }
+
+    /**日期時間篩選送出*/
+    private void DateTimeSelect(){
+//        Log.v("BT", String.valueOf(numberPicker.getValue()));
+        try{
+            Intent intent = new Intent(activity,DownloadDataFilteredActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("dtMethod",numberPicker.getValue());
+            bundle.putString("getD",getSelectedDate);
+            bundle.putString("getT",getSelectedTime);
+            intent.putExtras(bundle);
+            if(getSelectedDate == null || getSelectedTime == null){
+                Toast.makeText(context,R.string.dataFilter_plzInputDT＿dontblank,Toast.LENGTH_LONG).show();
+            }else
+                activity.startActivity(intent);
+
+        }catch(Exception x){
+            Log.v("BT","爆了");
+        }
+
+    }
+
 
 
 }
