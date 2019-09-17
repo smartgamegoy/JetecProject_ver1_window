@@ -1,6 +1,9 @@
 package com.example.jetecpro_ver1.MainProcess;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.jetecpro_ver1.Chart.MyMarkerView;
 import com.example.jetecpro_ver1.R;
@@ -36,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +57,8 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     String DB_NAME = SendType.DB_Name;
     String DB_TABLE = SendType.DB_TABLE + "GETRecord";
     SQLiteDatabase mCustomDb;
+    int displayChartCentrol = 2;
+    JSONArray mJsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +98,41 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.buttonChoose:
+                    final AlertDialog.Builder mBuilder = new AlertDialog.Builder(ChartActivity.this);
+                    final View vvvvvvvvvvvvvvvv  =getLayoutInflater().inflate(R.layout.activity_chart_button_choose_dialog,null);
+                    mBuilder.setView(vvvvvvvvvvvvvvvv);
+                    final ListView thisIsListViewHahahahahahahahhahahaha =
+                                vvvvvvvvvvvvvvvv.findViewById(R.id.lvDDDDDDDDialog);
+                    Button btOKOK = vvvvvvvvvvvvvvvv.findViewById(R.id.LineChartChooseOK);
+                    Button btCancle= vvvvvvvvvvvvvvvv.findViewById(R.id.LineChartChooseCancel);
+                    String[] str ={trans(R.string.Temperature),trans(R.string.Humidity),trans(R.string.MixxxxxChart)};
+                    ArrayAdapter adapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_list_item_1,str);
+                    thisIsListViewHahahahahahahahhahahaha.setAdapter(adapter);
+                    final Dialog dialog = mBuilder.create();
+                    thisIsListViewHahahahahahahahhahahaha.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            thisIsListViewHahahahahahahahhahahaha.setSelector(R.color.Sakura);//點擊背景色
+                            displayChartCentrol = position;
+                        }
+                    });
+                    btOKOK.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            chart.clear();
+                            chartView();
+                            dialog.dismiss();
+
+                        }
+                    });
+                    btCancle.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
 
                     break;
                 case R.id.buttonList:
@@ -109,8 +153,6 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     });//Button.OnClickListener
     /**圖表顯示*/
     private void chartView() {
-//        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun","Aug"};
-        Button btChooseChart = findViewById(R.id.buttonChoose);
         chart = findViewById(R.id.dataChart);
         DBHelper db = new DBHelper(getBaseContext(), DB_NAME, null, 1);
         mCustomDb = db.getWritableDatabase();
@@ -124,6 +166,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
                 getJson = cursor.getString(1);
             }
             jsonArray = new JSONArray(getJson);
+            mJsonArray =new JSONArray(getJson);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -132,8 +175,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         YAxis leftAxis = chart.getAxisLeft();//設置Y軸(左)
         YAxis rightAxis = chart.getAxisRight();//設置Y軸(右)
         rightAxis.setEnabled(false);//讓右邊Y消失
-        leftAxis.setAxisMaximum(90f);//顯示上限
-        leftAxis.setAxisMinimum(0f);//顯示下限
+
         XAxis xAxis = chart.getXAxis();//設定X軸
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//將x軸表示字移到底下
         chart.getDescription().setEnabled(false);//讓右下角文字消失
@@ -141,33 +183,6 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         xAxis.setDrawGridLines(false);//將X軸格子消失掉
         xAxis.setLabelRotationAngle(-45f);//讓字變成斜的
         xAxis.setValueFormatter(new MyValueFormatter());
-
-
-        String newTime;
-        String hour = SendType.mTIME2COUNT.substring(0,2);
-        String min  = SendType.mTIME2COUNT.substring(2,4);
-        String sec  = SendType.mTIME2COUNT.substring(4,6);
-//        Log.v("TimeLog", "mTIME輸入樣式(第一筆)"+SendType.mTIME);
-        //三個輸出182027
-        String year = "20"+SendType.mDATE.substring(0,2);
-        String month= SendType.mDATE.substring(2,4);
-        String day  = SendType.mDATE.substring(4,6);
-//        Log.v("TimeLog", "mDATE輸入樣式(第一筆)"+SendType.mDATE);
-        //三個輸出20190903
-//        Log.v("TimeLog","日期:"+year+month+day+" ,時間:"+hour+min+sec);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
-        String string = year+"-"+month+"-"+day+","+hour+":"+min+":"+sec;
-        Date dt = null;
-        try {
-            dt = sdf.parse(string);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Calendar rightNow = Calendar.getInstance();
-        rightNow.setTime(dt);
-
-        Date dt1 = rightNow.getTime();
-        newTime = sdf.format(dt1);
 
 
         ArrayList<Entry> yValues1 = new ArrayList<>();
@@ -217,8 +232,22 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-        dataSets.add(set2);
+        if (displayChartCentrol == 0){
+            leftAxis.setAxisMaximum(50f);//顯示上限
+            leftAxis.setAxisMinimum(10f);//顯示下限
+            dataSets.add(set1);
+        }else if (displayChartCentrol == 1){
+            leftAxis.setAxisMaximum(80f);//顯示上限
+            leftAxis.setAxisMinimum(40f);//顯示下限
+            dataSets.add(set2);
+        }else if(displayChartCentrol == 2){
+            leftAxis.setAxisMaximum(90f);//顯示上限
+            leftAxis.setAxisMinimum(0f);//顯示下限
+            dataSets.add(set1);
+            dataSets.add(set2);
+        }
+
+
         LineData lineData = new LineData(dataSets);
         chart.setData(lineData);
 
@@ -226,7 +255,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
 
 
-    /**轉float其一*/
+    /**轉floatその〜〜いち！*/
     private float trans2Double1(String input) {
         String s1 = input.substring(0, 5);
         float d1 = Float.parseFloat(s1);
@@ -247,7 +276,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         return output;
     }
 
-    /**轉float其二*/
+    /**轉floatその〜〜に！*/
     private float trans2Double2(String input) {
         String s1 = input.substring(0, 5);
         float d1 = Float.parseFloat(s1);
@@ -283,38 +312,28 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     }
     /**設置X軸(未完工)*/
     private class MyValueFormatter extends ValueFormatter {
-
-
         @Override
         public String getFormattedValue(float value) {
-            String newTime;
-            String hour = SendType.mTIME2COUNT.substring(0,2);
-            String min  = SendType.mTIME2COUNT.substring(2,4);
-            String sec  = SendType.mTIME2COUNT.substring(4,6);
-//        Log.v("TimeLog", "mTIME輸入樣式(第一筆)"+SendType.mTIME);
-            //三個輸出182027
-            String year = "20"+SendType.mDATE.substring(0,2);
-            String month= SendType.mDATE.substring(2,4);
-            String day  = SendType.mDATE.substring(4,6);
-//        Log.v("TimeLog", "mDATE輸入樣式(第一筆)"+SendType.mDATE);
-            //三個輸出20190903
-//        Log.v("TimeLog","日期:"+year+month+day+" ,時間:"+hour+min+sec);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
-            String string = year+"-"+month+"-"+day+","+hour+":"+min+":"+sec;
-            Date dt = null;
-            try {
-                dt = sdf.parse(string);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Calendar rightNow = Calendar.getInstance();
-            rightNow.setTime(dt);
 
-            Date dt1 = rightNow.getTime();
-            newTime = sdf.format(dt1);
-//            Log.v("BT","看如何執行");
-            return newTime;
+            final ArrayList<String> xLabel = new ArrayList<>();
+            for (int i = 0;i<mJsonArray.length();i++){
+                try {
+                    JSONObject jsonObject = mJsonArray.getJSONObject(i);
+                    String Date = jsonObject.getString("RecordDate");
+                    String Time = jsonObject.getString("RecordTime");
+                    xLabel.add(Date+" "+Time);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            return xLabel.get((int) value);
         }
+    }
+
+    private String trans(int name) {//不是我在講...每個都要寫ctx.getResources().getString(R.string.??);真的會死人
+        String str = getBaseContext().getResources().getString(name);
+        return str;
     }
 }
 

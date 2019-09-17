@@ -75,7 +75,7 @@ public class SQLiteFunction {
         lvDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                lvDisplay.setSelector(R.color.Sakura);
+                lvDisplay.setSelector(R.color.Sakura);//背景色der~rrrrrrr啦
                 final Cursor data = mCustomDb.query(true, DB_TABLE, new String[]{"_id", "name", "Description"},
                         null, null, null, null, null, null);
                 final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
