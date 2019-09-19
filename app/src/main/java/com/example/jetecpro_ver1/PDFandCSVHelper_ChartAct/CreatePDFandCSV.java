@@ -193,7 +193,9 @@ public class CreatePDFandCSV {
 
 
     }
-
+    /**
+     * 處理文字
+     */
     private String trans(int name) {
         String str = context.getResources().getString(name);
         return str;
