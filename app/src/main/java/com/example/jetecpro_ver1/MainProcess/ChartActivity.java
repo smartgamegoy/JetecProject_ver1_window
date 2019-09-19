@@ -80,14 +80,14 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
      */
     private void setButtons() {
         Button btChooseData = findViewById(R.id.buttonChoose);
-        Button btList       = findViewById(R.id.buttonList);
-        Button btExport     = findViewById(R.id.buttonExport);
-        Button btLookPDF    = findViewById(R.id.buttonReport);
+        Button btList = findViewById(R.id.buttonList);
+        Button btExport = findViewById(R.id.buttonExport);
+        Button btLookPDF = findViewById(R.id.buttonReport);
 
         btChooseData.setOnClickListener(mListener);
-        btList      .setOnClickListener(mListener);
-        btExport    .setOnClickListener(mListener);
-        btLookPDF   .setOnClickListener(mListener);
+        btList.setOnClickListener(mListener);
+        btExport.setOnClickListener(mListener);
+        btLookPDF.setOnClickListener(mListener);
     }//setButtons
 
     /**
@@ -99,14 +99,14 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
             switch (v.getId()) {
                 case R.id.buttonChoose:
                     final AlertDialog.Builder mBuilder = new AlertDialog.Builder(ChartActivity.this);
-                    final View vvvvvvvvvvvvvvvv  =getLayoutInflater().inflate(R.layout.activity_chart_button_choose_dialog,null);
+                    final View vvvvvvvvvvvvvvvv = getLayoutInflater().inflate(R.layout.activity_chart_button_choose_dialog, null);
                     mBuilder.setView(vvvvvvvvvvvvvvvv);
                     final ListView thisIsListViewHahahahahahahahhahahaha =
-                                vvvvvvvvvvvvvvvv.findViewById(R.id.lvDDDDDDDDialog);
+                            vvvvvvvvvvvvvvvv.findViewById(R.id.lvDDDDDDDDialog);
                     Button btOKOK = vvvvvvvvvvvvvvvv.findViewById(R.id.LineChartChooseOK);
-                    Button btCancle= vvvvvvvvvvvvvvvv.findViewById(R.id.LineChartChooseCancel);
-                    String[] str ={trans(R.string.Temperature),trans(R.string.Humidity),trans(R.string.MixxxxxChart)};
-                    ArrayAdapter adapter = new ArrayAdapter(getBaseContext(),android.R.layout.simple_list_item_1,str);
+                    Button btCancle = vvvvvvvvvvvvvvvv.findViewById(R.id.LineChartChooseCancel);
+                    String[] str = {trans(R.string.Temperature), trans(R.string.Humidity), trans(R.string.MixxxxxChart)};
+                    ArrayAdapter adapter = new ArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_1, str);
                     thisIsListViewHahahahahahahahhahahaha.setAdapter(adapter);
                     final Dialog dialog = mBuilder.create();
                     thisIsListViewHahahahahahahahhahahaha.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -136,7 +136,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
                     break;
                 case R.id.buttonList:
-                    Intent intent = new Intent(ChartActivity.this,ListDownloadDataActivity.class);
+                    Intent intent = new Intent(ChartActivity.this, ListDownloadDataActivity.class);
                     startActivity(intent);
 
                     break;
@@ -151,7 +151,10 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
             }//switch
         }//click
     });//Button.OnClickListener
-    /**圖表顯示*/
+
+    /**
+     * 圖表顯示
+     */
     private void chartView() {
         chart = findViewById(R.id.dataChart);
         DBHelper db = new DBHelper(getBaseContext(), DB_NAME, null, 1);
@@ -166,7 +169,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
                 getJson = cursor.getString(1);
             }
             jsonArray = new JSONArray(getJson);
-            mJsonArray =new JSONArray(getJson);
+            mJsonArray = new JSONArray(getJson);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -203,7 +206,6 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         }
 
 
-
         LineDataSet set1 = new LineDataSet(yValues1, "溫度");
         LineData dataText_x = new LineData(set1);
         dataText_x.setDrawValues(false);
@@ -232,15 +234,15 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        if (displayChartCentrol == 0){
+        if (displayChartCentrol == 0) {
             leftAxis.setAxisMaximum(50f);//顯示上限
             leftAxis.setAxisMinimum(10f);//顯示下限
             dataSets.add(set1);
-        }else if (displayChartCentrol == 1){
+        } else if (displayChartCentrol == 1) {
             leftAxis.setAxisMaximum(80f);//顯示上限
             leftAxis.setAxisMinimum(40f);//顯示下限
             dataSets.add(set2);
-        }else if(displayChartCentrol == 2){
+        } else if (displayChartCentrol == 2) {
             leftAxis.setAxisMaximum(90f);//顯示上限
             leftAxis.setAxisMinimum(0f);//顯示下限
             dataSets.add(set1);
@@ -254,8 +256,9 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     }
 
 
-
-    /**轉floatその〜〜いち！*/
+    /**
+     * 轉floatその〜〜いち！
+     */
     private float trans2Double1(String input) {
         String s1 = input.substring(0, 5);
         float d1 = Float.parseFloat(s1);
@@ -276,7 +279,9 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         return output;
     }
 
-    /**轉floatその〜〜に！*/
+    /**
+     * 轉floatその〜〜に！
+     */
     private float trans2Double2(String input) {
         String s1 = input.substring(0, 5);
         float d1 = Float.parseFloat(s1);
@@ -297,7 +302,9 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         return output;
     }
 
-    /**點選圖表事件*/
+    /**
+     * 點選圖表事件
+     */
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         Log.i("Entry selected", e.toString());
@@ -310,18 +317,21 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     public void onNothingSelected() {
 
     }
-    /**設置X軸(未完工)*/
+
+    /**
+     * 設置X軸
+     */
     private class MyValueFormatter extends ValueFormatter {
         @Override
         public String getFormattedValue(float value) {
 
             final ArrayList<String> xLabel = new ArrayList<>();
-            for (int i = 0;i<mJsonArray.length();i++){
+            for (int i = 0; i < mJsonArray.length(); i++) {
                 try {
                     JSONObject jsonObject = mJsonArray.getJSONObject(i);
                     String Date = jsonObject.getString("RecordDate");
                     String Time = jsonObject.getString("RecordTime");
-                    xLabel.add(Date+" "+Time);
+                    xLabel.add(Date + " " + Time);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

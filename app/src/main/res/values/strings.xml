@@ -15,6 +15,9 @@
     <string name="menu_disconnect">斷開裝置</string>
     <string name="trySecond">嘗試第二次連線...</string>
     <string name="maybeSoFair">該裝置無法連接，可能離裝置距離太遠了</string>
+    <string name="inputDevicePassword">請輸入裝置密碼</string>
+    <string name="inputDevicePasswordHint">請輸入密碼</string>
+    <string name="inputError">請輸入密碼</string>
 
     <!--DeviceControlActivity-->
     <string name="Device_name">裝置名稱: </string>

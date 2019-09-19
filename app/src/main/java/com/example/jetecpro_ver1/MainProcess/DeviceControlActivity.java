@@ -220,7 +220,7 @@ public class DeviceControlActivity extends Activity {
             AlertDialog.Builder mBuidler = new AlertDialog.Builder(DeviceControlActivity.this);
             View v = getLayoutInflater().inflate(R.layout.activity_device_control_input_psw_dialog, null);
             final EditText edInput = (EditText) v.findViewById(R.id.editTextInput);
-            mBuidler.setTitle("請輸入裝置密碼");
+            mBuidler.setTitle(R.string.inputDevicePassword);
             mBuidler.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -269,7 +269,7 @@ public class DeviceControlActivity extends Activity {
                         }.start();
 
                     } else {
-                        Toast.makeText(getBaseContext(), "輸入錯誤", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), R.string.inputError, Toast.LENGTH_LONG).show();
                     }
                 }
             });

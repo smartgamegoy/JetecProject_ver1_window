@@ -763,7 +763,7 @@ public class DataDisplayActivity extends Activity {
             public void onClick(View v) {
                 if (tvMonitor.getText().toString().contains(
                         DataDisplayActivity.DisplayData.getResources().getString(R.string.dataDownloadfield))) {
-
+                    Toast.makeText(DataDisplayActivity.DisplayData, R.string.plzWait, Toast.LENGTH_LONG).show();
                     SendType.SendForBLEDataType = "END";
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);

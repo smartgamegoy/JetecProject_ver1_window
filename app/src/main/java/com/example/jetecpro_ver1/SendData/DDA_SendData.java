@@ -2,7 +2,9 @@ package com.example.jetecpro_ver1.SendData;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.sip.SipSession;
+import android.os.SystemClock;
 import android.text.method.DialerKeyListener;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +14,9 @@ import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.jetecpro_ver1.MainProcess.DataDisplayActivity;
 import com.example.jetecpro_ver1.R;
+import com.example.jetecpro_ver1.RecordData.GetRecord;
 import com.example.jetecpro_ver1.Values.SendType;
 
 import java.io.UnsupportedEncodingException;
@@ -105,7 +109,7 @@ public class DDA_SendData {
 
             case 'H':
                 if (selectName.contains(SendType.PV2)) {
-                    edInput.setHint("-10~10");
+                    edInput.setHint("-20~20");
                 } else if (selectName.contains(SendType.EH2)) {
                     edInput.setHint("0~100");
                 } else if (selectName.contains(SendType.EL2)) {
@@ -175,8 +179,25 @@ public class DDA_SendData {
                         dialog.dismiss();
                     }
                 } else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
-                    timeSend();
-                    dialog.dismiss();
+                    AlertDialog.Builder mB = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
+                    mB.setTitle(R.string.alertTitle);
+                    mB.setMessage(R.string.itWillDeleteAllofData);
+                    mB.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface ialog, int which) {
+                            timeSend();
+                            dialog.dismiss();
+                            ialog.dismiss();
+                        }
+                    });
+                    mB.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    mB.show();
+
 
                 } else if (selectName.contains(trans(R.string.device_name))) {
                     modifyDeviceName(dialog);
@@ -237,11 +258,11 @@ public class DDA_SendData {
                     npMin.setMaxValue(60);
                     npMin.setMinValue(0);
                     npSec.setMaxValue(60);
-                    npSec.setMinValue(0);
+                    npSec.setMinValue(10);
                     npMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
                         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                            if (newVal == 0) {
+                            if (npMin.getValue() == 0) {
                                 npSec.setMaxValue(60);
                                 npSec.setMinValue(30);
                             } else {
@@ -267,16 +288,43 @@ public class DDA_SendData {
         int min2Sec = min * 60;
         int totleSec = hour2Sec + min2Sec + sec;
         String out = String.valueOf(totleSec);
+//        GetRecord getRecord = new GetRecord("",cox);
+//        getRecord.deleteAllData();
         if (totleSec >= 1000) {
             SendType.SendForBLEDataType = "INTER0" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
+            SystemClock.sleep(200);
+            SendType.SendForBLEDataType = "START";
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+            SystemClock.sleep(200);
+            SendType.SendForBLEDataType = "END";
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+
         } else if (totleSec <= 999 && totleSec >= 100) {
             SendType.SendForBLEDataType = "INTER00" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
+            SystemClock.sleep(200);
+            SendType.SendForBLEDataType = "START";
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+            SystemClock.sleep(200);
+            SendType.SendForBLEDataType = "END";
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
         } else if (totleSec < 99) {
             SendType.SendForBLEDataType = "INTER000" + out;
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+            SystemClock.sleep(500);
+            SendType.SendForBLEDataType = "START";
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+            SystemClock.sleep(500);
+            SendType.SendForBLEDataType = "END";
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
         }
@@ -304,12 +352,12 @@ public class DDA_SendData {
                 }
                 break;
 
-            case "-10~10":
+            case "-20~20":
                 if (edInput.length() > 0) {
-                    if (inputValue > 10) {
-                        edInput.setText("10");
-                    } else if (inputValue < -10) {
-                        edInput.setText("-10");
+                    if (inputValue > 20) {
+                        edInput.setText("20");
+                    } else if (inputValue < -20) {
+                        edInput.setText("-20");
                     } else {
                         sendData2BT(inputValue, transSreing(selectName));
                         dialog.dismiss();
