@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.IBinder;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.SimpleAdapter;
@@ -71,6 +73,7 @@ public class DataDisplayActivity extends Activity {
     public static Activity DisplayData;
     Button btStartRecord;
     String dataResult;
+    int actionBarRecordChoose = 0;
 
 
     @Override
@@ -81,10 +84,11 @@ public class DataDisplayActivity extends Activity {
         //使用BluetoothLeService的Service功能
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-        getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
+//        getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
+//        getActionBar().setTitle(SendType.DeviceName);
         //取得Action Bar 抬頭顯示
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+//        getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         //載入ListView
         displayListView();
         //DrawerLayout內的活動
@@ -95,12 +99,14 @@ public class DataDisplayActivity extends Activity {
         if (SendType.mLOG != null){
             Log.v("BT", SendType.mLOG.substring(0,3));
             if (SendType.mLOG.contains("ON")){
-                getActionBar().setTitle(SendType.DeviceName + getBaseContext().getResources().getString(R.string.isRecoeding));
+//                getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.redGINSYU)));
+//                getActionBar().setTitle(SendType.DeviceName+R.string.isRecoeding);
                 DeviceScanActivity.DeviceScan.finish();
                 btStartRecord.setText(R.string.stopRecord);
                 btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
                                 .getDrawable(R.drawable.noun_record_2822351_red)
                         , null, null, null);
+                setActionBarTextW();
             }else {
                 getActionBar().setTitle(SendType.DeviceName);
                 DeviceScanActivity.DeviceScan.finish();
@@ -108,18 +114,61 @@ public class DataDisplayActivity extends Activity {
                 btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
                                 .getDrawable(R.drawable.noun_record_2822351)
                         , null, null, null);
+                setActionBarTextB();
             }
 
         }else{
-            getActionBar().setTitle(SendType.DeviceName);
+            setActionBarTextB();
             DeviceScanActivity.DeviceScan.finish();
         }
 
+    }//onCreate
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        View view = findViewById(R.id.menu_disconnect);
+        if (view != null && view instanceof TextView) {
+            if (actionBarRecordChoose == 1){
+                ((TextView) view).setTextColor( Color.WHITE );
+            }else if(actionBarRecordChoose == 0){
+                ((TextView) view).setTextColor( Color.BLACK );
+            }
 
-//        GetRecord getRecord = new GetRecord(dataResult, getBaseContext());
-//        getRecord.deleteAllData();
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
+    private String trans(int name) {
+        String str = getBaseContext().getResources().getString(name);
+        return str;
+    }
+    private void setActionBarTextW(){
+        TextView textView = new TextView(this);
+        textView.setText(SendType.DeviceName+trans(R.string.isRecoeding));
+        textView.setTextColor(Color.WHITE);
+        textView.setTextSize(18);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setCustomView(textView);
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.redGINSYU)));
+        getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        actionBarRecordChoose = 1;
+        invalidateOptionsMenu();
+    }
+    private void setActionBarTextB(){
+        TextView textView = new TextView(this);
+        textView.setText(SendType.DeviceName);
+        textView.setTextColor(Color.BLACK);
+        textView.setTextSize(18);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setCustomView(textView);
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
+        getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        actionBarRecordChoose = 0;
+        invalidateOptionsMenu();
     }
 
     /**
@@ -210,8 +259,7 @@ public class DataDisplayActivity extends Activity {
                                             btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
                                                             .getDrawable(R.drawable.noun_record_2822351)
                                                     , null, null, null);
-                                            getActionBar().setTitle(SendType.DeviceName);
-                                            btStartRecord.setText(R.string.StartRecord);
+                                            setActionBarTextB();
                                             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
                                             View view = getLayoutInflater().inflate(R.layout.activity_data_display_data_download, null);
                                             GetRecordDataAndDownload getRecordDataAndDownload = new GetRecordDataAndDownload(getBaseContext(), view, mBuilder);
@@ -299,8 +347,7 @@ public class DataDisplayActivity extends Activity {
                                                         } else if (SendType.mLOG.contains("ON")) {
                                                             btStartRecord.setText(R.string.StartRecord);
                                                         }
-                                                        getActionBar().setTitle(SendType.DeviceName
-                                                                + getBaseContext().getResources().getString(R.string.isRecoeding));
+                                                        setActionBarTextW();
                                                         btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
                                                                         .getDrawable(R.drawable.noun_record_2822351_red)
                                                                 , null, null, null);
@@ -339,7 +386,7 @@ public class DataDisplayActivity extends Activity {
                                                         btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
                                                                         .getDrawable(R.drawable.noun_record_2822351)
                                                                 , null, null, null);
-                                                        getActionBar().setTitle(SendType.DeviceName);
+                                                        setActionBarTextB();
                                                         Toast.makeText(getBaseContext(), R.string.closed, Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
@@ -555,7 +602,11 @@ public class DataDisplayActivity extends Activity {
         get.getRecord();
 
         //如果有改名字
-        getActionBar().setTitle(SendType.DeviceName);
+        if (actionBarRecordChoose ==1){
+            setActionBarTextW();
+        }else if(actionBarRecordChoose == 0){
+            setActionBarTextB();
+        }
 
     }
     /**連線狀態控制*/

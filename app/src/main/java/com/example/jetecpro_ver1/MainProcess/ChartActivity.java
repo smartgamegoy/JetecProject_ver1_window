@@ -1,13 +1,16 @@
 package com.example.jetecpro_ver1.MainProcess;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.jetecpro_ver1.Chart.MyMarkerView;
+import com.example.jetecpro_ver1.PDFandCSVHelper_ChartAct.CreatePDFandCSV;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SQLite.DBHelper;
 import com.example.jetecpro_ver1.Values.SendType;
@@ -141,6 +145,34 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
                     break;
                 case R.id.buttonExport:
+                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED){
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1000);
+                    }
+                    final CreatePDFandCSV choose = new CreatePDFandCSV(ChartActivity.this);
+                   AlertDialog.Builder fileChoose = new AlertDialog.Builder(ChartActivity.this);
+                   fileChoose.setTitle(R.string.reportTitle);
+                   fileChoose.setMessage(R.string.plzChooseExportType);
+                   fileChoose.setPositiveButton("PDF", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+
+                       }
+                   });
+                   fileChoose.setNegativeButton("CSV", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+                           choose.CSV(getBaseContext());
+
+                       }
+                   });
+                   fileChoose.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+
+                       }
+                   });
+                   fileChoose.show();
 
                     break;
                 case R.id.buttonReport:
