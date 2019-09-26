@@ -142,9 +142,11 @@ public class GetRecordDataAndDownload {
                         setCharacteristicNotification(SendType.Mycharacteristic, true);
                 SystemClock.sleep(500);
                 if(choose == 1){
-                    SendType.SendForBLEDataType = "Delay00020";//高速
+//                    SendType.SendForBLEDataType = "Delay00020";//高速
+                        SendType.SendForBLEDataType = "Delay00005";//高速
                 }else if(choose == 2){
-                    SendType.SendForBLEDataType = "Delay00080";//穩定
+//                    SendType.SendForBLEDataType = "Delay00080";//穩定
+                    SendType.SendForBLEDataType = "Delay00050";//穩定
                 }
                 SendType.getSendBluetoothLeService.
                         setCharacteristicNotification(SendType.Mycharacteristic, true);

@@ -258,7 +258,7 @@ public class DDA_SendData {
                     npMin.setMaxValue(60);
                     npMin.setMinValue(0);
                     npSec.setMaxValue(60);
-                    npSec.setMinValue(30);
+                    npSec.setMinValue(10);
                     npMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
                         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {

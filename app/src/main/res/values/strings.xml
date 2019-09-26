@@ -15,9 +15,7 @@
     <string name="menu_disconnect">斷開裝置</string>
     <string name="trySecond">嘗試第二次連線...</string>
     <string name="maybeSoFair">該裝置無法連接，可能離裝置距離太遠了</string>
-    <string name="inputDevicePassword">請輸入裝置密碼</string>
-    <string name="inputDevicePasswordHint">請輸入密碼</string>
-    <string name="inputError">請輸入密碼</string>
+
 
     <!--DeviceControlActivity-->
     <string name="Device_name">裝置名稱: </string>
@@ -34,6 +32,9 @@
     <string name="OK">確定</string>
     <string name="cancel">取消</string>
     <string name="no_data">如果沒反應，請手動幫我點右上的連線</string>
+    <string name="inputDevicePassword">請輸入裝置密碼</string>
+    <string name="inputDevicePasswordHint">請輸入密碼</string>
+    <string name="inputError">請輸入密碼</string>
 
     <!--所有的資料中文名稱-->
     <string name="PV">補正</string>
@@ -188,6 +189,12 @@
     <string name="justTime">時間</string>
     <string name="localHaveAData">該資料亦可在本機的資料夾內開啟！</string>
     <string name="localposition">位置: </string>
+    
+<!--新增字串-->
+    
+<!--紀錄功能-->
+    
+    <string name="capture">擷取並離開下載</string>
 
 
 </resources>
