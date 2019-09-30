@@ -103,16 +103,18 @@ public class CreatePDFandCSV {
         for (String repeatFile : createFile) {
             checkFile = repeatFile;
         }
+        try{
+            if (checkFile.contains(fileName)) {
 
-        if (checkFile.contains(fileName)) {
-
-            if (context.deleteFile(fileName)) {
-                Log.v("BT", "su");
-                write(fileName, XTitle);
+                if (context.deleteFile(fileName)) {
+                    Log.v("BT", "su");
+                    write(fileName, XTitle);
+                }
             }
-        } else {
+            }catch (Exception e){
             write(fileName, XTitle);
         }
+
     }
 
     /**
@@ -188,11 +190,14 @@ public class CreatePDFandCSV {
 
     }
 
-
+    /**PDF資料處理*/
     public void PDF() {
 
-
     }
+
+
+
+    //=======================================================
     /**
      * 處理文字
      */

@@ -12,8 +12,11 @@ public class ClearAllData {
 //        SendType.DeviceType = null;//大顯型號
 //        SendType.DeviceName = null;//裝置名稱
 //        SendType.DeviceAddress = null;//裝置位址
-        SendType.DevicePSW = null;//裝置密碼
+        SendType.DevicePSW = "";//裝置密碼
         SendType.NormalData = null;//顯示不經任何分類的回傳值
+        SendType.FirstWord = ' ';
+        SendType.SecondWord = ' ';
+        SendType.ThirdWord = ' ';
 
 //      SQLite會用到的資料
 //        SendType.DB_Name = null;
@@ -45,9 +48,9 @@ public class ClearAllData {
         SendType.CR2 = null;
         SendType.CR3 = null;
 
-        SendType.DP1 = null;
-        SendType.DP2 = null;
-        SendType.DP3 = null;
+        SendType.DP1 = "";
+        SendType.DP2 = "";
+        SendType.DP3 = "";
 
         SendType.SPK = null;
 

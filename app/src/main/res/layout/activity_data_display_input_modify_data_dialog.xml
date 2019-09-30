@@ -10,5 +10,5 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:ems="10"
-        android:inputType="numberSigned" />
+        android:inputType="numberDecimal|numberSigned" />
 </LinearLayout>

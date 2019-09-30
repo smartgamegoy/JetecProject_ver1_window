@@ -456,19 +456,31 @@ public class DataDisplayActivity extends Activity {
             String[] valueItems = sortData.getValues();
             String GetName = nameItems[position];
             String GetValues = valueItems[position];
-            View v = null;
+            View v ;
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
 
             if (GetName.contains(SendType.SPK)) {
                 v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog, null);
-            } else if (SendType.FirstWord == 'I'
+            }
+            else if (SendType.FirstWord == 'I'
                     || SendType.SecondWord == 'I'
                     || SendType.ThirdWord == 'I') {
-                if (GetName.contains(SendType.DP1)
-                        || GetName.contains(SendType.DP2)
-                        || GetName.contains(SendType.DP2)) {
-                    v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog, null);
+                try{
+                    if (GetName.contains(trans(R.string.decimal_point))) {
+                        v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog, null);
+                    }else{
+                        v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
+                        mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                    }
+                }catch (Exception e){
+                    v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
+
                 }
+
 
             } else if (SendType.ThirdWord == 'L' && GetName.contains(SendType.INTER)) {
                 v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);

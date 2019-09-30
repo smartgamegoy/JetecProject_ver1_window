@@ -210,6 +210,10 @@ public class DeviceControlActivity extends Activity {
                 SendType.DB_TABLE = getTable.replace("-", "");
             } else if (data.charAt(3) == '2') {
                 Log.v("BT", "裝置只有兩個輸入");
+                String getTable = data.substring(0, 7);
+                SendType.DB_TABLE = getTable.replace("-", "");
+            }else if(data.charAt(3) =='1'){
+                Log.v("BT", "裝置只有一個輸入");
                 String getTable = data.substring(0, 6);
                 SendType.DB_TABLE = getTable.replace("-", "");
             }

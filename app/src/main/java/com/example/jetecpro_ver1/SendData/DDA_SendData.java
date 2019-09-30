@@ -62,12 +62,15 @@ public class DDA_SendData {
                 || SendType.ThirdWord == 'I') {
             if (selectName.contains(SendType.DP1)
                     || selectName.contains(SendType.DP2)
-                    || selectName.contains(SendType.DP2)) {
-                if (selectValues.contains("on")) {
-                    swInput.setChecked(true);
-                } else {
-                    swInput.setChecked(false);
+                    || selectName.contains(SendType.DP3)) {
+                if(swInput != null){
+                    if (selectValues.contains("on")) {
+                        swInput.setChecked(true);
+                    } else {
+                        swInput.setChecked(false);
+                    }
                 }
+
             }
         }
     }
@@ -97,7 +100,27 @@ public class DDA_SendData {
 
                 break;
             case 'I':
+                Log.v("BT","第一排"+ SendType.mDP1);
+                if (SendType.mDP1.contains("on")){//洨數點打開
+                    if(selectName.contains(SendType.PV1)){
+                        edInput.setHint("-99.9~99.9");
+                    }else if (selectName.contains(trans(R.string.decimal_point))
+                            ||selectName.contains(SendType.SPK)){
 
+                        Log.v("BT","切換系列");
+                    }
+                    else if(selectName.contains(trans(R.string.FirstRow))){
+                        edInput.setHint("-199.9~999.9");
+                    }
+                }else{//洨數點關閉
+                    if(selectName.contains(SendType.PV1)){
+                        edInput.setHint("-999~999");
+                    }else if (selectName.contains(trans(R.string.decimal_point))
+                            ||selectName.contains(SendType.SPK)){}
+                    else if(selectName.contains(trans(R.string.FirstRow))){
+                        edInput.setHint("-999~9999");
+                    }
+                }
                 break;
 
         }
@@ -120,7 +143,25 @@ public class DDA_SendData {
                 break;
 
             case 'I':
+                Log.v("BT","第二排"+ SendType.mDP2);
+                if (SendType.mDP2.contains("on")){//洨數點打開
+                    if(selectName.contains(SendType.PV2)){
+                        edInput.setHint("-99.9~99.9");
+                    }else if (selectName.contains(trans(R.string.decimal_point))
+                            ||selectName.contains(SendType.SPK)){}
+                    else if(selectName.contains(trans(R.string.SecondRow))){
+                        edInput.setHint("-199.9~999.9");
+                    }
+                }else {//洨數點關閉
+                    if(selectName.contains(SendType.PV2)){
+                        edInput.setHint("-999~999");
+                    }else if (selectName.contains(trans(R.string.decimal_point))
+                            ||selectName.contains(SendType.SPK)){
 
+                    }else if(selectName.contains(trans(R.string.SecondRow))){
+                        edInput.setHint("-999~9999");
+                    }
+                }
                 break;
 
         }
@@ -147,18 +188,22 @@ public class DDA_SendData {
         if (selectName.contains(SendType.SPK)) {
             SendType.SPK = "SPK";
             sendData2BTWithSwitch();
-        } else if (SendType.FirstWord == 'I'
-                || SendType.SecondWord == 'I'
-                || SendType.ThirdWord == 'I') {
-            if (selectName.contains(SendType.DP1)
-                    || selectName.contains(SendType.DP2)
-                    || selectName.contains(SendType.DP2)) {
-            }
         } else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
             timeSelect();
         } else if (selectName.contains(trans(R.string.device_name))) {
             edInput.setText(selectValues);
             edInput.setKeyListener(new EditText(cox).getKeyListener());
+        }else if (SendType.FirstWord == 'I'
+                || SendType.SecondWord == 'I'
+                || SendType.ThirdWord == 'I') {
+            if(swInput != null){
+                if (selectName.contains(SendType.DP1)
+                        || selectName.contains(SendType.DP2)
+                        || selectName.contains(SendType.DP3)) {
+                    sendData2BTWithDP_Switch(selectName);
+                }
+            }
+
         }
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -170,15 +215,7 @@ public class DDA_SendData {
             public void onClick(View v) {
                 if (selectName.contains(trans(R.string.SPK))) {
                     dialog.dismiss();
-                } else if (SendType.FirstWord == 'I'
-                        || SendType.SecondWord == 'I'
-                        || SendType.ThirdWord == 'I') {
-                    if (selectName.contains(SendType.DP1)
-                            || selectName.contains(SendType.DP2)
-                            || selectName.contains(SendType.DP2)) {
-                        dialog.dismiss();
-                    }
-                } else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
+                }  else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
                     AlertDialog.Builder mB = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
                     mB.setTitle(R.string.alertTitle);
                     mB.setMessage(R.string.itWillDeleteAllofData);
@@ -198,12 +235,30 @@ public class DDA_SendData {
                     });
                     mB.show();
 
-
                 } else if (selectName.contains(trans(R.string.device_name))) {
                     modifyDeviceName(dialog);
-                } else {
-                    RunEditText(dialog);
+                }else if(SendType.FirstWord == 'I'
+                        || SendType.SecondWord == 'I'
+                        || SendType.ThirdWord == 'I'){
+                    if (selectName.contains(trans(R.string.decimal_point))) {
+                        dialog.dismiss();
+                    }else{
+                        if (edInput.getText().length()<=0){
+                            Toast.makeText(cox, R.string.dont_blank, Toast.LENGTH_SHORT).show();
+                        }else{
+                            RunEditText(dialog);
+                        }
+                    }
                 }
+                else {
+                    if (edInput.getText().length()<=0){
+                        Toast.makeText(cox, R.string.dont_blank, Toast.LENGTH_SHORT).show();
+                    }else{
+                        RunEditText(dialog);
+                    }
+
+                }
+
 
 
             }//onClick
@@ -414,6 +469,66 @@ public class DDA_SendData {
                     setToast();
                 }
                 break;
+            case "-999~9999"://小數點未開其他系列
+                if (edInput.length() > 0) {
+                    if (inputValue > 9999) {
+                        edInput.setText("9999");
+                    } else if (inputValue < -999) {
+                        edInput.setText("-999");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "-999~999"://小數點未開補正系列
+                if (edInput.length() > 0) {
+                    if (inputValue > 999) {
+                        edInput.setText("999");
+                    } else if (inputValue < -999) {
+                        edInput.setText("-999");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "-199.9~999.9":
+                if (edInput.length() > 0) {
+                    if (inputValue > 999.9) {
+                        edInput.setText("999.9");
+                    } else if (inputValue < -199.9) {
+                        edInput.setText("-199.9");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "-99.9~99.9":
+                if (edInput.length() > 0) {
+                    if (inputValue > 99.9) {
+                        edInput.setText("99.9");
+                    } else if (inputValue < -99.9) {
+                        edInput.setText("-99.9");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
 
         }//switch
 
@@ -447,11 +562,21 @@ public class DDA_SendData {
                 break;
 
             case 'I':
-                SendType.PV1 = "PV1";
-                SendType.EH1 = "EH1";
-                SendType.EL1 = "EL1";
-                SendType.CR1 = "CR1";
-                SendType.DP1 = "DP1";
+                if (input.contains(trans(R.string.FirstRow) + trans(R.string.IH))) {//最大量程
+                    return "IH1";
+                } else if (input.contains(trans(R.string.FirstRow) + trans(R.string.IL))) {//最小量程
+                    return "IL1";
+                } else if (input.contains(trans(R.string.FirstRow) + trans(R.string.EH))) {//上限
+                    return "EH1";
+                }else if (input.contains(trans(R.string.FirstRow) + trans(R.string.EL))) {//下限
+                    return "EL1";
+                }else if (input.contains(trans(R.string.FirstRow) + trans(R.string.PV))) {//補正
+                    return "PV1";
+                }else if (input.contains(trans(R.string.FirstRow) + trans(R.string.CR))) {//顏色
+                    return "CR1";
+                }else if (input.contains(trans(R.string.FirstRow) + trans(R.string.decimal_point))) {//小數點
+                    return "DP1";
+                }
                 break;
 
             case 'C':
@@ -483,7 +608,21 @@ public class DDA_SendData {
                 }
                 break;
             case 'I':
-
+                if (input.contains(trans(R.string.SecondRow) + trans(R.string.IH))) {//最大量程
+                    return "IH2";
+                } else if (input.contains(trans(R.string.SecondRow) + trans(R.string.IL))) {//最小量程
+                    return "IL2";
+                } else if (input.contains(trans(R.string.SecondRow) + trans(R.string.EH))) {//上限
+                    return "EH2";
+                }else if (input.contains(trans(R.string.SecondRow) + trans(R.string.EL))) {//下限
+                    return "EL2";
+                }else if (input.contains(trans(R.string.SecondRow) + trans(R.string.PV))) {//補正
+                    return "PV2";
+                }else if (input.contains(trans(R.string.SecondRow) + trans(R.string.CR))) {//顏色
+                    return "CR2";
+                }else if (input.contains(trans(R.string.SecondRow) + trans(R.string.decimal_point))) {//小數點
+                    return "DP2";
+                }
                 break;
             case 'C':
 
@@ -504,7 +643,7 @@ public class DDA_SendData {
      * 將開關系列資料送至藍芽
      */
     public void sendData2BTWithSwitch() {
-        Log.v("BT", "Here");
+        Log.v("BT", "選擇警報");
         swInput.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -525,6 +664,38 @@ public class DDA_SendData {
         });
     }
 
+    /**傳送小數點資料*/
+    private void sendData2BTWithDP_Switch(final String selectName){
+        Log.v("BT", "選擇小數點" +selectName);
+        swInput.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == true){
+                    if (selectName.contains(trans(R.string.FirstRow) + trans(R.string.decimal_point))){
+
+                        SendType.SendForBLEDataType = "DP1+0001.0";
+                    }else if(selectName.contains(trans(R.string.SecondRow) + trans(R.string.decimal_point))){
+                        SendType.SendForBLEDataType = "DP2+0001.0";
+                    }else if(selectName.contains(trans(R.string.ThirdRow) + trans(R.string.decimal_point))){
+                        SendType.SendForBLEDataType = "DP3+0001.0";
+                    }
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                }else{
+                    if (selectName.contains(trans(R.string.FirstRow) + trans(R.string.decimal_point))){
+                        SendType.SendForBLEDataType = "DP1+0000.0";
+                    }else if(selectName.contains(trans(R.string.SecondRow) + trans(R.string.decimal_point))){
+                        SendType.SendForBLEDataType = "DP2+0000.0";
+                    }else if(selectName.contains(trans(R.string.ThirdRow) + trans(R.string.decimal_point))){
+                        SendType.SendForBLEDataType = "DP3+0000.0";
+                    }
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                }
+            }
+        });
+    }
+
     /**
      * 將一般資料送至藍芽
      */
@@ -535,36 +706,36 @@ public class DDA_SendData {
             SendType.SendForBLEDataType = inputType + "+" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= 100 && input <= 999) {
+        } else if (input >= 100 && input <= 999.9) {
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "+0" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= 10 && input <= 99) {
+        } else if (input >= 10 && input <= 99.9) {
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "+00" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= 0 && input <= 9) {
+        } else if (input >= 0 && input <= 9.9) {
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "+000" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
 
-        } else if (input >= -9 && input <= 0) {
+        } else if (input >= -9.9 && input <= 0) {
             input = Math.abs(input);
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "-000" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= -99 && input <= -10) {
+        } else if (input >= -99.9 && input <= -10) {
             input = Math.abs(input);
             input = Math.abs(input);
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "-00" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= -999 && input <= -100) {
+        } else if (input >= -999.9 && input <= -100) {
             input = Math.abs(input);
             input = Math.abs(input);
             input = Math.abs(input);
@@ -582,6 +753,7 @@ public class DDA_SendData {
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
 
         }
+        Log.v("BT","送出的值: "+ SendType.SendForBLEDataType);
 
 
     }

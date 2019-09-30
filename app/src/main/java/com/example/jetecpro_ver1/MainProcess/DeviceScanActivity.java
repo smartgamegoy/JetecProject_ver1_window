@@ -194,6 +194,7 @@ public class DeviceScanActivity extends ListActivity {
             final String deviceName = device.getName();
             if (deviceName != null && deviceName.length() > 0) {
                 viewHolder.deviceName.setText(deviceName);
+
             }else {
                 viewHolder.deviceName.setText(R.string.unknown_device);
             }
@@ -212,9 +213,11 @@ public class DeviceScanActivity extends ListActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mLeDeviceListAdapter.addDevice(device);
+                            if (device.getName() != null){
+                                mLeDeviceListAdapter.addDevice(device);
+                                mLeDeviceListAdapter.notifyDataSetChanged();
+                            }
 
-                            mLeDeviceListAdapter.notifyDataSetChanged();
                         }
                     });
                 }

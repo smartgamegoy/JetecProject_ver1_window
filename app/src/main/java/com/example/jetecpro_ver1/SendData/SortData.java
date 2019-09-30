@@ -1,6 +1,7 @@
 package com.example.jetecpro_ver1.SendData;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.apache.commons.lang3.ArrayUtils;//字元陣列合併
 
@@ -43,6 +44,12 @@ public class SortData {
                 , SendType.mDP1,SendType.mDP2
                 , SendType.mSPK};
 
+        String[] I = {SendType.DeviceName
+                , SendType.mIH1, SendType.mIL1
+                , SendType.mPV1, SendType.mEH1
+                , SendType.mEL1, SendType.mCR1
+                , SendType.mDP1, SendType.mSPK};
+
         String[] L = {SendType.mINTER};
         String[] n = {"這", "是", "我", "不", "知", "道", "的", "型","號"};
 
@@ -64,7 +71,7 @@ public class SortData {
                 }//IIL
                 return II;
             }//II
-            return n;
+            return I;
         }//I
 
 
@@ -75,6 +82,7 @@ public class SortData {
 
 
     public String[] getSQLiteTrs(){
+
         switch (SendType.FirstWord){
             case 'T':
                 SendType.PV1 = "PV1";
@@ -88,7 +96,13 @@ public class SortData {
                 break;
 
             case 'I':
-
+                SendType.PV1 = "PV1";
+                SendType.IH1 = "IH1";
+                SendType.IL1 = "IL1";
+                SendType.EH1 = "EH1";
+                SendType.EL1 = "EL1";
+                SendType.CR1 = "CR1";
+                SendType.DP1 = "DP1";
                 break;
 
             case 'C':
@@ -116,7 +130,13 @@ public class SortData {
                 break;
 
             case 'I':
-
+                SendType.PV2 = "PV2";
+                SendType.IH2 = "IH2";
+                SendType.IL2 = "IL2";
+                SendType.EH2 = "EH2";
+                SendType.EL2 = "EL2";
+                SendType.CR2 = "CR2";
+                SendType.DP2 = "DP2";
                 break;
 
             case 'C':
@@ -179,6 +199,8 @@ public class SortData {
                 , SendType.DP1,SendType.DP2
                 , SendType.SPK};
 
+
+
         String[] L = {SendType.INTER};
         String[] n = {"這", "是", "我", "不", "知", "道", "的", "型","號"};
 
@@ -212,6 +234,7 @@ public class SortData {
 
 
     public String[] getNames() {
+//        Log.v("BT", "取得型號: "+SendType.FirstWord+", "+ SendType.SecondWord+", "+ SendType.ThirdWord);
         switch (SendType.FirstWord) {
 
             case 'T':
@@ -346,6 +369,12 @@ public class SortData {
                 , SendType.DP1,SendType.DP2
                 , SendType.SPK};
 
+        String[] I = {trans(R.string.device_name)
+                , SendType.IH1, SendType.IL1
+                , SendType.PV1, SendType.EH1
+                , SendType.EL1, SendType.CR1
+                , SendType.DP1, SendType.SPK};
+
         String[] L = {SendType.INTER};
         /**各種型號都放這*/
         String[] n = {"這", "是", "我", "不", "知", "道", "的", "型","號"};
@@ -369,7 +398,7 @@ public class SortData {
                 }//IIL
                 return II;
             }//II
-            return n;
+            return I;
         }//I
 
 
@@ -394,6 +423,12 @@ public class SortData {
                 , SendType.mDP1,SendType.mDP2
                 , SendType.mSPK};
 
+        String[] I = {trans(R.string.Device_name)
+                , SendType.mIH1, SendType.mIL1
+                , SendType.mPV1, SendType.mEH1
+                , SendType.mEL1, SendType.mCR1
+                , SendType.mDP1, SendType.mSPK};
+
         String[] L = {SendType.INTER2SQL};
         String[] n = {"這", "是", "我", "不", "知", "道", "的", "型","號"};
 
@@ -415,7 +450,7 @@ public class SortData {
                 }//IIL
                 return II;
             }//II
-            return n;
+            return I;
         }//I
 
 

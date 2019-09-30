@@ -30,15 +30,9 @@ public class LoadingSend {
                     break;
 
                 case "DP1":
-
-                    break;
-
                 case "DP2":
-
-                    break;
-
                 case "DP3":
-
+                    sendDP2BT(id,value);
                     break;
 
                 case "INTER":
@@ -125,6 +119,20 @@ public class LoadingSend {
             Log.v("BT","花惹發??????????????");
         }
 
+    }
+    /**小數點數據傳送*/
+    private void sendDP2BT(String id,String value){
+        if (value.contains("on")){
+            SendType.SendForBLEDataType = id + "+0001.0";
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+        }else if(value.contains("off")){
+            SendType.SendForBLEDataType = id + "+0000.0";
+            SendType.getSendBluetoothLeService.
+                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+        }else{
+            Log.v("BT","花惹發??????????????");
+        }
     }
     /**INTER數據傳送*/
     private void sendINTER2BT(String value){

@@ -156,7 +156,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
                    fileChoose.setPositiveButton("PDF", new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
-
+                            choose.PDF();
                        }
                    });
                    fileChoose.setNegativeButton("CSV", new DialogInterface.OnClickListener() {
