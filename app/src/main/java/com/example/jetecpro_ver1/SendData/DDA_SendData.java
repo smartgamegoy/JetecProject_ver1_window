@@ -177,8 +177,27 @@ public class DDA_SendData {
                 break;
 
             case 'I':
+                Log.v("BT","第三排"+ SendType.mDP3);
+                if (SendType.mDP3.contains("on")){//洨數點打開
+                    if(selectName.contains(SendType.PV3)){
+                        edInput.setHint("-99.9~99.9");
+                    }else if (selectName.contains(trans(R.string.decimal_point))
+                            ||selectName.contains(SendType.SPK)){}
+                    else if(selectName.contains(trans(R.string.ThirdRow))){
+                        edInput.setHint("-199.9~999.9");
+                    }
+                }else {//洨數點關閉
+                    if(selectName.contains(SendType.PV3)){
+                        edInput.setHint("-999~999");
+                    }else if (selectName.contains(trans(R.string.decimal_point))
+                            ||selectName.contains(SendType.SPK)){
 
+                    }else if(selectName.contains(trans(R.string.ThirdRow))){
+                        edInput.setHint("-999~9999");
+                    }
+                }
                 break;
+
 
 
         }
@@ -633,6 +652,42 @@ public class DDA_SendData {
             case 'E':
 
                 break;
+        }
+        switch (SendType.ThirdWord){
+            case 'T':
+
+                break;
+            case 'H':
+
+                break;
+            case 'I':
+                if (input.contains(trans(R.string.ThirdRow) + trans(R.string.IH))) {//最大量程
+                    return "IH3";
+                } else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.IL))) {//最小量程
+                    return "IL3";
+                } else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.EH))) {//上限
+                    return "EH3";
+                }else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.EL))) {//下限
+                    return "EL3";
+                }else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.PV))) {//補正
+                    return "PV3";
+                }else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.CR))) {//顏色
+                    return "CR3";
+                }else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.decimal_point))) {//小數點
+                    return "DP3";
+                }
+                break;
+            case 'C':
+
+                break;
+            case 'D':
+
+                break;
+            case 'E':
+
+                break;
+
+
         }
 
 

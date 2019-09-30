@@ -13,6 +13,7 @@ public class SendType {
     public static char FirstWord;//大顯字1
     public static char SecondWord;//大顯字2
     public static char ThirdWord;//大顯字3
+    public static char FourthWord;//大顯字4
     public static String DeviceName;//裝置名稱
     public static String DeviceAddress;//裝置位址
     public static BluetoothGattCharacteristic Mycharacteristic;//每次傳輸資料用的

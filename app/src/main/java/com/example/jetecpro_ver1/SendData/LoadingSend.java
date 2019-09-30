@@ -55,36 +55,36 @@ public class LoadingSend {
             SendType.SendForBLEDataType = inputType + "+" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= 100 && input <= 999) {
+        } else if (input >= 100 && input <= 999.9) {
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "+0" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= 10 && input <= 99) {
+        } else if (input >= 10 && input <= 99.9) {
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "+00" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= 0 && input <= 9) {
+        } else if (input >= 0 && input <= 9.9) {
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "+000" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
 
-        } else if (input >= -9 && input <= 0) {
+        } else if (input >= -9.9 && input <= 0) {
             input = Math.abs(input);
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "-000" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= -99 && input <= -10) {
+        } else if (input >= -99.9 && input <= -10) {
             input = Math.abs(input);
             input = Math.abs(input);
             String out = String.valueOf(input);
             SendType.SendForBLEDataType = inputType + "-00" + out;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (input >= -999 && input <= -100) {
+        } else if (input >= -999.9 && input <= -100) {
             input = Math.abs(input);
             input = Math.abs(input);
             input = Math.abs(input);
