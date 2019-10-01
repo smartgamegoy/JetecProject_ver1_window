@@ -6,6 +6,8 @@ import android.util.Log;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
 
+import java.io.UnsupportedEncodingException;
+
 public class LoadingSend {
 
 
@@ -13,33 +15,43 @@ public class LoadingSend {
     String value;
     Context co;
 
-    public LoadingSend(String id, String value, Context context){
+    public LoadingSend(String id, String value, Context context) {
         this.id = id;
         this.value = value;
         this.co = context;
     }
-    /**分類資料*/
-    public void ChickData(){
-        if(id.contains(co.getString(R.string.device_name))){
+
+    /**
+     * 分類資料
+     */
+    public void ChickData() {
+        if (id.contains(co.getString(R.string.device_name))) {
             //先不做處理
-        }else{
-            switch (id){
+            if (id.contains(co.getString(R.string.device_name))) {
+                String s = "NAME" + value;
+                SendType.SendForBLEDataType = s;
+                SendType.getSendBluetoothLeService.
+                        setCharacteristicNotification(SendType.Mycharacteristic, true);
+
+            }
+        } else {
+            switch (id) {
 
                 case "SPK":
-                    sendSPK2BT(id,value);
+                    sendSPK2BT(id, value);
                     break;
 
                 case "DP1":
                 case "DP2":
                 case "DP3":
-                    sendDP2BT(id,value);
+                    sendDP2BT(id, value);
                     break;
 
                 case "INTER":
                     sendINTER2BT(value);
                     break;
                 default:
-                    sendData2BT(Double.parseDouble(value),id);
+                    sendData2BT(Double.parseDouble(value), id);
                     break;
 
             }
@@ -47,7 +59,10 @@ public class LoadingSend {
         }
 
     }
-    /**一般數據傳送*/
+
+    /**
+     * 一般數據傳送
+     */
     private void sendData2BT(Double input, String inputType) {
 
         if (input >= 1000) {
@@ -105,48 +120,57 @@ public class LoadingSend {
 
 
     }
-    /**警報數據傳送*/
-    private void sendSPK2BT(String id,String value){
-        if (value.contains("on")){
+
+    /**
+     * 警報數據傳送
+     */
+    private void sendSPK2BT(String id, String value) {
+        if (value.contains("on")) {
             SendType.SendForBLEDataType = id + "+0001.0";
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else if(value.contains("off")){
+        } else if (value.contains("off")) {
             SendType.SendForBLEDataType = id + "+0000.0";
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else{
-            Log.v("BT","花惹發??????????????");
+        } else {
+            Log.v("BT", "花惹發??????????????");
         }
 
     }
-    /**小數點數據傳送*/
-    private void sendDP2BT(String id,String value){
-        if (value.contains("on")){
+
+    /**
+     * 小數點數據傳送
+     */
+    private void sendDP2BT(String id, String value) {
+        if (value.contains("on")) {
             SendType.SendForBLEDataType = id + "+0001.0";
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else if(value.contains("off")){
+        } else if (value.contains("off")) {
             SendType.SendForBLEDataType = id + "+0000.0";
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else{
-            Log.v("BT","花惹發??????????????");
+        } else {
+            Log.v("BT", "花惹發??????????????");
         }
     }
-    /**INTER數據傳送*/
-    private void sendINTER2BT(String value){
+
+    /**
+     * INTER數據傳送
+     */
+    private void sendINTER2BT(String value) {
         int v = Integer.parseInt(value);
-        if(v >= 1000){
-            SendType.SendForBLEDataType = "INTER0"+v;
+        if (v >= 1000) {
+            SendType.SendForBLEDataType = "INTER0" + v;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else if(v <=999 && v >=100){
-            SendType.SendForBLEDataType = "INTER00"+v;
+        } else if (v <= 999 && v >= 100) {
+            SendType.SendForBLEDataType = "INTER00" + v;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
-        }else if(v <99){
-            SendType.SendForBLEDataType = "INTER000"+v;
+        } else if (v < 99) {
+            SendType.SendForBLEDataType = "INTER000" + v;
             SendType.getSendBluetoothLeService.
                     setCharacteristicNotification(SendType.Mycharacteristic, true);
         }

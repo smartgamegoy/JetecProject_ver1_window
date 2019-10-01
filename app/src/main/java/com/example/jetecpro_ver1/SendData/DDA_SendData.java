@@ -291,7 +291,7 @@ public class DDA_SendData {
         try {
             String s = "NAME"+edInput.getText().toString();
             byte[] b3 = s.getBytes("UTF-8");
-            Log.v("BT", String.valueOf(b3.length));
+            Log.v("BT", "名稱的字串長度:"+(b3.length));
             if (b3.length > 20) {
                 Toast.makeText(cox, trans(R.string.NameIsTooLong), Toast.LENGTH_LONG).show();
             } else {

@@ -415,7 +415,7 @@ public class SortData {
 
     /**************************************************************************************************/
 
-
+    /**有增加型號的話要改這裡，這裡是將資料寫入資料庫時用的*/
     public String[] getSQLiteTrs() {
 
         switch (SendType.FirstWord) {
@@ -502,7 +502,13 @@ public class SortData {
 
                     break;
                 case 'I':
-
+                    SendType.PV3 = "PV3";
+                    SendType.IH3 = "IH3";
+                    SendType.IL3 = "IL3";
+                    SendType.EH3 = "EH3";
+                    SendType.EL3 = "EL3";
+                    SendType.CR3 = "CR3";
+                    SendType.DP3 = "DP3";
                     break;
                 case 'C':
 
