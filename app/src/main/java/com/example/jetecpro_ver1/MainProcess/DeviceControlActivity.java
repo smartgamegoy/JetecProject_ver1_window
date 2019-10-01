@@ -135,8 +135,6 @@ public class DeviceControlActivity extends Activity {
 
                     mBluetoothLeService.connect(SendType.DeviceAddress);
                     count();
-
-
                 }
 
                 invalidateOptionsMenu();
@@ -203,11 +201,22 @@ public class DeviceControlActivity extends Activity {
             SendType.SecondWord = data.charAt(6);
             SendType.row = data.charAt(3);
             if (data.charAt(3) == '3') {
-                Log.v("BT", "裝置有三個輸入");
-                SendType.ThirdWord = data.charAt(7);
-                String getTable = data.substring(0, 7);
-                SendType.DB_TABLE = getTable.replace("-", "");
-            }  else if (data.charAt(3) == '2') {
+                Log.v("BT", "裝置有三個輸入"+data.substring(0, 8));
+                if(data.length() == 37){
+                    Log.v("BT", "裝置有三個輸入而且還有記錄功能"+data.substring(0, 9));
+                    SendType.FourthWord = data.charAt(8);
+                    SendType.ThirdWord = data.charAt(7);
+                    String getTable = data.substring(0, 8);
+                    SendType.DB_TABLE = getTable.replace("-", "");
+                }else{
+                    SendType.ThirdWord = data.charAt(7);
+                    String getTable = data.substring(0, 8);
+                    SendType.DB_TABLE = getTable.replace("-", "");
+                }
+
+            }
+
+            else if (data.charAt(3) == '2') {
                 Log.v("BT", "裝置有兩個輸入");
                 if (data.length() == 33){
                     Log.v("BT", "裝置有兩個輸入而且還有記錄功能");

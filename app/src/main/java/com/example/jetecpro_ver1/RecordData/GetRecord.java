@@ -81,10 +81,10 @@ public class GetRecord {
         Cursor cursor = mCustomDb.rawQuery(
                 "select DISTINCT tbl_name from sqlite_master where tbl_name = '" + DB_TABLE + "'", null);
         if (cursor != null) {
-            if (cursor.getCount() == 0)
+            if (cursor.getCount() == 0)//大概資料庫都是在這邊創的吧．．．．．．．
                 mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
                         + "_id INTEGER PRIMARY KEY," + "First TEXT,"
-                        + "SecondData TEXT" + "RecordDate TEXT" + "RecordTime TEXT);");
+                        + "SecondData TEXT" +"ThirdData TEXT"+ "RecordDate TEXT" + "RecordTime TEXT);");
             cursor.close();
         }
         ContentValues newRow = new ContentValues();

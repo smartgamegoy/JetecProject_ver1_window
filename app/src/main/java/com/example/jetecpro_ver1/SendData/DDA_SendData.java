@@ -197,6 +197,39 @@ public class DDA_SendData {
                     }
                 }
                 break;
+            case 'C':
+                if (selectName.contains(SendType.PV3)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH3)) {
+                    edInput.setHint("0~2000");
+                }else if (selectName.contains(SendType.EL3)) {
+                    edInput.setHint("0~2000");
+                } else if (selectName.contains(SendType.CR3)) {
+                    edInput.setHint("0~2000");
+                }
+                break;
+            case 'D':
+                if (selectName.contains(SendType.PV3)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH3)) {
+                    edInput.setHint("0~3000");
+                }else if (selectName.contains(SendType.EL3)) {
+                    edInput.setHint("0~3000");
+                } else if (selectName.contains(SendType.CR3)) {
+                    edInput.setHint("0~3000");
+                }
+                break;
+            case 'E':
+                if (selectName.contains(SendType.PV3)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH3)) {
+                    edInput.setHint("0~4000");
+                }else if (selectName.contains(SendType.EL3)) {
+                    edInput.setHint("0~4000");
+                } else if (selectName.contains(SendType.CR3)) {
+                    edInput.setHint("0~4000");
+                }
+                break;
 
 
 
@@ -207,7 +240,7 @@ public class DDA_SendData {
         if (selectName.contains(SendType.SPK)) {
             SendType.SPK = "SPK";
             sendData2BTWithSwitch();
-        } else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
+        } else if (selectName.contains(trans(R.string.INTER))) {
             timeSelect();
         } else if (selectName.contains(trans(R.string.device_name))) {
             edInput.setText(selectValues);
@@ -234,7 +267,7 @@ public class DDA_SendData {
             public void onClick(View v) {
                 if (selectName.contains(trans(R.string.SPK))) {
                     dialog.dismiss();
-                }  else if (SendType.ThirdWord == 'L' && selectName.contains(SendType.INTER)) {
+                }  else if (selectName.contains(trans(R.string.INTER))) {
                     AlertDialog.Builder mB = new AlertDialog.Builder(DataDisplayActivity.DisplayData);
                     mB.setTitle(R.string.alertTitle);
                     mB.setMessage(R.string.itWillDeleteAllofData);
@@ -548,6 +581,96 @@ public class DDA_SendData {
                     setToast();
                 }
                 break;
+            case "-500~500":
+                if (edInput.length() > 0) {
+                    if (inputValue > 500) {
+                        edInput.setText("500");
+                    } else if (inputValue < -500) {
+                        edInput.setText("-500");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "0~300":
+                if (edInput.length() > 0) {
+                    if (inputValue > 300) {
+                        edInput.setText("300");
+                    } else if (inputValue < 0) {
+                        edInput.setText("0");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "0~1000":
+                if (edInput.length() > 0) {
+                    if (inputValue > 1000) {
+                        edInput.setText("1000");
+                    } else if (inputValue < 0) {
+                        edInput.setText("0");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "0~2000":
+                if (edInput.length() > 0) {
+                    if (inputValue > 2000) {
+                        edInput.setText("2000");
+                    } else if (inputValue < 0) {
+                        edInput.setText("0");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "0~3000":
+                if (edInput.length() > 0) {
+                    if (inputValue > 3000) {
+                        edInput.setText("3000");
+                    } else if (inputValue < 0) {
+                        edInput.setText("0");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
+            case "0~4000":
+                if (edInput.length() > 0) {
+                    if (inputValue > 4000) {
+                        edInput.setText("4000");
+                    } else if (inputValue < 0) {
+                        edInput.setText("0");
+                    } else {
+                        sendData2BT(inputValue, transSreing(selectName));
+                        dialog.dismiss();
+                    }
+
+                } else {
+                    setToast();
+                }
+                break;
 
         }//switch
 
@@ -574,10 +697,7 @@ public class DDA_SendData {
                 break;
 
             case 'H':
-                SendType.PV1 = "PV1";
-                SendType.EH1 = "EH1";
-                SendType.EL1 = "EL1";
-                SendType.CR1 = "CR1";
+
                 break;
 
             case 'I':
@@ -599,15 +719,17 @@ public class DDA_SendData {
                 break;
 
             case 'C':
-
-                break;
-
             case 'D':
-
-                break;
-
             case 'E':
-
+                if (input.contains(trans(R.string.CO2) + trans(R.string.PV))) {
+                    return "PV1";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.EH))) {
+                    return "EH1";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.EL))) {
+                    return "EL1";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.CR))) {
+                    return "CR1";
+                }
                 break;
 
         }
@@ -644,13 +766,17 @@ public class DDA_SendData {
                 }
                 break;
             case 'C':
-
-                break;
             case 'D':
-
-                break;
             case 'E':
-
+                if (input.contains(trans(R.string.CO2) + trans(R.string.PV))) {
+                    return "PV2";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.EH))) {
+                    return "EH2";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.EL))) {
+                    return "EL2";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.CR))) {
+                    return "CR2";
+                }
                 break;
         }
         switch (SendType.ThirdWord){
@@ -678,13 +804,17 @@ public class DDA_SendData {
                 }
                 break;
             case 'C':
-
-                break;
             case 'D':
-
-                break;
             case 'E':
-
+                if (input.contains(trans(R.string.CO2) + trans(R.string.PV))) {
+                    return "PV3";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.EH))) {
+                    return "EH3";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.EL))) {
+                    return "EL3";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.CR))) {
+                    return "CR3";
+                }
                 break;
 
 

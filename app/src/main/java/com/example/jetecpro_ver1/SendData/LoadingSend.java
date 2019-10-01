@@ -26,7 +26,6 @@ public class LoadingSend {
      */
     public void ChickData() {
         if (id.contains(co.getString(R.string.device_name))) {
-            //先不做處理
             if (id.contains(co.getString(R.string.device_name))) {
                 String s = "NAME" + value;
                 SendType.SendForBLEDataType = s;

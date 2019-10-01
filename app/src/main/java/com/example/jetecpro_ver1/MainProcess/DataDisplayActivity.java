@@ -143,6 +143,8 @@ public class DataDisplayActivity extends Activity {
         String str = getBaseContext().getResources().getString(name);
         return str;
     }
+
+    /**記錄中的ActionBar*/
     private void setActionBarTextW(){
         TextView textView = new TextView(this);
         textView.setText(SendType.DeviceName+"\n"+trans(R.string.isRecoeding));
@@ -157,6 +159,7 @@ public class DataDisplayActivity extends Activity {
         actionBarRecordChoose = 1;
         invalidateOptionsMenu();
     }
+    /**一般的ActionBar*/
     private void setActionBarTextB(){
         TextView textView = new TextView(this);
         textView.setText(SendType.DeviceName);
@@ -190,9 +193,12 @@ public class DataDisplayActivity extends Activity {
         btModifyPSW.setOnClickListener(mListener);
         btStartRecord.setOnClickListener(mListener);
 
+
         if (SendType.ThirdWord == 'L') {
 
         } else if (SendType.SecondWord == 'L') {
+
+        }else if(SendType.FourthWord == 'L'){
 
         } else {
             btChart.setEnabled(false);
@@ -504,7 +510,7 @@ public class DataDisplayActivity extends Activity {
                 }
 
 
-            } else if (SendType.ThirdWord == 'L' && GetName.contains(SendType.INTER)) {
+            } else if ( GetName.contains(trans(R.string.INTER))) {
                 v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
                 mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
