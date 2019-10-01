@@ -295,6 +295,12 @@ public class SortData {
                 , SendType.CR1, SendType.CR2, SendType.CR3
                 , SendType.DP3
                 , SendType.SPK};
+        String[] THY = {trans(R.string.device_name)
+                , SendType.PV1, SendType.PV2
+                , SendType.EH1, SendType.EL1
+                , SendType.EH2, SendType.EL2
+                , SendType.CR1, SendType.CR2
+                , SendType.SPK, trans(R.string.Y_function_TimeSet)};
 
         String[] L = {SendType.INTER};
         /**各種型號都放這*/
@@ -328,7 +334,8 @@ public class SortData {
 
                         break;
                     default:
-                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H') {return THI;}
+                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return THI;}
+                        else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return  THY;}
                         break;
                 }
                 break;
@@ -372,6 +379,13 @@ public class SortData {
                 , SendType.mEL1, SendType.mCR1
                 , SendType.mDP1, SendType.mSPK};
 
+        String[] THY = {SendType.DeviceName
+                , SendType.mPV1, SendType.mPV2
+                , SendType.mEH1, SendType.mEL1
+                , SendType.mEH2, SendType.mEL2
+                , SendType.mCR1, SendType.mCR2
+                , SendType.mSPK, " "};
+
 
         String[] L = {SendType.mINTER};
         String[] n = {"這", "是", "我", "不", "知", "道", "的", "型", "號"};
@@ -405,7 +419,8 @@ public class SortData {
 
                         break;
                     default:
-                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H') {return THI;}
+                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return THI;}
+                        else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return  THY;}
                         break;
                 }
                 break;
@@ -555,6 +570,12 @@ public class SortData {
                 , SendType.CR1, SendType.CR2, SendType.CR3
                 , SendType.DP3
                 , SendType.SPK};
+        String[] THY = {trans(R.string.device_name)
+                , SendType.PV1, SendType.PV2
+                , SendType.EH1, SendType.EL1
+                , SendType.EH2, SendType.EL2
+                , SendType.CR1, SendType.CR2
+                , SendType.SPK};
 
         String[] L = {SendType.INTER};
         String[] n = {"這", "是", "我", "不", "知", "道", "的", "型", "號"};
@@ -588,7 +609,8 @@ public class SortData {
 
                         break;
                     default:
-                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H') {return THI;}
+                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return THI;}
+                        else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return THY;}
                         break;
                 }
                 break;
@@ -606,6 +628,12 @@ public class SortData {
                 , SendType.mIH3, SendType.mIH3
                 , SendType.mCR1, SendType.mCR2, SendType.mCR3
                 , SendType.mDP3
+                , SendType.mSPK};
+        String[] THY = {SendType.DeviceName
+                , SendType.mPV1, SendType.mPV2
+                , SendType.mEH1, SendType.mEL1
+                , SendType.mEH2, SendType.mEL2
+                , SendType.mCR1, SendType.mCR2
                 , SendType.mSPK};
 
         String[] TH = {SendType.DeviceName
@@ -663,7 +691,8 @@ public class SortData {
 
                         break;
                     default:
-                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H') {return THI;}
+                        if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return THI;}
+                        else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return THY;}
                         break;
                 }
                 break;

@@ -191,7 +191,12 @@
     <string name="localposition">位置: </string>
     
 <!--新增字串-->
-    
+    <string name="Y_function_TimeSet">時間設定</string>
+    <string name="question">請問想如何設定時間？</string>
+    <string name="Y_freshSet">快速設定</string>
+    <string name="Y_mutSet">手動設定</string>
+    <string name="Y_modifyOK">完成設定！</string>
+
 <!--紀錄功能-->
     
     <string name="capture">擷取並離開下載</string>

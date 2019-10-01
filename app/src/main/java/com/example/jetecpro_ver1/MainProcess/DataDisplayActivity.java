@@ -54,6 +54,7 @@ import com.example.jetecpro_ver1.SendData.GetDisplayData;
 import com.example.jetecpro_ver1.SendData.LoadingSend;
 import com.example.jetecpro_ver1.Values.SendType;
 import com.example.jetecpro_ver1.SendData.SortData;
+import com.example.jetecpro_ver1.Y_functionTimeSet.TimeSet;
 import com.facebook.stetho.Stetho;
 
 import org.json.JSONArray;
@@ -456,7 +457,28 @@ public class DataDisplayActivity extends Activity {
             String[] valueItems = sortData.getValues();
             String GetName = nameItems[position];
             String GetValues = valueItems[position];
-            View v ;
+
+            if(GetName.contains(trans(R.string.Y_function_TimeSet))){
+                AlertDialog.Builder timeSetBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+                final TimeSet timeSet = new TimeSet(timeSetBuilder,DataDisplayActivity.this,GetName);
+                timeSetBuilder.setTitle(GetName);
+                timeSetBuilder.setMessage(R.string.question);
+                timeSetBuilder.setPositiveButton(R.string.Y_freshSet, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        timeSet.flashSetting();
+                    }
+                });
+                timeSetBuilder.setNegativeButton(R.string.Y_mutSet, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        timeSet.manualSetting();
+                    }
+                });
+                timeSetBuilder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) {}});
+                timeSetBuilder.show();
+            }else {
+            View v;
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
 
             if (GetName.contains(SendType.SPK)) {
@@ -515,6 +537,7 @@ public class DataDisplayActivity extends Activity {
             DDA_SendData dda_sendData = new DDA_SendData(GetName, GetValues, edInput, swInput, getBaseContext()
                     , npHour, npMin, npSec);
             dda_sendData.mAlertDialog(mBuilder);
+            }
         }
     });
 
