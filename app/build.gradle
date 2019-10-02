@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'//使用圖表,來源->
     // https://github.com/PhilJay/MPAndroidChart#documentation
 
-    implementation 'com.itextpdf:itextpdf:5.5.13.1'//寫PDF,來源->
+    implementation 'com.itextpdf:itextpdf:5.5.10'//寫PDF,來源->
     // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
 
 //    implementation 'org.apache.pdfbox:pdfbox:2.0.17'//另一個寫PDF的,來源->

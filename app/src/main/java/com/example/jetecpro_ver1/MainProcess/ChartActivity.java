@@ -41,6 +41,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.gson.JsonArray;
+import com.itextpdf.text.pdf.PdfPTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -156,7 +157,18 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
                    fileChoose.setPositiveButton("PDF", new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
-                            choose.PDF();
+                           switch (SendType.row){
+                               case '1':
+                                   choose.PDF_1C(getBaseContext());
+                                   break;
+                               case '2':
+                                   choose.PDF_2C(getBaseContext());
+                                   break;
+                               case '3':
+                                   choose.PDF_3C(getBaseContext());
+                                   break;
+                           }
+
                        }
                    });
                    fileChoose.setNegativeButton("CSV", new DialogInterface.OnClickListener() {
