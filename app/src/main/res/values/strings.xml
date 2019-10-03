@@ -34,7 +34,7 @@
     <string name="no_data">如果沒反應，請手動幫我點右上的連線</string>
     <string name="inputDevicePassword">請輸入裝置密碼</string>
     <string name="inputDevicePasswordHint">請輸入密碼</string>
-    <string name="inputError">請輸入密碼</string>
+    <string name="inputError">輸入錯誤！</string>
 
     <!--所有的資料中文名稱-->
     <string name="PV">補正</string>

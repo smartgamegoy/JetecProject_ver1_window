@@ -371,7 +371,7 @@ public class CreatePDFandCSV {
         for (int i = start; i <= end; i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i-1);
-                table.addCell(jsonObject.getString("RecordTime"));
+                table.addCell(jsonObject.getString("RecordDate"));
                 table.addCell(trans2Double(jsonObject.getString("First"))+FIRSTunit);
                 table.addCell(trans2Double(jsonObject.getString("Second"))+SECONDunti);
 

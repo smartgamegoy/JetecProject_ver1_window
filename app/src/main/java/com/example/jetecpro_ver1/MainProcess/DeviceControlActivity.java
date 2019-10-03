@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.BLE_function.SampleGattAttributes;
+import com.example.jetecpro_ver1.EngineerMode.EngineerMode;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SendData.GetDisplayData;
 import com.example.jetecpro_ver1.Values.ClearAllData;
@@ -288,7 +289,13 @@ public class DeviceControlActivity extends Activity {
                             }
                         }.start();
 
-                    } else {
+                    } else if(!edInput.getText().toString().isEmpty()&&
+                    edInput.getText().toString().contains("111111")){
+                        Toast.makeText(getBaseContext(),"工程師模式",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(DeviceControlActivity.this, EngineerMode.class);
+                        startActivity(intent);
+
+                    }else {
                         Toast.makeText(getBaseContext(), R.string.inputError, Toast.LENGTH_LONG).show();
                     }
                 }
