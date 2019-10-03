@@ -21,6 +21,9 @@ public class SendType {
     public static String DevicePSW;//裝置密碼
     public static String NormalData;//顯示不經任何分類的回傳值
     public static String DownloadData;//處理下載下來的資料
+    public static int dpNumberSelectedDP1 = 0;
+    public static int dpNumberSelectedDP2 = 0;
+    public static int dpNumberSelectedDP3 = 0;
 
 //    SQLite會用到的資料
     public static String DB_Name = "LeCustomDB.db";

@@ -138,20 +138,30 @@ public class GetDisplayData {
 
             case "DP1":
                 SendType.DP1 = getMain;
-                transformToswitch(data);
-                SendType.mDP1 = d.transformToswitch(data);
+                transform(data);
+                SendType.mDP1 = d.transfromTodpFuntion(data);
+                SendType.dpNumberSelectedDP1 = Integer.parseInt(SendType.mDP1);
+//                transformToswitch(data);
+//                SendType.mDP1 = d.transformToswitch(data);
+
                 break;
 
             case "DP2":
                 SendType.DP2 = getMain;
-                transformToswitch(data);
-                SendType.mDP2 = d.transformToswitch(data);
+                transform(data);
+                SendType.mDP2 = d.transfromTodpFuntion(data);
+                SendType.dpNumberSelectedDP2 = Integer.parseInt(SendType.mDP2);
+//                transformToswitch(data);
+//                SendType.mDP2 = d.transformToswitch(data);
                 break;
 
             case "DP3":
                 SendType.DP3 = getMain;
-                transformToswitch(data);
-                SendType.mDP3 = d.transformToswitch(data);
+                transform(data);
+                SendType.mDP3 = d.transfromTodpFuntion(data);
+                SendType.dpNumberSelectedDP3 = Integer.parseInt(SendType.mDP3);
+//                transformToswitch(data);
+//                SendType.mDP3 = d.transformToswitch(data);
                 break;
 
             case "SPK":
@@ -162,74 +172,75 @@ public class GetDisplayData {
 
         }//Switch
         if (data.contains("COUNT")) {
-            SendType.COUNT = data.substring(0,5);
-            int count = Integer.parseInt(data.substring(5,10));
-            SendType.Count2Send = data.substring(5,10);
-            String co    = String.valueOf(count);
+            SendType.COUNT = data.substring(0, 5);
+            int count = Integer.parseInt(data.substring(5, 10));
+            SendType.Count2Send = data.substring(5, 10);
+            String co = String.valueOf(count);
             SendType.mCOUNT = co;
 
-        }else if(data.contains("INTER")){
-            SendType.INTER = data.substring(0,5);
+        } else if (data.contains("INTER")) {
+            SendType.INTER = data.substring(0, 5);
             inter(data);
 //            SendType.mINTER = inter(data);
             SendType.mINTER = inter(data);
 
-        }else if(data.contains("DATE")){
-            SendType.DATE = data.substring(0,4);
-            Double count = Double.valueOf(data.substring(4,10));
-            String co    = String.valueOf(count);
+        } else if (data.contains("DATE")) {
+            SendType.DATE = data.substring(0, 4);
+            Double count = Double.valueOf(data.substring(4, 10));
+            String co = String.valueOf(count);
             SendType.mDATE = co;
 
-        }else if(data.contains("TIME")){
-            SendType.TIME = data.substring(0,4);
-            Double count = Double.valueOf(data.substring(4,10));
-            String co    = String.valueOf(count);
+        } else if (data.contains("TIME")) {
+            SendType.TIME = data.substring(0, 4);
+            Double count = Double.valueOf(data.substring(4, 10));
+            String co = String.valueOf(count);
             SendType.mTIME = co;
-            SendType.mTIME2COUNT = data.substring(4,10);
+            SendType.mTIME2COUNT = data.substring(4, 10);
 
-        }else if(data.contains("LOG")){
-            SendType.LOG = data.substring(0,3);
+        } else if (data.contains("LOG")) {
+            SendType.LOG = data.substring(0, 3);
             SendType.mLOG = data.substring(3);
 
-        }else if(data.contains("NAME")){
+        } else if (data.contains("NAME")) {
 
-            String dataaaa = data.replace("\n","$");
-            String dateeee = dataaaa.substring(4,dataaaa.indexOf("$"));
+            String dataaaa = data.replace("\n", "$");
+            String dateeee = dataaaa.substring(4, dataaaa.indexOf("$"));
 
             SendType.DeviceName = dateeee;
         }
 
 
     }
-    private String inter (String in){
-        String to = in.substring(6,10);
+
+    private String inter(String in) {
+        String to = in.substring(6, 10);
         SendType.INTER2SQL = to;
         int origin = Integer.parseInt(to);
         int sec = 0;
         int min = 0;
         int hour = 0;
 
-        min = origin/60;
-        sec = origin%60;
-        if (min>=60){
-            hour = min/60;
-            min = min%60;
+        min = origin / 60;
+        sec = origin % 60;
+        if (min >= 60) {
+            hour = min / 60;
+            min = min % 60;
         }
-         if(hour == 0 && min == 0){//0小時0分鐘x秒
-             String strSec = String.valueOf(sec);
-             return strSec+"s";
-        }else if (hour == 0 && sec == 0){//0小時x分鐘0秒
-             String strMin = String.valueOf(min);
-             return strMin+"m";
+        if (hour == 0 && min == 0) {//0小時0分鐘x秒
+            String strSec = String.valueOf(sec);
+            return strSec + "s";
+        } else if (hour == 0 && sec == 0) {//0小時x分鐘0秒
+            String strMin = String.valueOf(min);
+            return strMin + "m";
 
-         }else if(hour == 0 && sec != 0 && min != 0){//0小時x分鐘x秒
-             String strSec = String.valueOf(sec);
-             String strMin = String.valueOf(min);
-             return strMin+"m"+strSec+"s";
-         }else if(hour != 0 && min == 0 &sec == 0){//1小時0分鐘0秒 ->最大就1h了
-             String strHour = String.valueOf(hour);
-             return strHour+"h";
-         }
+        } else if (hour == 0 && sec != 0 && min != 0) {//0小時x分鐘x秒
+            String strSec = String.valueOf(sec);
+            String strMin = String.valueOf(min);
+            return strMin + "m" + strSec + "s";
+        } else if (hour != 0 && min == 0 & sec == 0) {//1小時0分鐘0秒 ->最大就1h了
+            String strHour = String.valueOf(hour);
+            return strHour + "h";
+        }
 
         return "怪怪的";
     }
@@ -237,22 +248,133 @@ public class GetDisplayData {
     private String transform(String in) {//偶很懶所以就...多寫這點鳥東西,
         //偶很懶所以就...多寫這點鳥東西
         //我也嫌煩..先轉過去才能正確取出小數點,才能適應所有數值傳遞，懂？
-        String to = in.substring(3, 10);
-        Double d = Double.valueOf(to);
-        String s = String.valueOf(d);
-        return s;
+        String s = null;
+    if (data.charAt(2) == '1'){
+        switch (SendType.dpNumberSelectedDP1) {
+            case 0:
+                String to = in.substring(3, 10);
+                Double d = Double.valueOf(to);
+                s = String.valueOf(d);
+                break;
+            case 1:
+                String to1 = in.substring(3, 10);
+                Double d1 = Double.valueOf(to1);
+                Double d11 = d1 / 10;
+                s = String.valueOf(d11);
+                break;
+            case 2:
+                String to2 = in.substring(3, 10);
+                Double d2 = Double.valueOf(to2);
+                Double d22 = d2 / 100;
+                s = String.valueOf(d22);
+                break;
+            case 3:
+                if (data.contains("PV1")){
+                    String to3 = in.substring(3, 10);
+                    Double d3 = Double.valueOf(to3);
+                    Double d33 = d3 / 100;
+                    s = String.valueOf(d33);
+                }else {
+                    String to3 = in.substring(3, 10);
+                    Double d3 = Double.valueOf(to3);
+                    Double d33 = d3 / 1000;
+                    s = String.valueOf(d33);
+                }
 
+                break;
+        }
+    }else if(data.charAt(2) == '2'){
+        switch (SendType.dpNumberSelectedDP2) {
+            case 0:
+                String to = in.substring(3, 10);
+                Double d = Double.valueOf(to);
+                s = String.valueOf(d);
+                break;
+            case 1:
+                String to1 = in.substring(3, 10);
+                Double d1 = Double.valueOf(to1);
+                Double d11 = d1 / 10;
+                s = String.valueOf(d11);
+                break;
+            case 2:
+                String to2 = in.substring(3, 10);
+                Double d2 = Double.valueOf(to2);
+                Double d22 = d2 / 100;
+                s = String.valueOf(d22);
+                break;
+            case 3:
+                if (data.contains("PV2")){
+                    String to3 = in.substring(3, 10);
+                    Double d3 = Double.valueOf(to3);
+                    Double d33 = d3 / 100;
+                    s = String.valueOf(d33);
+                }else{
+                    String to3 = in.substring(3, 10);
+                    Double d3 = Double.valueOf(to3);
+                    Double d33 = d3 / 1000;
+                    s = String.valueOf(d33);
+                }
+
+                break;
+        }
+    }else if(data.charAt(2) == '3'){
+        switch (SendType.dpNumberSelectedDP3) {
+            case 0:
+                String to = in.substring(3, 10);
+                Double d = Double.valueOf(to);
+                s = String.valueOf(d);
+                break;
+            case 1:
+                String to1 = in.substring(3, 10);
+                Double d1 = Double.valueOf(to1);
+                Double d11 = d1 / 10;
+                s = String.valueOf(d11);
+                break;
+            case 2:
+                String to2 = in.substring(3, 10);
+                Double d2 = Double.valueOf(to2);
+                Double d22 = d2 / 100;
+                s = String.valueOf(d22);
+                break;
+            case 3:
+                if (data.contains("PV3")){
+                    String to3 = in.substring(3, 10);
+                    Double d3 = Double.valueOf(to3);
+                    Double d33 = d3 / 100;
+                    s = String.valueOf(d33);
+                }else {
+                    String to3 = in.substring(3, 10);
+                    Double d3 = Double.valueOf(to3);
+                    Double d33 = d3 / 1000;
+                    s = String.valueOf(d33);
+                    break;
+                }
+        }
     }
-    private String transformToswitch(String input){
-        String str = input.substring(4,10);
-        if(str.contains("0000.0")){
+
+
+
+        return s;
+    }
+
+    private String transformToswitch(String input) {
+        String str = input.substring(4, 10);
+        if (str.contains("0000.0")) {
             String jugOn = "off";
             return jugOn;
-        }else if(str.contains("0001.0")){
+        } else if (str.contains("0001.0")) {
             String jugOff = "on";
             return jugOff;
-        }else return "What the fuck?";
+        } else return "What the fuck?";
 
+    }
+
+    private String transfromTodpFuntion(String input) {
+        String to = input.substring(3, 8);
+//        Log.v("BT","trans:"+to);
+        int d = Integer.parseInt(to);
+        String s = String.valueOf(d);
+        return s;
     }
 
 }

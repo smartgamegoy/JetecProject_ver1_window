@@ -181,8 +181,9 @@ public class CreatePDFandCSV {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 data.append("\n" + jsonObject.getString("id") + ","
                         + jsonObject.getString("RecordDate") + " " + jsonObject.getString("RecordTime") + ","
-                        + trans2Double(jsonObject.getString("First")) +FIRSTunit+ ","
-                        + trans2Double(jsonObject.getString("Second"))+SECONDunti);
+                        + trans2Double(jsonObject.getString("First")) .substring(0,4)+FIRSTunit+ ","
+                        + trans2Double(jsonObject.getString("Second")).substring(0,4)+SECONDunti);
+
 
             } catch (JSONException e) {
                 Log.v("BT", "JS爆掉：" + e);
@@ -368,12 +369,14 @@ public class CreatePDFandCSV {
         PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100);
         table.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        for (int i = start; i <= end; i++) {
+        for (int i = start; i <= end; i++) {//一頁135資料
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i-1);
-                table.addCell(jsonObject.getString("RecordDate"));
-                table.addCell(trans2Double(jsonObject.getString("First"))+FIRSTunit);
-                table.addCell(trans2Double(jsonObject.getString("Second"))+SECONDunti);
+                table.addCell(jsonObject.getString("RecordDate").substring(5));
+//                table.addCell(jsonObject.getString("id"));
+                table.addCell(trans2Double(jsonObject.getString("First")).substring(0,4)+FIRSTunit);
+                table.addCell(trans2Double(jsonObject.getString("Second")).substring(0,4)+SECONDunti);
+
 
 
             } catch (JSONException e) {
@@ -387,6 +390,7 @@ public class CreatePDFandCSV {
 //            table.addCell(S[i-1]);
 //            table.addCell(T[i-1]);
         }
+
 
         return table;
     }

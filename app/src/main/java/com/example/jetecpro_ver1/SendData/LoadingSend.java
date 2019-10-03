@@ -136,23 +136,27 @@ public class LoadingSend {
             Log.v("BT", "花惹發??????????????");
         }
 
+
     }
 
     /**
      * 小數點數據傳送
      */
     private void sendDP2BT(String id, String value) {
-        if (value.contains("on")) {
-            SendType.SendForBLEDataType = id + "+0001.0";
-            SendType.getSendBluetoothLeService.
-                    setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else if (value.contains("off")) {
-            SendType.SendForBLEDataType = id + "+0000.0";
-            SendType.getSendBluetoothLeService.
-                    setCharacteristicNotification(SendType.Mycharacteristic, true);
-        } else {
-            Log.v("BT", "花惹發??????????????");
-        }
+//        if (value.contains("on")) {
+//            SendType.SendForBLEDataType = id + "+0001.0";
+//            SendType.getSendBluetoothLeService.
+//                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+//        } else if (value.contains("off")) {
+//            SendType.SendForBLEDataType = id + "+0000.0";
+//            SendType.getSendBluetoothLeService.
+//                    setCharacteristicNotification(SendType.Mycharacteristic, true);
+//        } else {
+//            Log.v("BT", "花惹發??????????????");
+//        }
+        SendType.SendForBLEDataType = id + "+000"+value+".0";
+        SendType.getSendBluetoothLeService.
+                setCharacteristicNotification(SendType.Mycharacteristic, true);
     }
 
     /**

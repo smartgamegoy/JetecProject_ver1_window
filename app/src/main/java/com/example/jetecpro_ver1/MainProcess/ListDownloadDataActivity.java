@@ -111,8 +111,8 @@ public class ListDownloadDataActivity extends Activity {
                 String Time         = jsonObject.getString("RecordTime");
                 hashMap.put("DateTime",Date+" "+Time);
                 hashMap.put("id",id);
-                hashMap.put("first",firstData+"°C");
-                hashMap.put("second",secondData+"%");
+                hashMap.put("first",firstData.substring(0,4)+"°C");
+                hashMap.put("second",secondData.substring(0,4)+"%");
                 arrayList.add(hashMap);
             }
         } catch (JSONException e) {

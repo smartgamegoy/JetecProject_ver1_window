@@ -17,6 +17,9 @@ public class ClearAllData {
         SendType.FirstWord = ' ';
         SendType.SecondWord = ' ';
         SendType.ThirdWord = ' ';
+        SendType.dpNumberSelectedDP1 = 0;
+        SendType.dpNumberSelectedDP2 = 0;
+        SendType.dpNumberSelectedDP3 = 0;
 
 //      SQLite會用到的資料
 //        SendType.DB_Name = null;

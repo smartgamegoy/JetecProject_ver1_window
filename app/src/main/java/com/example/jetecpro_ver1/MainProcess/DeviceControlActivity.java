@@ -77,6 +77,7 @@ public class DeviceControlActivity extends Activity {
 
     private boolean mConnected = false;
     int tt=0;
+    int coint = 0;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
 
     private final String LIST_NAME = "NAME";
@@ -195,6 +196,7 @@ public class DeviceControlActivity extends Activity {
         GetDisplayData get = new GetDisplayData(data);
         if (data.contains("OK")) {
             get.GetOK();
+
         }
         if (data.contains("BT-")) {
             SendType.DeviceType = data;
@@ -290,7 +292,7 @@ public class DeviceControlActivity extends Activity {
                         }.start();
 
                     } else if(!edInput.getText().toString().isEmpty()&&
-                    edInput.getText().toString().contains("111111")){
+                    edInput.getText().toString().contains("@JETEC")){
                         Toast.makeText(getBaseContext(),"工程師模式",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(DeviceControlActivity.this, EngineerMode.class);
                         startActivity(intent);
@@ -334,7 +336,15 @@ public class DeviceControlActivity extends Activity {
                     break;
 
             }
+            if(coint == 0){
+                SendType.SendForBLEDataType = "get";
+                SendType.getSendBluetoothLeService.
+                        setCharacteristicNotification(SendType.Mycharacteristic, true);
+                coint++;
+            }else if(coint ==1){
                 goNextActivity();
+            }
+
 
         }
 

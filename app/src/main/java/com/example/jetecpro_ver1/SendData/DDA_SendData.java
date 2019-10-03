@@ -31,19 +31,21 @@ public class DDA_SendData {
     NumberPicker npHour;
     NumberPicker npMin;
     NumberPicker npSec;
+    NumberPicker nbDppicker;
+    int dPNumberSelect;
 
 
     public DDA_SendData(String selectName, String selectValues, EditText edInput, Switch swInput, Context cox
-            , NumberPicker npHour, NumberPicker npMin, NumberPicker npSec) {
-
-        this.selectName = selectName;
-        this.selectValues = selectValues;
-        this.edInput = edInput;
-        this.swInput = swInput;
-        this.cox = cox;
-        this.npHour = npHour;
-        this.npMin = npMin;
-        this.npSec = npSec;
+            , NumberPicker npHour, NumberPicker npMin, NumberPicker npSec, NumberPicker nbDPpicker) {
+        this.nbDppicker     = nbDPpicker;
+        this.selectName     = selectName;
+        this.selectValues   = selectValues;
+        this.edInput        = edInput;
+        this.swInput        = swInput;
+        this.cox            = cox;
+        this.npHour         = npHour;
+        this.npMin          = npMin;
+        this.npSec          = npSec;
 
     }
 
@@ -60,16 +62,31 @@ public class DDA_SendData {
         } else if (SendType.FirstWord == 'I'
                 || SendType.SecondWord == 'I'
                 || SendType.ThirdWord == 'I') {
-            if (selectName.contains(SendType.DP1)
-                    || selectName.contains(SendType.DP2)
-                    || selectName.contains(SendType.DP3)) {
-                if(swInput != null){
-                    if (selectValues.contains("on")) {
-                        swInput.setChecked(true);
-                    } else {
-                        swInput.setChecked(false);
-                    }
+            if (selectName.contains(trans(R.string.decimal_point))) {
+//                if(swInput != null){
+//                    if (selectValues.contains("on")) {
+//                        swInput.setChecked(true);
+//                    } else {
+//                        swInput.setChecked(false);
+//                    }
+//                }
+                nbDppicker.setMinValue(0);
+                nbDppicker.setMaxValue(3);
+                if(selectName.contains(SendType.DP1)){
+                    nbDppicker.setValue(Integer.parseInt(SendType.mDP1));
+                }else if(selectName.contains(SendType.DP2)){
+                    nbDppicker.setValue(Integer.parseInt(SendType.mDP2));
+                } else if(selectName.contains(SendType.DP3)){
+                    nbDppicker.setValue(Integer.parseInt(SendType.mDP3));
                 }
+                nbDppicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                    @Override
+                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                        dPNumberSelect = oldVal;
+                        dPNumberSelect = newVal;
+
+                    }
+                });
 
             }
         }
@@ -100,26 +117,69 @@ public class DDA_SendData {
 
                 break;
             case 'I':
-                Log.v("BT","第一排"+ SendType.mDP1);
-                if (SendType.mDP1.contains("on")){//洨數點打開
-                    if(selectName.contains(SendType.PV1)){
-                        edInput.setHint("-99.9~99.9");
-                    }else if (selectName.contains(trans(R.string.decimal_point))
-                            ||selectName.contains(SendType.SPK)){
+//                Log.v("BT","第一排"+ dPNumberSelect);
+//                if (SendType.mDP1.contains("on")){//洨數點打開
+//                    if(selectName.contains(SendType.PV1)){
+//                        edInput.setHint("-99.9~99.9");
+//                    }else if (selectName.contains(trans(R.string.decimal_point))
+//                            ||selectName.contains(SendType.SPK)){
+//
+//                        Log.v("BT","切換系列");
+//                    }
+//                    else if(selectName.contains(trans(R.string.FirstRow))){
+//                        edInput.setHint("-199.9~999.9");
+//                    }
+//                }else{//洨數點關閉
+//                    if(selectName.contains(SendType.PV1)){
+//                        edInput.setHint("-999~999");
+//                    }else if (selectName.contains(trans(R.string.decimal_point))
+//                            ||selectName.contains(SendType.SPK)){}
+//                    else if(selectName.contains(trans(R.string.FirstRow))){
+//                        edInput.setHint("-999~9999");
+//                    }
+//                }
+                switch (Integer.parseInt(SendType.mDP1)){//小數點開到幾？
+                    case 0://沒開
+                        if(selectName.contains(SendType.PV1)){
+                            edInput.setHint("-999~999");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
 
-                        Log.v("BT","切換系列");
-                    }
-                    else if(selectName.contains(trans(R.string.FirstRow))){
-                        edInput.setHint("-199.9~999.9");
-                    }
-                }else{//洨數點關閉
-                    if(selectName.contains(SendType.PV1)){
-                        edInput.setHint("-999~999");
-                    }else if (selectName.contains(trans(R.string.decimal_point))
-                            ||selectName.contains(SendType.SPK)){}
-                    else if(selectName.contains(trans(R.string.FirstRow))){
-                        edInput.setHint("-999~9999");
-                    }
+                        }else if(selectName.contains(trans(R.string.FirstRow))){
+                            edInput.setHint("-999~9999");
+                        }
+                        break;
+                    case 1://開一發
+                        if(selectName.contains(SendType.PV1)){
+                            edInput.setHint("-99.9~99.9");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.FirstRow))){
+                            edInput.setHint("-199.9~99.9");
+                        }
+                        break;
+                    case 2://兩發
+                        if(selectName.contains(SendType.PV1)){
+                            edInput.setHint("-9.99~9.99");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.FirstRow))){
+                            edInput.setHint("-19.9~99.99");
+                        }
+                        break;
+                    case 3://三發
+                        if(selectName.contains(SendType.PV1)){
+                            edInput.setHint("-9.990~9.99");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.FirstRow))){
+                            edInput.setHint("-9.999~9.999");
+                        }
+                        break;
+
                 }
                 break;
 
@@ -143,24 +203,66 @@ public class DDA_SendData {
                 break;
 
             case 'I':
-                Log.v("BT","第二排"+ SendType.mDP2);
-                if (SendType.mDP2.contains("on")){//洨數點打開
-                    if(selectName.contains(SendType.PV2)){
-                        edInput.setHint("-99.9~99.9");
-                    }else if (selectName.contains(trans(R.string.decimal_point))
-                            ||selectName.contains(SendType.SPK)){}
-                    else if(selectName.contains(trans(R.string.SecondRow))){
-                        edInput.setHint("-199.9~999.9");
-                    }
-                }else {//洨數點關閉
-                    if(selectName.contains(SendType.PV2)){
-                        edInput.setHint("-999~999");
-                    }else if (selectName.contains(trans(R.string.decimal_point))
-                            ||selectName.contains(SendType.SPK)){
+//                if (SendType.mDP2.contains("on")){//洨數點打開
+//                    if(selectName.contains(SendType.PV2)){
+//                        edInput.setHint("-99.9~99.9");
+//                    }else if (selectName.contains(trans(R.string.decimal_point))
+//                            ||selectName.contains(SendType.SPK)){}
+//                    else if(selectName.contains(trans(R.string.SecondRow))){
+//                        edInput.setHint("-199.9~999.9");
+//                    }
+//                }else {//洨數點關閉
+//                    if(selectName.contains(SendType.PV2)){
+//                        edInput.setHint("-999~999");
+//                    }else if (selectName.contains(trans(R.string.decimal_point))
+//                            ||selectName.contains(SendType.SPK)){
+//
+//                    }else if(selectName.contains(trans(R.string.SecondRow))){
+//                        edInput.setHint("-999~9999");
+//                    }
+//                }
+                switch (Integer.parseInt(SendType.mDP2)){//小數點開到幾？
+                    case 0://沒開
+                        if(selectName.contains(SendType.PV2)){
+                            edInput.setHint("-999~999");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
 
-                    }else if(selectName.contains(trans(R.string.SecondRow))){
-                        edInput.setHint("-999~9999");
-                    }
+                        }else if(selectName.contains(trans(R.string.SecondRow))){
+                            edInput.setHint("-999~9999");
+                        }
+                        break;
+                    case 1://開一發
+                        if(selectName.contains(SendType.PV2)){
+                            edInput.setHint("-99.9~99.9");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.SecondRow))){
+                            edInput.setHint("-199.9~99.9");
+                        }
+                        break;
+                    case 2://兩發
+                        if(selectName.contains(SendType.PV2)){
+                            edInput.setHint("-9.99~9.99");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.SecondRow))){
+                            edInput.setHint("-19.9~99.99");
+                        }
+                        break;
+                    case 3://三發
+                        if(selectName.contains(SendType.PV2)){
+                            edInput.setHint("-9.990~9.99");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.SecondRow))){
+                            edInput.setHint("-9.999~9.999");
+                        }
+                        break;
+
                 }
                 break;
 
@@ -177,17 +279,27 @@ public class DDA_SendData {
                 break;
 
             case 'I':
-                Log.v("BT","第三排"+ SendType.mDP3);
-                if (SendType.mDP3.contains("on")){//洨數點打開
-                    if(selectName.contains(SendType.PV3)){
-                        edInput.setHint("-99.9~99.9");
-                    }else if (selectName.contains(trans(R.string.decimal_point))
-                            ||selectName.contains(SendType.SPK)){}
-                    else if(selectName.contains(trans(R.string.ThirdRow))){
-                        edInput.setHint("-199.9~999.9");
-                    }
-                }else {//洨數點關閉
-                    if(selectName.contains(SendType.PV3)){
+//                if (SendType.mDP3.contains("on")){//洨數點打開
+//                    if(selectName.contains(SendType.PV3)){
+//                        edInput.setHint("-99.9~99.9");
+//                    }else if (selectName.contains(trans(R.string.decimal_point))
+//                            ||selectName.contains(SendType.SPK)){}
+//                    else if(selectName.contains(trans(R.string.ThirdRow))){
+//                        edInput.setHint("-199.9~999.9");
+//                    }
+//                }else {//洨數點關閉
+//                    if(selectName.contains(SendType.PV3)){
+//                        edInput.setHint("-999~999");
+//                    }else if (selectName.contains(trans(R.string.decimal_point))
+//                            ||selectName.contains(SendType.SPK)){
+//
+//                    }else if(selectName.contains(trans(R.string.ThirdRow))){
+//                        edInput.setHint("-999~9999");
+//                    }
+//                }
+                switch (Integer.parseInt(SendType.mDP3)){//小數點開到幾？
+                    case 0://沒開
+                        if(selectName.contains(SendType.PV3)){
                         edInput.setHint("-999~999");
                     }else if (selectName.contains(trans(R.string.decimal_point))
                             ||selectName.contains(SendType.SPK)){
@@ -195,6 +307,38 @@ public class DDA_SendData {
                     }else if(selectName.contains(trans(R.string.ThirdRow))){
                         edInput.setHint("-999~9999");
                     }
+                        break;
+                    case 1://開一發
+                        if(selectName.contains(SendType.PV3)){
+                            edInput.setHint("-99.9~99.9");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.ThirdRow))){
+                            edInput.setHint("-199.9~99.9");
+                        }
+                        break;
+                    case 2://兩發
+                        if(selectName.contains(SendType.PV3)){
+                            edInput.setHint("-9.99~9.99");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.ThirdRow))){
+                            edInput.setHint("-19.9~99.99");
+                        }
+                        break;
+                    case 3://三發
+                        if(selectName.contains(SendType.PV3)){
+                            edInput.setHint("-9.990~9.99");
+                        }else if (selectName.contains(trans(R.string.decimal_point))
+                                ||selectName.contains(SendType.SPK)){
+
+                        }else if(selectName.contains(trans(R.string.ThirdRow))){
+                            edInput.setHint("-9.999~9.999");
+                        }
+                        break;
+
                 }
                 break;
             case 'C':
@@ -245,18 +389,19 @@ public class DDA_SendData {
         } else if (selectName.contains(trans(R.string.device_name))) {
             edInput.setText(selectValues);
             edInput.setKeyListener(new EditText(cox).getKeyListener());
-        }else if (SendType.FirstWord == 'I'
-                || SendType.SecondWord == 'I'
-                || SendType.ThirdWord == 'I') {
-            if(swInput != null){
-                if (selectName.contains(SendType.DP1)
-                        || selectName.contains(SendType.DP2)
-                        || selectName.contains(SendType.DP3)) {
-                    sendData2BTWithDP_Switch(selectName);
-                }
-            }
-
         }
+//        else if (SendType.FirstWord == 'I'
+//                || SendType.SecondWord == 'I'
+//                || SendType.ThirdWord == 'I') {
+//            if(swInput != null){
+//                if (selectName.contains(SendType.DP1)
+//                        || selectName.contains(SendType.DP2)
+//                        || selectName.contains(SendType.DP3)) {
+//                    sendData2BTWithDP_Switch(selectName);
+//                }
+//            }
+//
+//        }
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
@@ -293,7 +438,9 @@ public class DDA_SendData {
                         || SendType.SecondWord == 'I'
                         || SendType.ThirdWord == 'I'){
                     if (selectName.contains(trans(R.string.decimal_point))) {
-                        dialog.dismiss();
+                        //這裡要加入song出
+                        modifyDP(dialog);
+//                        dialog.dismiss();
                     }else{
                         if (edInput.getText().length()<=0){
                             Toast.makeText(cox, R.string.dont_blank, Toast.LENGTH_SHORT).show();
@@ -317,6 +464,33 @@ public class DDA_SendData {
         });
     }//mAlertDialog
 
+
+    /**修改洨數點*/
+    private void modifyDP(AlertDialog dialog){
+        Log.v("BT","洨數點:"+dPNumberSelect);
+        if (selectName.contains(trans(R.string.FirstRow) + trans(R.string.decimal_point))){
+            SendType.dpNumberSelectedDP1 = dPNumberSelect;
+            SendType.SendForBLEDataType = "DP1+000"+dPNumberSelect+".0";
+        }else if(selectName.contains(trans(R.string.SecondRow) + trans(R.string.decimal_point))){
+            SendType.dpNumberSelectedDP2 = dPNumberSelect;
+            SendType.SendForBLEDataType = "DP2+000"+dPNumberSelect+".0";
+        }else if(selectName.contains(trans(R.string.ThirdRow) + trans(R.string.decimal_point))){
+            SendType.dpNumberSelectedDP3 = dPNumberSelect;
+            SendType.SendForBLEDataType = "DP3+000"+dPNumberSelect+".0";
+        }else{
+            Log.e("DDA_SendData.java","媽的發科？");
+        }
+        SendType.getSendBluetoothLeService.
+                setCharacteristicNotification(SendType.Mycharacteristic, true);
+        SystemClock.sleep(500);
+        SendType.SendForBLEDataType = "get";
+        SendType.getSendBluetoothLeService.
+                setCharacteristicNotification(SendType.Mycharacteristic, true);
+        dialog.dismiss();
+
+
+
+    }
     /**
      * 傳送修改的裝置名稱
      */
@@ -671,6 +845,11 @@ public class DDA_SendData {
                     setToast();
                 }
                 break;
+
+                default://隨便送了拉..
+                    sendData2BT(inputValue, transSreing(selectName));
+                    dialog.dismiss();
+                    break;
 
         }//switch
 

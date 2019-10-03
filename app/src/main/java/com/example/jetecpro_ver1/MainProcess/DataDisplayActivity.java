@@ -487,15 +487,20 @@ public class DataDisplayActivity extends Activity {
             View v;
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
 
-            if (GetName.contains(SendType.SPK)) {
+            if (GetName.contains(SendType.SPK)) {//警報
                 v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog, null);
             }
             else if (SendType.FirstWord == 'I'
                     || SendType.SecondWord == 'I'
-                    || SendType.ThirdWord == 'I') {
+                    || SendType.ThirdWord == 'I') {//II的洨數點
                 try{
                     if (GetName.contains(trans(R.string.decimal_point))) {
-                        v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog, null);
+                        v = getLayoutInflater().inflate(R.layout.activity_data_display_numberpicker_dialog, null);
+                        mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
                     }else{
                         v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
                         mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -510,7 +515,7 @@ public class DataDisplayActivity extends Activity {
                 }
 
 
-            } else if ( GetName.contains(trans(R.string.INTER))) {
+            } else if ( GetName.contains(trans(R.string.INTER))) {//處理有紀錄的('L')
                 v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
                 mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -525,12 +530,12 @@ public class DataDisplayActivity extends Activity {
                     }
                 });
             }
-
-            final EditText edInput = (EditText) v.findViewById(R.id.editValueInput);
-            final Switch swInput = (Switch) v.findViewById(R.id.switch1);
-            final NumberPicker npHour = (NumberPicker) v.findViewById(R.id.hourPic);
-            final NumberPicker npMin = (NumberPicker) v.findViewById(R.id.minPic);
-            final NumberPicker npSec = (NumberPicker) v.findViewById(R.id.secPick);
+            final NumberPicker nbDPpicker   = v.findViewById(R.id.numberPickerDPChoose);
+            final EditText edInput      = (EditText) v.findViewById(R.id.editValueInput);
+            final Switch swInput        = (Switch) v.findViewById(R.id.switch1);
+            final NumberPicker npHour   = (NumberPicker) v.findViewById(R.id.hourPic);
+            final NumberPicker npMin    = (NumberPicker) v.findViewById(R.id.minPic);
+            final NumberPicker npSec    = (NumberPicker) v.findViewById(R.id.secPick);
 
 
             mBuilder.setTitle(GetName);
@@ -541,7 +546,7 @@ public class DataDisplayActivity extends Activity {
             });
             mBuilder.setView(v);
             DDA_SendData dda_sendData = new DDA_SendData(GetName, GetValues, edInput, swInput, getBaseContext()
-                    , npHour, npMin, npSec);
+                    , npHour, npMin, npSec,nbDPpicker);
             dda_sendData.mAlertDialog(mBuilder);
             }
         }
