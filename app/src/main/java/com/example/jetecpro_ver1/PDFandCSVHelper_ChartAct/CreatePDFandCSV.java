@@ -160,7 +160,7 @@ public class CreatePDFandCSV {
             }
             Log.v("BT",getJson);
             jsonArray = new JSONArray(getJson);
-            Log.v("BT","1: "+jsonArray);
+//            Log.v("BT","1: "+jsonArray);
         } catch (JSONException e) {
             Log.v("BT","資料庫為空？"+e);
         }
@@ -173,7 +173,7 @@ public class CreatePDFandCSV {
      */
     private void write(String fileName, String XTitle) {
         getSQLite();
-        Log.v("BT","2: "+jsonArray);
+//        Log.v("BT","2: "+jsonArray);
         StringBuilder data = new StringBuilder();
         data.append(XTitle);
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -218,6 +218,7 @@ public class CreatePDFandCSV {
     }
     /**PDF資料處理2排的*/
     public void PDF_2C(Context context) {
+
         switch (SendType.FirstWord) {
             case 'T':
                 FIRSTunit = "°C";
@@ -269,8 +270,11 @@ public class CreatePDFandCSV {
             TOCCreation event = new TOCCreation();
             writer.setPageEvent(event);
 
+
+
             document.open();
             //======================================================================================
+
             document.add(new Paragraph("Jetec Electronics CO,LTD"));
             document.add(new Paragraph(" "));
 
@@ -294,9 +298,10 @@ public class CreatePDFandCSV {
             }
 
             document.add(tabbbb);
-            Log.v("BT","json長度:"+ jsonArray.length());
+//            Log.v("BT","json長度:"+ jsonArray.length());
             int start;
             int end;
+
             for (int i = 0; i <= jsonArray.length()-1; ) {
                 start = (i) + 1;
                 i++;

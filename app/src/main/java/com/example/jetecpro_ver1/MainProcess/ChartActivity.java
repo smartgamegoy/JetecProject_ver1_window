@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.jetecpro_ver1.Chart.MyMarkerView;
 import com.example.jetecpro_ver1.PDFandCSVHelper_ChartAct.CreatePDFandCSV;
@@ -162,6 +163,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
                                    choose.PDF_1C(getBaseContext());
                                    break;
                                case '2':
+
                                    choose.PDF_2C(getBaseContext());
                                    break;
                                case '3':
