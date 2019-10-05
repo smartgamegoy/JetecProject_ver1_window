@@ -290,6 +290,11 @@ public class SortData {
                 , SendType.EL1, SendType.CR1
                 , SendType.DP1, SendType.SPK};
 
+        String [] single = {trans(R.string.device_name)
+                , SendType.PV1,SendType.EH1
+                , SendType.EL1,SendType.CR1
+                , SendType.SPK};
+
         String[] THI = {trans(R.string.device_name)
                 , SendType.PV1, SendType.PV2, SendType.PV3
                 , SendType.EH1, SendType.EL1
@@ -321,9 +326,11 @@ public class SortData {
                 switch (SendType.SecondWord){
                     case 'L':
                         if(SendType.FirstWord == 'I'){return ArrayUtils.addAll(I,L);}
+//                        if(SendType.FirstWord == 'I'){return ArrayUtils.addAll(I,L);}
                         break;
                     default:
                         if (SendType.FirstWord == 'I') {return I;}
+                        else if(SendType.FirstWord != ' ') {return single;}
                         break;
                 }
                 break;
@@ -390,6 +397,10 @@ public class SortData {
                 , SendType.mPV1, SendType.mEH1
                 , SendType.mEL1, SendType.mCR1
                 , SendType.mDP1, SendType.mSPK};
+        String [] msingle = {trans(R.string.device_name)
+                , SendType.mPV1,SendType.mEH1
+                , SendType.mEL1,SendType.mCR1
+                , SendType.mSPK};
 
         String[] mTHY = {SendType.DeviceName
                 , SendType.mPV1, SendType.mPV2
@@ -418,6 +429,7 @@ public class SortData {
                         break;
                     default:
                         if (SendType.FirstWord == 'I') {return mI;}
+                        else if(SendType.FirstWord != ' ') {return msingle;}
                         break;
                 }
                 break;
@@ -553,6 +565,10 @@ public class SortData {
                 , SendType.PV1, SendType.EH1
                 , SendType.EL1, SendType.CR1
                 , SendType.DP1, SendType.SPK};
+        String [] single = {trans(R.string.device_name)
+                , SendType.PV1,SendType.EH1
+                , SendType.EL1,SendType.CR1
+                , SendType.SPK};
         String[] TH = {trans(R.string.device_name)
                 , SendType.PV1, SendType.PV2
                 , SendType.EH1, SendType.EL1
@@ -605,6 +621,7 @@ public class SortData {
                         break;
                     default:
                         if (SendType.FirstWord == 'I') {return I;}
+                        else if(SendType.FirstWord != ' ') {return single;}
                         break;
                 }
                 break;
@@ -678,6 +695,11 @@ public class SortData {
                 , SendType.mEL1, SendType.mCR1
                 , SendType.mDP1, SendType.mSPK};
 
+        String [] msingle = {trans(R.string.device_name)
+                , SendType.mPV1,SendType.mEH1
+                , SendType.mEL1,SendType.mCR1
+                , SendType.mSPK};
+
         String[] mTHD = {SendType.DeviceName
                 , SendType.mPV1, SendType.mPV2, SendType.mPV3
                 , SendType.mEH1, SendType.mEH2, SendType.mEH3
@@ -697,6 +719,7 @@ public class SortData {
                         break;
                     default:
                         if (SendType.FirstWord == 'I') {return mI;}
+                        else if(SendType.FirstWord != ' ') {return msingle;}
                         break;
                 }
                 break;

@@ -78,6 +78,7 @@ public class DeviceControlActivity extends Activity {
     private boolean mConnected = false;
     int tt=0;
     int coint = 0;
+    boolean PASSOK = false;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
 
     private final String LIST_NAME = "NAME";
@@ -271,25 +272,28 @@ public class DeviceControlActivity extends Activity {
                         mDataField.setText(R.string.Correct);
                         GetDisplayData get = new GetDisplayData(data);
                         get.sendGet();
+                        PASSOK = true;
                         dialog.dismiss();
                         waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
                                 getResources().getString(R.string.plzWait),getResources().getString(R.string.progressing),true);
-                        new CountDownTimer(3000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                Log.v("BT","讀秒中:"+millisUntilFinished / 1000);
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                if (SendType.NormalData.contains("OVER")){Log.v("BT","已正常連線取得數據");}else {
-                                    SendType.SendForBLEDataType = "get";
-                                    SendType.getSendBluetoothLeService.
-                                            setCharacteristicNotification(SendType.Mycharacteristic, true);
-                                }
-
-                            }
-                        }.start();
+//                        new CountDownTimer(3000, 1000) {
+//                            @Override
+//                            public void onTick(long millisUntilFinished) {
+//                                Log.v("BT","讀秒中:"+millisUntilFinished / 1000);
+//                            }
+//
+//                            @Override
+//                            public void onFinish() {
+//                                if (SendType.NormalData.contains("OVER")){
+//                                    Log.v("BT","已正常連線取得數據");
+//                                }else {
+//                                    SendType.SendForBLEDataType = "get";
+//                                    SendType.getSendBluetoothLeService.
+//                                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+//                                }
+//
+//                            }
+//                        }.start();
 
                     } else if(!edInput.getText().toString().isEmpty()&&
                     edInput.getText().toString().contains("@JETEC")){
@@ -307,7 +311,26 @@ public class DeviceControlActivity extends Activity {
         String getMain = data.substring(0, 3);
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
+        if (PASSOK == true){
+            new  CountDownTimer(5000,1000){
 
+                @Override
+                public void onTick(long millisUntilFinished) {
+//                    Log.v("BT","綜合讀秒中:"+millisUntilFinished / 1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    if (SendType.NormalData.contains("OVER")){
+                        Log.v("BT","已正常連線取得數據");
+                    }else {
+                        SendType.SendForBLEDataType = "get";
+                        SendType.getSendBluetoothLeService.
+                                setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    }
+                }
+            }.start();
+        }
 
 
         if (data.contains("OVER")){
@@ -342,6 +365,7 @@ public class DeviceControlActivity extends Activity {
                         setCharacteristicNotification(SendType.Mycharacteristic, true);
                 coint++;
             }else if(coint ==1){
+                PASSOK = false;
                 goNextActivity();
             }
 
@@ -485,8 +509,10 @@ public class DeviceControlActivity extends Activity {
         //將可用的GATT Service迴圈顯示
         /**這邊顯示的是關於裝置的基本性質*/
         for (BluetoothGattService gattService : gattServices) {
+//        for (BluetoothGattService gattService : gattServices) {
             HashMap<String, String> currentServiceData = new HashMap<String, String>();
             uuid = gattService.getUuid().toString();
+//            Log.v("BT",uuid);
             currentServiceData.put(
                     LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
             currentServiceData.put(LIST_UUID, uuid);

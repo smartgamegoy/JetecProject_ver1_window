@@ -202,6 +202,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
      * 圖表顯示
      */
     private void chartView() {
+
         chart = findViewById(R.id.dataChart);
         DBHelper db = new DBHelper(getBaseContext(), DB_NAME, null, 1);
         mCustomDb = db.getWritableDatabase();

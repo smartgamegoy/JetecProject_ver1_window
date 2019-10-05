@@ -145,10 +145,10 @@ public class BluetoothLeService extends Service {
         @Override
         public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             super.onDescriptorRead(gatt, descriptor, status);
-            Log.v("BT", "AT onDescriptorRead. " + "descriptor: "
-                    + descriptor.getUuid() + ". characteristic: "
-                    + descriptor.getCharacteristic().getUuid()
-                    + ". status: " + status);
+//            Log.v("BT", "AT onDescriptorRead. " + "descriptor: "
+//                    + descriptor.getUuid() + ". characteristic: "
+//                    + descriptor.getCharacteristic().getUuid()
+//                    + ". status: " + status);
         }
 
         @Override
