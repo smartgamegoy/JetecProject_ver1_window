@@ -51,6 +51,7 @@ public class CreatePDFandCSV {
     Activity activity;
     String FIRSTunit, SECONDunti, THIRDunit;
     JSONArray jsonArray;
+    PdfPTable table_Row3,table_Row2,table_Row1;
 
 
     public CreatePDFandCSV(Activity activity) {
@@ -139,7 +140,7 @@ public class CreatePDFandCSV {
                 break;
         }
         XTitle = defult + first + second + third;
-        Log.v("BT", XTitle);
+//        Log.v("BT", XTitle);
 
         /*==========收資料與製為CSV============*/
         String[] createFile = context.fileList();
@@ -318,7 +319,7 @@ public class CreatePDFandCSV {
             document.add(tabbbb);
 //            Log.v("BT","json長度:"+ jsonArray.length());
             int start;
-            int end;
+            int end = 0;
 
             for (int i = 0; i <= jsonArray.length() - 1; ) {
                 start = (i) + 1;
@@ -329,6 +330,18 @@ public class CreatePDFandCSV {
                 c.setGenericTag(title);
                 ct.addElement(c);
                 ct.addElement(createTable_Row2(start, end));
+            }
+            //補格子
+            int fullPageCell = 135;
+            if(end%fullPageCell >0){
+                int func = ((end/fullPageCell)+1)*fullPageCell;
+                for (int i = 0;i<func-end;i++){
+                    PdfPCell dateCell = new PdfPCell(Phrase.getInstance(" "));
+                    dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    table_Row2.addCell(dateCell);
+                    table_Row2.addCell(" ");
+                    table_Row2.addCell(" ");
+                }
             }
             int column = 0;
             do {
@@ -495,7 +508,7 @@ public class CreatePDFandCSV {
             document.add(tabbbb);
 //            Log.v("BT","json長度:"+ jsonArray.length());
             int start;
-            int end;
+            int end = 0;
 
             for (int i = 0; i <= jsonArray.length() - 1; ) {
                 start = (i) + 1;
@@ -506,6 +519,19 @@ public class CreatePDFandCSV {
                 c.setGenericTag(title);
                 ct.addElement(c);
                 ct.addElement(createTable_Row3(start, end));
+            }
+            //補格子～
+            int fullPageCell = 90;
+            if(end%fullPageCell >0){
+                int func = ((end/fullPageCell)+1)*fullPageCell;
+                for (int i = 0;i<func-end;i++){
+                    PdfPCell dateCell = new PdfPCell(Phrase.getInstance(" "));
+                    dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    table_Row3.addCell(dateCell);
+                    table_Row3.addCell(" ");
+                    table_Row3.addCell(" ");
+                    table_Row3.addCell(" ");
+                }
             }
             int column = 0;
             do {
@@ -556,25 +582,25 @@ public class CreatePDFandCSV {
             new Rectangle(381, 50, 547, 780)
     };//192是第一區塊的寬度
     private PdfPTable createTable_Row2(int start, int end) throws IOException {
-        PdfPTable table = new PdfPTable(3);
-        table.setWidthPercentage(100);
-        table.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table_Row2 = new PdfPTable(3);
+        table_Row2.setWidthPercentage(100);
+        table_Row2.setHorizontalAlignment(Element.ALIGN_RIGHT);
         for (int i = start; i <= end; i++) {//一頁135資料
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i-1);
                 PdfPCell dateCell = new PdfPCell(Phrase.getInstance(jsonObject.getString("RecordDate").substring(5)));
                 dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                table.addCell(dateCell);
+                table_Row2.addCell(dateCell);
 //                table.addCell(jsonObject.getString("id"));
-                table.addCell(trans2Double(jsonObject.getString("First")).substring(0,4)+FIRSTunit);
-                table.addCell(trans2Double(jsonObject.getString("Second")).substring(0,4)+SECONDunti);
+                table_Row2.addCell(trans2Double(jsonObject.getString("First")).substring(0,4)+FIRSTunit);
+                table_Row2.addCell(trans2Double(jsonObject.getString("Second")).substring(0,4)+SECONDunti);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
 
-        return table;
+        return table_Row2;
     }
 
     private class TOCCreation extends PdfPageEventHelper{
@@ -614,31 +640,31 @@ public class CreatePDFandCSV {
 //            new Rectangle(381, 50, 547, 780)
     };//192是第一區塊的寬度
     private PdfPTable createTable_Row3(int start, int end) throws IOException {
-        PdfPTable table = new PdfPTable(4);
+        table_Row3 = new PdfPTable(4);
         try {
-            table.setWidths(new float[]{20,26,26,26});
+            table_Row3.setWidths(new float[]{20,26,26,26});
         } catch (DocumentException e) {
             e.printStackTrace();
         }
-        table.setWidthPercentage(100);
-        table.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        for (int i = start; i <= end; i++) {//一頁135資料
+        table_Row3.setWidthPercentage(100);
+        table_Row3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        for (int i = start; i <= end; i++) {//一頁90資料
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i-1);
                 PdfPCell dateCell = new PdfPCell(Phrase.getInstance(jsonObject.getString("RecordDate").substring(5)));
                 dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                table.addCell(dateCell);
+                table_Row3.addCell(dateCell);
 //                table.addCell(jsonObject.getString("id"));
-                table.addCell(trans2Double(jsonObject.getString("First"))+FIRSTunit);
-                table.addCell(trans2Double(jsonObject.getString("Second"))+SECONDunti);
-                table.addCell(trans2Double(jsonObject.getString("Third"))+THIRDunit);
+                table_Row3.addCell(trans2Double(jsonObject.getString("First"))+FIRSTunit);
+                table_Row3.addCell(trans2Double(jsonObject.getString("Second"))+SECONDunti);
+                table_Row3.addCell(trans2Double(jsonObject.getString("Third"))+THIRDunit);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
 
-        return table;
+        return table_Row3;
     }
 
 
