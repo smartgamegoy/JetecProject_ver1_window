@@ -6,12 +6,12 @@
 
 主頁面:
 
-![image]()
+![image](https://github.com/thumbb13555/JetecProject_ver1/blob/master/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-08%20%E4%B8%8A%E5%8D%8811.13.14.png)
 
 
 修改顯示器數據與抽屜視窗:
 
-![image]()
+![image](https://github.com/thumbb13555/JetecProject_ver1/blob/master/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-08%20%E4%B8%8A%E5%8D%8811.11.41.png)
 
 顯示器紀錄中..
 
@@ -20,4 +20,4 @@
 
 圖表顯示
 
-![image]()
+![image](https://github.com/thumbb13555/JetecProject_ver1/blob/master/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-08%20%E4%B8%8A%E5%8D%8811.12.43.png)
