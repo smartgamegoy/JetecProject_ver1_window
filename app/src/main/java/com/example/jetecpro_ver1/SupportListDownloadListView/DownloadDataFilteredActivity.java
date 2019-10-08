@@ -2,14 +2,13 @@ package com.example.jetecpro_ver1.SupportListDownloadListView;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -51,9 +50,7 @@ public class DownloadDataFilteredActivity extends Activity {
             dateTimeRangeSelect();
         } else if (mSelectType.contains(trans(R.string.dataFilter_plzSelectId))) {
             idRangeSelect();
-        } else if (mSelectType.contains(trans(R.string.Temperature))) {
-            valueRangeSelect();
-        } else if (mSelectType.contains(trans(R.string.Humidity))) {
+        } else {
             valueRangeSelect();
         }
 
@@ -113,6 +110,22 @@ public class DownloadDataFilteredActivity extends Activity {
             e.printStackTrace();
         }
         final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
+
+        switch (SendType.row){
+
+            case '1':
+
+                break;
+            case '2':
+                IdSelectRow2(fir, sec, jsonArray, arrayList);
+                break;
+            case '3':
+                IdSelectRow3(fir, sec, jsonArray, arrayList);
+                break;
+        }
+
+    }
+    private void IdSelectRow2(String fir, String sec, JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList) {
         try {
             for (int i = Integer.parseInt(fir) - 1; i < Integer.parseInt(sec); i++) {
                 HashMap<String, String> hashMap = new HashMap<>();
@@ -124,21 +137,55 @@ public class DownloadDataFilteredActivity extends Activity {
                 String Time = jsonObject.getString("RecordTime");
                 hashMap.put("DateTime", Date + " " + Time);
                 hashMap.put("id", id);
-                hashMap.put("first", firstData + "°C");
-                hashMap.put("second", secondData + "%");
+                hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                hashMap.put("second", secondData+unit(SendType.SecondWord,2));
+                hashMap.put("firstT",Lab(SendType.FirstWord,1));
+                hashMap.put("secondT",Lab(SendType.SecondWord,2));
                 arrayList.add(hashMap);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String[] from = {"DateTime", "id", "first", "second"};
-        int[] to = {R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecondData};
+        String[] from = {"firstT","secondT","DateTime", "id", "first", "second"};
+        int[] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle
+                ,R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecendData};
+        simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.activity_list_download_data_custom, from, to);
+        lv.setAdapter(simpleAdapter);
+    }
+    private void IdSelectRow3(String fir, String sec, JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList) {
+        try {
+            for (int i = Integer.parseInt(fir) - 1; i < Integer.parseInt(sec); i++) {
+                HashMap<String, String> hashMap = new HashMap<>();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id = jsonObject.getString("id");
+                String firstData = trans2Double1(jsonObject.getString("First"));
+                String secondData = trans2Double1(jsonObject.getString("Second"));
+                String thirdData = trans2Double1(jsonObject.getString("Third"));
+                String Date = jsonObject.getString("RecordDate");
+                String Time = jsonObject.getString("RecordTime");
+                hashMap.put("DateTime", Date + " " + Time);
+                hashMap.put("id", id);
+                hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                hashMap.put("second", secondData+unit(SendType.SecondWord,2));
+                hashMap.put("third", thirdData+unit(SendType.ThirdWord,3));
+                hashMap.put("firstT",Lab(SendType.FirstWord,1));
+                hashMap.put("secondT",Lab(SendType.SecondWord,2));
+                hashMap.put("thirdT",Lab(SendType.ThirdWord,3));
+                arrayList.add(hashMap);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String[] from = {"firstT","secondT","thirdT","DateTime", "id", "first", "second", "third"};
+        int[] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle,R.id.listView_ThirdDataTitle
+                ,R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecendData,R.id.listView_ThirdData};
         simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.activity_list_download_data_custom, from, to);
         lv.setAdapter(simpleAdapter);
     }
 
+
     /**
-     * 顯示選擇的溫度值範圍
+     * 顯示選擇的值範圍
      */
     private void valueRangeSelect() {
         Bundle bundle = getIntent().getExtras();
@@ -161,6 +208,23 @@ public class DownloadDataFilteredActivity extends Activity {
         }
         final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
 
+        switch (SendType.row){
+
+            case '1':
+
+                break;
+            case '2':
+                valueSelectRow2(mathMethod, mathRange, jsonArray, arrayList);
+                break;
+            case '3':
+                valueSelectRow3(mathMethod, mathRange, jsonArray, arrayList);
+                break;
+        }
+
+
+
+    }
+    private void valueSelectRow2(int mathMethod, Double mathRange, JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList) {
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 HashMap<String, String> hashMap = new HashMap<>();
@@ -170,14 +234,15 @@ public class DownloadDataFilteredActivity extends Activity {
                 String secondData = trans2Double1(jsonObject.getString("Second"));
                 String Date = jsonObject.getString("RecordDate");
                 String Time = jsonObject.getString("RecordTime");
-                if (mSelectType.contains(trans(R.string.Temperature))) {
                     switch (mathMethod) {
                         case 0://大於
                             if (Double.valueOf(firstData) > mathRange) {
                                 hashMap.put("DateTime", Date + " " + Time);
                                 hashMap.put("id", id);
-                                hashMap.put("first", firstData + "°C");
-                                hashMap.put("second", secondData + "%");
+                                hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                                hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                                hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                                hashMap.put("secondT", Lab(SendType.SecondWord,2));
                                 arrayList.add(hashMap);
                             }
                             break;
@@ -185,8 +250,10 @@ public class DownloadDataFilteredActivity extends Activity {
                             if (Double.valueOf(firstData) < mathRange) {
                                 hashMap.put("DateTime", Date + " " + Time);
                                 hashMap.put("id", id);
-                                hashMap.put("first", firstData + "°C");
-                                hashMap.put("second", secondData + "%");
+                                hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                                hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                                hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                                hashMap.put("secondT", Lab(SendType.SecondWord,2));
                                 arrayList.add(hashMap);
                             }
                             break;
@@ -194,56 +261,93 @@ public class DownloadDataFilteredActivity extends Activity {
                             if (Double.valueOf(firstData).equals(mathRange)) {
                                 hashMap.put("DateTime", Date + " " + Time);
                                 hashMap.put("id", id);
-                                hashMap.put("first", firstData + "°C");
-                                hashMap.put("second", secondData + "%");
+                                hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                                hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                                hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                                hashMap.put("secondT", Lab(SendType.SecondWord,2));
                                 arrayList.add(hashMap);
                             }
                             break;
                     }
-                } else if (mSelectType.contains(trans(R.string.Humidity))) {
-                    switch (mathMethod) {
-                        case 0://大於
-                            if (Double.valueOf(secondData) > mathRange) {
-                                hashMap.put("DateTime", Date + " " + Time);
-                                hashMap.put("id", id);
-                                hashMap.put("first", firstData + "°C");
-                                hashMap.put("second", secondData + "%");
-                                arrayList.add(hashMap);
-                            }
-                            break;
-                        case 1://小於
-                            if (Double.valueOf(secondData) < mathRange) {
-                                hashMap.put("DateTime", Date + " " + Time);
-                                hashMap.put("id", id);
-                                hashMap.put("first", firstData + "°C");
-                                hashMap.put("second", secondData + "%");
-                                arrayList.add(hashMap);
-                            }
-                            break;
-                        case 2://等於
-                            if (Double.valueOf(secondData).equals(mathRange)) {
-                                hashMap.put("DateTime", Date + " " + Time);
-                                hashMap.put("id", id);
-                                hashMap.put("first", firstData + "°C");
-                                hashMap.put("second", secondData + "%");
-                                arrayList.add(hashMap);
-                            }
-                            break;
-                    }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String[] from = {"firstT","secondT","DateTime", "id", "first", "second"};
+        int[] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle
+                ,R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecendData};
+        simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.activity_list_download_data_custom, from, to);
+        lv.setAdapter(simpleAdapter);
+        if (arrayList.size() == 0) {
+            Toast.makeText(getBaseContext(), R.string.sorry, Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void valueSelectRow3(int mathMethod, Double mathRange, JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList) {
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                HashMap<String, String> hashMap = new HashMap<>();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id = jsonObject.getString("id");
+                String firstData = trans2Double1(jsonObject.getString("First"));
+                String secondData = trans2Double1(jsonObject.getString("Second"));
+                String thirdData = trans2Double1(jsonObject.getString("Third"));
+                String Date = jsonObject.getString("RecordDate");
+                String Time = jsonObject.getString("RecordTime");
+                switch (mathMethod) {
+                    case 0://大於
+                        if (Double.valueOf(firstData) > mathRange) {
+                            hashMap.put("DateTime", Date + " " + Time);
+                            hashMap.put("id", id);
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("third", thirdData+unit(SendType.FirstWord,3));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
+                            hashMap.put("thirdT", Lab(SendType.SecondWord,3));
+                            arrayList.add(hashMap);
+                        }
+                        break;
+                    case 1://小於
+                        if (Double.valueOf(firstData) < mathRange) {
+                            hashMap.put("DateTime", Date + " " + Time);
+                            hashMap.put("id", id);
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("third", thirdData+unit(SendType.FirstWord,3));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
+                            hashMap.put("thirdT", Lab(SendType.SecondWord,3));
+                            arrayList.add(hashMap);
+                        }
+                        break;
+                    case 2://等於
+                        if (Double.valueOf(firstData).equals(mathRange)) {
+                            hashMap.put("DateTime", Date + " " + Time);
+                            hashMap.put("id", id);
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("third", thirdData+unit(SendType.FirstWord,3));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
+                            hashMap.put("thirdT", Lab(SendType.SecondWord,3));
+                            arrayList.add(hashMap);
+                        }
+                        break;
                 }
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String[] from = {"DateTime", "id", "first", "second"};
-        int[] to = {R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecondData};
+        String[] from = {"firstT","secondT","thirdT","DateTime", "id", "first", "second","third"};
+        int[] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle,R.id.listView_ThirdDataTitle
+                ,R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecendData,R.id.listView_ThirdData};
         simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.activity_list_download_data_custom, from, to);
         lv.setAdapter(simpleAdapter);
         if (arrayList.size() == 0) {
             Toast.makeText(getBaseContext(), R.string.sorry, Toast.LENGTH_SHORT).show();
         }
-
     }
 
     /**
@@ -281,6 +385,23 @@ public class DownloadDataFilteredActivity extends Activity {
             e.printStackTrace();
         }
         final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
+
+        switch (SendType.row){
+
+            case '1':
+
+                break;
+            case '2':
+                TimeDateSelectRow2(mathMethod, dSelected, ft, jsonArray, arrayList);
+                break;
+            case '3':
+                TimeDateSelectRow3(mathMethod, dSelected, ft, jsonArray, arrayList);
+                break;
+        }
+
+
+    }
+    private void TimeDateSelectRow2(int mathMethod, Date dSelected, SimpleDateFormat ft, JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList) {
         Date recordDT;
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -298,8 +419,10 @@ public class DownloadDataFilteredActivity extends Activity {
                         if (dSelected.getTime() - recordDT.getTime()>=0) {
                             hashMap.put("DateTime", Date + " " + Time);
                             hashMap.put("id", id);
-                            hashMap.put("first", firstData + "°C");
-                            hashMap.put("second", secondData + "%");
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
                             arrayList.add(hashMap);
                         }
 
@@ -308,8 +431,10 @@ public class DownloadDataFilteredActivity extends Activity {
                         if (dSelected.getTime() - recordDT.getTime()<=0) {
                             hashMap.put("DateTime", Date + " " + Time);
                             hashMap.put("id", id);
-                            hashMap.put("first", firstData + "°C");
-                            hashMap.put("second", secondData + "%");
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
                             arrayList.add(hashMap);
                         }
                         break;
@@ -319,12 +444,13 @@ public class DownloadDataFilteredActivity extends Activity {
                                 &&dSelected.getTime()-recordDT.getTime()<=0) {
                             hashMap.put("DateTime", Date + " " + Time);
                             hashMap.put("id", id);
-                            hashMap.put("first", firstData + "°C");
-                            hashMap.put("second", secondData + "%");
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
                             arrayList.add(hashMap);
                         }
                         break;
-
                 }
 
             }
@@ -334,18 +460,90 @@ public class DownloadDataFilteredActivity extends Activity {
             e.printStackTrace();
             Log.v("BT", String.valueOf(e));
         }
-        String[] from = {"DateTime", "id", "first", "second"};
-        int[] to = {R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecondData};
+        String[] from = {"firstT","secondT","DateTime", "id", "first", "second"};
+        int[] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle
+                ,R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecendData};
         simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.activity_list_download_data_custom, from, to);
         lv.setAdapter(simpleAdapter);
         if (arrayList.size() == 0) {
             Toast.makeText(getBaseContext(), R.string.sorry, Toast.LENGTH_SHORT).show();
         }
-
     }
+    private void TimeDateSelectRow3(int mathMethod, Date dSelected, SimpleDateFormat ft, JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList) {
+        Date recordDT;
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                HashMap<String, String> hashMap = new HashMap<>();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id = jsonObject.getString("id");
+                String firstData = trans2Double1(jsonObject.getString("First"));
+                String secondData = trans2Double1(jsonObject.getString("Second"));
+                String thirdData = trans2Double1(jsonObject.getString("Third"));
+                String Date = jsonObject.getString("RecordDate");
+                String Time = jsonObject.getString("RecordTime");
+                recordDT = ft.parse(Date + " " + Time);
+                switch (mathMethod) {
 
-    /**顯示選擇的XX值範圍*/
+                    case 0:
+                        if (dSelected.getTime() - recordDT.getTime()>=0) {
+                            hashMap.put("DateTime", Date + " " + Time);
+                            hashMap.put("id", id);
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("third", thirdData+unit(SendType.FirstWord,3));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
+                            hashMap.put("thirdT", Lab(SendType.SecondWord,3));
+                            arrayList.add(hashMap);
+                        }
 
+                        break;
+                    case 1:
+                        if (dSelected.getTime() - recordDT.getTime()<=0) {
+                            hashMap.put("DateTime", Date + " " + Time);
+                            hashMap.put("id", id);
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("third", thirdData+unit(SendType.FirstWord,3));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
+                            hashMap.put("thirdT", Lab(SendType.SecondWord,3));
+                            arrayList.add(hashMap);
+                        }
+                        break;
+                    case 2:
+//                        Log.v("BT", String.valueOf(dSelected.getTime()-recordDT.getTime()));
+                        if (dSelected.getTime()-recordDT.getTime()>=-36*100000
+                                &&dSelected.getTime()-recordDT.getTime()<=0) {
+                            hashMap.put("DateTime", Date + " " + Time);
+                            hashMap.put("id", id);
+                            hashMap.put("first", firstData+unit(SendType.FirstWord,1));
+                            hashMap.put("second", secondData+unit(SendType.FirstWord,2));
+                            hashMap.put("third", thirdData+unit(SendType.FirstWord,3));
+                            hashMap.put("firstT", Lab(SendType.FirstWord,1));
+                            hashMap.put("secondT", Lab(SendType.SecondWord,2));
+                            hashMap.put("thirdT", Lab(SendType.SecondWord,3));
+                            arrayList.add(hashMap);
+                        }
+                        break;
+                }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.v("BT", String.valueOf(e));
+        }
+        String[] from = {"firstT","secondT","thirdT","DateTime", "id", "first", "second","third"};
+        int[] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle,R.id.listView_ThirdDataTitle
+                ,R.id.listView_dateTime, R.id.listView_RecordId, R.id.listView_firstData, R.id.listView_SecendData,R.id.listView_ThirdData};
+        simpleAdapter = new SimpleAdapter(this, arrayList, R.layout.activity_list_download_data_custom, from, to);
+        lv.setAdapter(simpleAdapter);
+        if (arrayList.size() == 0) {
+            Toast.makeText(getBaseContext(), R.string.sorry, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     /**
      * 轉數字
@@ -376,5 +574,98 @@ public class DownloadDataFilteredActivity extends Activity {
     private String trans(int name) {
         String str = this.getResources().getString(name);
         return str;
+    }
+
+    /**揀選標籤*/
+    private String Lab(char name,int x) {
+        switch (name){
+            case 'T':
+
+                return "溫度";
+
+            case 'H':
+                return "濕度";
+
+            case 'C':
+            case 'D':
+            case 'E':
+                return "二氧化碳";
+
+            case 'P':
+                return "壓力";
+
+            case 'M':
+                return "PM2.5";
+
+            case 'Q':
+                return "PM10";
+
+            case 'O':
+                return "噪音";
+
+            case 'G':
+                return "一氧化碳";
+
+            case 'F':
+                return "流量";
+
+            case 'I':
+                if(x == 1){
+                    return "第一排";
+                }else if(x ==2){
+                    return "第二排";
+                }else if(x == 3){
+                    return "第三排";
+                }
+
+                break;
+
+        }
+        return "不知道";
+    }
+    /**揀選單位*/
+    private String unit(char name,int x) {
+        switch (name){
+            case 'T':
+
+                return "°C";
+
+            case 'H':
+                return "%";
+
+            case 'C':
+            case 'D':
+            case 'E':
+                return "ppm";
+
+            case 'P':
+                return "Pa N/m2";
+
+            case 'M':
+            case 'Q':
+                return "μm";
+
+            case 'O':
+                return "db";
+
+            case 'G':
+                return "ppm";
+
+            case 'F':
+                return "m3/s";
+
+            case 'I':
+                if(x == 1){
+                    return " ";
+                }else if(x ==2){
+                    return " ";
+                }else if(x == 3){
+                    return " ";
+                }
+
+                break;
+
+        }
+        return "不知道";
     }
 }

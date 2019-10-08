@@ -72,11 +72,11 @@ public class DDA_SendData {
 //                }
                 nbDppicker.setMinValue(0);
                 nbDppicker.setMaxValue(3);
-                if(selectName.contains(SendType.DP1)){
+                if(SendType.mDP1 != null &&selectName.contains(SendType.DP1)){
                     nbDppicker.setValue(Integer.parseInt(SendType.mDP1));
-                }else if(selectName.contains(SendType.DP2)){
+                }else if(SendType.mDP2 != null && selectName.contains(SendType.DP2)){
                     nbDppicker.setValue(Integer.parseInt(SendType.mDP2));
-                } else if(selectName.contains(SendType.DP3)){
+                } else if(SendType.mDP3 != null && selectName.contains(SendType.DP3)){
                     nbDppicker.setValue(Integer.parseInt(SendType.mDP3));
                 }
                 nbDppicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -115,6 +115,40 @@ public class DDA_SendData {
                 break;
             case 'H':
 
+                break;
+
+            case 'C':
+                if (selectName.contains(SendType.PV1)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH1)) {
+                    edInput.setHint("0~2000");
+                } else if (selectName.contains(SendType.EL1)) {
+                    edInput.setHint("0~2000");
+                } else if (selectName.contains(SendType.CR1)) {
+                    edInput.setHint("0~2000");
+                }
+                break;
+            case 'D':
+                if (selectName.contains(SendType.PV1)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH1)) {
+                    edInput.setHint("0~3000");
+                } else if (selectName.contains(SendType.EL1)) {
+                    edInput.setHint("0~3000");
+                } else if (selectName.contains(SendType.CR1)) {
+                    edInput.setHint("0~3000");
+                }
+                break;
+            case 'E':
+                if (selectName.contains(SendType.PV1)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH1)) {
+                    edInput.setHint("0~5000");
+                } else if (selectName.contains(SendType.EL1)) {
+                    edInput.setHint("0~5000");
+                } else if (selectName.contains(SendType.CR1)) {
+                    edInput.setHint("0~5000");
+                }
                 break;
             case 'I':
 //                Log.v("BT","第一排"+ dPNumberSelect);
@@ -201,6 +235,39 @@ public class DDA_SendData {
                     edInput.setHint("0~100");
                 }
                 break;
+            case 'C':
+                if (selectName.contains(SendType.PV2)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH2)) {
+                    edInput.setHint("0~2000");
+                } else if (selectName.contains(SendType.EL2)) {
+                    edInput.setHint("0~2000");
+                } else if (selectName.contains(SendType.CR2)) {
+                    edInput.setHint("0~2000");
+                }
+                break;
+            case 'D':
+                if (selectName.contains(SendType.PV2)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH2)) {
+                    edInput.setHint("0~3000");
+                } else if (selectName.contains(SendType.EL2)) {
+                    edInput.setHint("0~3000");
+                } else if (selectName.contains(SendType.CR2)) {
+                    edInput.setHint("0~3000");
+                }
+                break;
+            case 'E':
+                if (selectName.contains(SendType.PV2)) {
+                    edInput.setHint("-500~500");
+                } else if (selectName.contains(SendType.EH2)) {
+                    edInput.setHint("0~5000");
+                } else if (selectName.contains(SendType.EL2)) {
+                    edInput.setHint("0~5000");
+                } else if (selectName.contains(SendType.CR2)) {
+                    edInput.setHint("0~5000");
+                }
+                break;
 
             case 'I':
 //                if (SendType.mDP2.contains("on")){//洨數點打開
@@ -277,6 +344,7 @@ public class DDA_SendData {
 
 
                 break;
+
 
             case 'I':
 //                if (SendType.mDP3.contains("on")){//洨數點打開
@@ -367,11 +435,11 @@ public class DDA_SendData {
                 if (selectName.contains(SendType.PV3)) {
                     edInput.setHint("-500~500");
                 } else if (selectName.contains(SendType.EH3)) {
-                    edInput.setHint("0~4000");
+                    edInput.setHint("0~5000");
                 }else if (selectName.contains(SendType.EL3)) {
-                    edInput.setHint("0~4000");
+                    edInput.setHint("0~5000");
                 } else if (selectName.contains(SendType.CR3)) {
-                    edInput.setHint("0~4000");
+                    edInput.setHint("0~5000");
                 }
                 break;
 

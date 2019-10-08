@@ -74,6 +74,7 @@ public class DeviceControlActivity extends Activity {
     private BluetoothLeService mBluetoothLeService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+    HashMap<String,String> hashMap = new HashMap<>();
 
     private boolean mConnected = false;
     int tt=0;
@@ -173,6 +174,7 @@ public class DeviceControlActivity extends Activity {
                             if (mConnected == false) {
                                 waitdialog.dismiss();
                                 Toast.makeText(getBaseContext(), R.string.maybeSoFair, Toast.LENGTH_LONG).show();
+                                finish();
                             }
                         }
                     }.start();
@@ -188,12 +190,14 @@ public class DeviceControlActivity extends Activity {
 
     private void displayData(final String data) {
 
+
         if (data != null) {
             mDataField.setText(data);
             SendType.NormalData = data;
             mDataField.setTextColor(getBaseContext().getResources().getColor(R.color.define));
 
         }
+
         GetDisplayData get = new GetDisplayData(data);
         if (data.contains("OK")) {
             get.GetOK();
@@ -240,6 +244,9 @@ public class DeviceControlActivity extends Activity {
 
         }
         if (data.contains("PASS")) {
+//            SendType.SendForBLEDataType = "END";
+//            SendType.getSendBluetoothLeService.
+//                    setCharacteristicNotification(SendType.Mycharacteristic, true);
             mDataField.setText(R.string.Pz_input_psw);
             AlertDialog.Builder mBuidler = new AlertDialog.Builder(DeviceControlActivity.this);
             View v = getLayoutInflater().inflate(R.layout.activity_device_control_input_psw_dialog, null);
@@ -312,6 +319,9 @@ public class DeviceControlActivity extends Activity {
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
         if (PASSOK == true){
+
+//            hashMap.put(getMain,data.substring(3,10));
+
             new  CountDownTimer(5000,1000){
 
                 @Override
@@ -366,6 +376,7 @@ public class DeviceControlActivity extends Activity {
                 coint++;
             }else if(coint ==1){
                 PASSOK = false;
+//                Log.v("BT","HashMap測試:\n"+hashMap);
                 goNextActivity();
             }
 

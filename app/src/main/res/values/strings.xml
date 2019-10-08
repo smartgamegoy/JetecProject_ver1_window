@@ -182,7 +182,7 @@
     <string name="plz_notify">(請注意跨日，00:00即為隔日)</string>
 
     <!--PDF&CSV Chooser-->
-    <string name="CSVPDFTitle">久德電子數據報表</string>
+    <string name="CSVPDFTitle">顯示器數據報表</string>
     <string name="reportTitle">資料報表</string>
     <string name="plzChooseExportType">請選擇欲輸出檔案類別</string>
     <string name="fileHasExportSuccess">檔案已成功儲存至</string>

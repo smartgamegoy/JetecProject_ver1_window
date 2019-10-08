@@ -63,7 +63,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     String DB_NAME = SendType.DB_Name;
     String DB_TABLE = SendType.DB_TABLE + "GETRecord";
     SQLiteDatabase mCustomDb;
-    int displayChartCentrol = 2;
+    int displayChartCentrol = Integer.parseInt(String.valueOf(SendType.row));
     JSONArray mJsonArray;
 
     @Override
@@ -111,7 +111,19 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
                             vvvvvvvvvvvvvvvv.findViewById(R.id.lvDDDDDDDDialog);
                     Button btOKOK = vvvvvvvvvvvvvvvv.findViewById(R.id.LineChartChooseOK);
                     Button btCancle = vvvvvvvvvvvvvvvv.findViewById(R.id.LineChartChooseCancel);
-                    String[] str = {trans(R.string.Temperature), trans(R.string.Humidity), trans(R.string.MixxxxxChart)};
+                    String[] str = new String[0];
+                    switch (SendType.row){
+                        case '1':
+                            str = new String[]{Lab(SendType.FirstWord,1)};
+                            break;
+                        case '2':
+                            str = new String[]{Lab(SendType.FirstWord,1),Lab(SendType.SecondWord,2),trans(R.string.MixxxxxChart)};
+                            break;
+                        case '3':
+                            str = new String[]{Lab(SendType.FirstWord,1),Lab(SendType.SecondWord,2),Lab(SendType.ThirdWord,3),trans(R.string.MixxxxxChart)};
+                            break;
+
+                    }
                     ArrayAdapter adapter = new ArrayAdapter(getBaseContext(), android.R.layout.simple_list_item_1, str);
                     thisIsListViewHahahahahahahahhahahaha.setAdapter(adapter);
                     final Dialog dialog = mBuilder.create();
@@ -234,7 +246,202 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         xAxis.setLabelRotationAngle(-45f);//讓字變成斜的
         xAxis.setValueFormatter(new MyValueFormatter());
 
+        switch (SendType.row){
 
+            case '1':
+
+                break;
+            case '2':
+                Row2(jsonArray, leftAxis);
+                break;
+            case '3':
+                Row3(jsonArray, leftAxis);
+                break;
+        }
+
+
+
+    }
+
+    private void Row3(JSONArray jsonArray, YAxis leftAxis) {
+        ArrayList<Entry> yValues1 = new ArrayList<>();
+        ArrayList<Entry> yValues2 = new ArrayList<>();
+        ArrayList<Entry> yValues3 = new ArrayList<>();
+        try {
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                float getFirst = trans2Double1(jsonObject.getString("First"));
+                float getSceond = trans2Double2(jsonObject.getString("Second"));
+                float getThird = trans2Double2(jsonObject.getString("Third"));
+                yValues1.add(new Entry(i, getFirst));
+                yValues2.add(new Entry(i, getSceond));
+                yValues3.add(new Entry(i, getThird));
+            }
+        } catch (Exception e) {}
+
+
+        LineDataSet set1 = new LineDataSet(yValues1, Lab(SendType.FirstWord,1));
+        LineDataSet set2 = new LineDataSet(yValues2, Lab(SendType.SecondWord,2));
+        LineDataSet set3 = new LineDataSet(yValues3, Lab(SendType.ThirdWord,3));
+
+        LineData dataText1 = new LineData(set1);
+        dataText1.setDrawValues(false);
+        set1.setColor(getResources().getColor(R.color.blueRUREI));//調整線的顏色
+        set1.setCircleColor(getResources().getColor(R.color.blueRUREI));//調整小圈圈的顏色
+        set1.setCircleRadius(0.5f);
+        set1.setLineWidth(1.5f);//條粗細
+        set1.setValueTextSize(9f);
+
+        LineData dataText2 = new LineData(set2);
+        dataText2.setDrawValues(false);
+        set2.setColor(getResources().getColor(R.color.greenTOKIWA));
+        set2.setCircleColor(getResources().getColor(R.color.greenTOKIWA));
+        set2.setCircleRadius(0.5f);
+        set2.setLineWidth(1.5f);//條粗細
+        set2.setValueTextSize(9f);
+
+        LineData dataText3 = new LineData(set3);
+        dataText3.setDrawValues(false);
+        set3.setColor(getResources().getColor(R.color.redGINSYU));
+        set3.setCircleColor(getResources().getColor(R.color.redGINSYU));
+        set3.setCircleRadius(0.5f);
+        set3.setLineWidth(1.5f);//條粗細
+        set3.setValueTextSize(9f);
+
+        chart.animateX(2000);//動畫～～～
+
+
+        chart.setOnChartValueSelectedListener(this);
+        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
+        mv.setChartView(chart);
+        chart.setMarker(mv);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        if (displayChartCentrol == 0) {
+            chooseChhartName(leftAxis, SendType.FirstWord);
+            dataSets.add(set1);
+        } else if (displayChartCentrol == 1) {
+            chooseChhartName(leftAxis, SendType.SecondWord);
+            dataSets.add(set2);
+        } else if (displayChartCentrol == 2) {
+            chooseChhartName(leftAxis, SendType.ThirdWord);
+            dataSets.add(set3);
+        } else if (displayChartCentrol == 3) {
+            leftAxis.setAxisMaximum(10000f);//顯示上限
+            leftAxis.setAxisMinimum(-10000f);//顯示下限
+            dataSets.add(set1);
+            dataSets.add(set2);
+            dataSets.add(set3);
+        }
+
+
+        LineData lineData = new LineData(dataSets);
+        chart.setData(lineData);
+    }
+
+    /**揀選名稱*/
+    private void chooseChhartName(YAxis leftAxis, char word) {
+        switch (word) {
+
+            case 'I':
+                leftAxis.setAxisMaximum(10000f);//顯示上限
+                leftAxis.setAxisMinimum(-10000f);//顯示下限
+                break;
+
+            case 'E':
+                leftAxis.setAxisMaximum(3000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+                break;
+
+            case 'D':
+                leftAxis.setAxisMaximum(2000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+                break;
+
+            case 'C':
+            case 'P':
+            case 'M':
+            case 'Q':
+                leftAxis.setAxisMaximum(1000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+                break;
+
+            case 'F':
+                leftAxis.setAxisMaximum(999f);//顯示上限
+                leftAxis.setAxisMinimum(-999f);//顯示下限
+                break;
+
+            case 'G':
+                leftAxis.setAxisMaximum(300f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+                break;
+
+            case 'H':
+                leftAxis.setAxisMaximum(100f);//顯示上限
+                leftAxis.setAxisMinimum(00f);//顯示下限
+                break;
+
+            case 'O':
+                leftAxis.setAxisMaximum(130f);//顯示上限
+                leftAxis.setAxisMinimum(30f);//顯示下限
+                break;
+
+            case 'T':
+                leftAxis.setAxisMaximum(80f);//顯示上限
+                leftAxis.setAxisMinimum(-65f);//顯示下限
+                break;
+
+        }
+    }
+    /**揀選標籤*/
+    private String Lab(char name,int x) {
+        switch (name){
+            case 'T':
+                return "溫度";
+
+            case 'H':
+                return "濕度";
+
+            case 'C':
+            case 'D':
+            case 'E':
+                return "二氧化碳";
+
+            case 'P':
+                return "壓力";
+
+            case 'M':
+                return "PM2.5";
+
+            case 'Q':
+                return "PM10";
+
+            case 'O':
+                return "噪音";
+
+            case 'G':
+                return "一氧化碳";
+
+            case 'F':
+                return "流量";
+
+            case 'I':
+                if(x == 1){
+                    return "第一排";
+                }else if(x ==2){
+                    return "第二排";
+                }else if(x == 3){
+                    return "第三排";
+                }
+
+                break;
+
+        }
+        return "不知道";
+    }
+
+    private void Row2(JSONArray jsonArray, YAxis leftAxis) {
         ArrayList<Entry> yValues1 = new ArrayList<>();
         ArrayList<Entry> yValues2 = new ArrayList<>();
         try {
@@ -253,7 +460,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         }
 
 
-        LineDataSet set1 = new LineDataSet(yValues1, "溫度");
+        LineDataSet set1 = new LineDataSet(yValues1, Lab(SendType.FirstWord,1));
         LineData dataText_x = new LineData(set1);
         dataText_x.setDrawValues(false);
         set1.setColor(getResources().getColor(R.color.blueRUREI));//調整線的顏色
@@ -262,7 +469,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         set1.setLineWidth(1.5f);//條粗細
         set1.setValueTextSize(9f);
 
-        LineDataSet set2 = new LineDataSet(yValues2, "濕度");
+        LineDataSet set2 = new LineDataSet(yValues2, Lab(SendType.SecondWord,2));
         LineData dataText_y = new LineData(set2);
         dataText_y.setDrawValues(false);
         set2.setColor(getResources().getColor(R.color.greenTOKIWA));
@@ -282,16 +489,14 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if (displayChartCentrol == 0) {
-            leftAxis.setAxisMaximum(50f);//顯示上限
-            leftAxis.setAxisMinimum(10f);//顯示下限
+            chooseChhartName(leftAxis, SendType.FirstWord);
             dataSets.add(set1);
         } else if (displayChartCentrol == 1) {
-            leftAxis.setAxisMaximum(80f);//顯示上限
-            leftAxis.setAxisMinimum(40f);//顯示下限
+            chooseChhartName(leftAxis, SendType.SecondWord);
             dataSets.add(set2);
         } else if (displayChartCentrol == 2) {
-            leftAxis.setAxisMaximum(90f);//顯示上限
-            leftAxis.setAxisMinimum(0f);//顯示下限
+            leftAxis.setAxisMaximum(10000f);//顯示上限
+            leftAxis.setAxisMinimum(-10000f);//顯示下限
             dataSets.add(set1);
             dataSets.add(set2);
         }
@@ -299,7 +504,6 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
         LineData lineData = new LineData(dataSets);
         chart.setData(lineData);
-
     }
 
 

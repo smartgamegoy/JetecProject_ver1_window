@@ -46,16 +46,39 @@ public class GetRecord {
                 getRecordDateTime();//取得最新資料的時間
             }
             i++;
-            Log.v("BC", "序號: " + i + " ,資料: " + data.substring(0, 12));
-            getDataSave(data.substring(0, 12));
+
+            switch (SendType.row){
+                case '1':
+
+                    break;
+                case '2':
+                    getDataSave(data.substring(0, 12));
+                    break;
+                case '3':
+                    getDataSave(data.substring(0, 18));
+                    Log.v("BC", "序號: " + i + " ,資料: " + data.substring(0,18));
+                    break;
+            }
 
         } else if (data != null && data.substring(0, 1).contains("-")) {
-            getDataSave(data.substring(0, 12));
+            switch (SendType.row){
+                case '1':
+
+                    break;
+                case '2':
+                    getDataSave(data.substring(0, 12));
+                    break;
+                case '3':
+                    getDataSave(data.substring(0, 18));
+                    Log.v("BC", "序號: " + i + " ,資料: " + data.substring(0,18));
+                    break;
+            }
+
             if (i == 0){
                 getRecordDateTime();//取得最新資料的時間
             }
             i++;
-            Log.v("BC", "序號: " + i + " ,資料: " + data.substring(0, 12));
+            Log.v("BC", "序號: " + i + " ,資料: " + data.substring(0,18));
 
         } else if (data != null && data.contains("OVER")) {
             Log.v("BC", "OVER");
@@ -68,8 +91,23 @@ public class GetRecord {
 
     public void getDataSave(String mData) {
         //把未分類資料通通丟進SQLite
-        String mFirstData = mData.substring(0, 6);
-        String mSecondData = mData.substring(6, 12);
+        String mFirstData = "1",mSecondData = "2",mThirdData="3";
+
+        switch (SendType.row){
+            case '1':
+                mFirstData = mData.substring(0, 6);
+                break;
+            case '2':
+                mFirstData = mData.substring(0, 6);
+                mSecondData = mData.substring(6, 12);
+                break;
+            case '3':
+                mFirstData  = mData.substring(0, 6);
+                mSecondData = mData.substring(6, 12);
+                mThirdData  = mData.substring(12,18);
+                break;
+        }
+
         if (i == 0){
             getRecordDateTime();//取得最新資料的時間
         }
@@ -82,18 +120,59 @@ public class GetRecord {
                 "select DISTINCT tbl_name from sqlite_master where tbl_name = '" + DB_TABLE + "'", null);
         if (cursor != null) {
             if (cursor.getCount() == 0)//大概資料庫都是在這邊創的吧．．．．．．．
-                mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
-                        + "_id INTEGER PRIMARY KEY," + "First TEXT,"
-                        + "SecondData TEXT" +"ThirdData TEXT"+ "RecordDate TEXT" + "RecordTime TEXT);");
+                switch (SendType.row){
+                    case '1':
+                        mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
+                                + "_id INTEGER PRIMARY KEY," + "First TEXT,"
+                                + "RecordDate TEXT," + "RecordTime TEXT);");
+                        break;
+                    case '2':
+                        mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
+                                + "_id INTEGER PRIMARY KEY," + "First TEXT,"
+                                + "SecondData TEXT,"+ "RecordDate TEXT," + "RecordTime TEXT);");
+                        break;
+                    case '3':
+                        mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
+                                + "_id INTEGER PRIMARY KEY," + "First TEXT,"
+                                + "SecondData TEXT," +"ThirdData TEXT,"+ "RecordDate TEXT," + "RecordTime TEXT);");
+                        break;
+                }
             cursor.close();
         }
         ContentValues newRow = new ContentValues();
-        newRow.put("First",mFirstData);
-        newRow.put("SecondData",mSecondData);
-        newRow.put("RecordDate",SendType.arrayDate);
-        newRow.put("RecordTime",SendType.arrayTime);
-        mCustomDb.insert(DB_TABLE,null,newRow);
-        writeTime();
+        switch (SendType.row){
+
+            case '1':
+                newRow.put("First",mFirstData);
+                newRow.put("RecordDate",SendType.arrayDate);
+                newRow.put("RecordTime",SendType.arrayTime);
+                mCustomDb.insert(DB_TABLE,null,newRow);
+                writeTime();
+                break;
+            case '2':
+                newRow.put("First",mFirstData);
+                newRow.put("SecondData",mSecondData);
+                newRow.put("RecordDate",SendType.arrayDate);
+                newRow.put("RecordTime",SendType.arrayTime);
+                mCustomDb.insert(DB_TABLE,null,newRow);
+                writeTime();
+                break;
+            case '3':
+//                Log.v("BT","here:"+mFirstData+", "+mSecondData+", "+mThirdData+", "+ SendType.arrayTime+", "+SendType.arrayTime);
+                newRow.put("First",mFirstData);
+                newRow.put("SecondData",mSecondData);
+                newRow.put("ThirdData",mThirdData);
+                newRow.put("RecordDate", SendType.arrayDate);
+                newRow.put("RecordTime",SendType.arrayTime);
+
+
+                mCustomDb.insert(DB_TABLE,null,newRow);
+
+                writeTime();
+                break;
+        }
+
+
 
     }
 
@@ -182,9 +261,25 @@ public class GetRecord {
                 "select DISTINCT tbl_name from sqlite_master where tbl_name = '" + DB_TABLE + "'", null);
         if (cursor != null) {
             if (cursor.getCount() == 0)
-                mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
-                        + "_id INTEGER PRIMARY KEY," + "First TEXT,"
-                        + "SecondData TEXT," + "RecordDate TEXT," + "RecordTime TEXT);");
+                switch (SendType.row){
+
+                    case '1':
+                        mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
+                                + "_id INTEGER PRIMARY KEY," + "First TEXT,"
+                                + "RecordDate TEXT," + "RecordTime TEXT);");
+                        break;
+                    case '2':
+                        mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
+                                + "_id INTEGER PRIMARY KEY," + "First TEXT,"
+                                + "SecondData TEXT,"+ "RecordDate TEXT," + "RecordTime TEXT);");
+                        break;
+                    case '3':
+                        mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
+                                + "_id INTEGER PRIMARY KEY," + "First TEXT,"
+                                + "SecondData TEXT," +"ThirdData TEXT,"+ "RecordDate TEXT," + "RecordTime TEXT);");
+                        break;
+                }
+
             cursor.close();
         }
         mCustomDb.delete(DB_TABLE,null,null);
@@ -198,11 +293,30 @@ public class GetRecord {
         while (cursor.moveToNext()){
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("id",cursor.getString(0));
-            hashMap.put("First",cursor.getString(1));
-            hashMap.put("Second",cursor.getString(2));
-            hashMap.put("RecordDate",cursor.getString(3));
-            hashMap.put("RecordTime",cursor.getString(4));
-            arrayList.add(hashMap);
+            switch (SendType.row){
+                case '1':
+                    hashMap.put("First",cursor.getString(1));
+                    hashMap.put("RecordDate",cursor.getString(2));
+                    hashMap.put("RecordTime",cursor.getString(3));
+                    arrayList.add(hashMap);
+                    break;
+                case '2':
+                    hashMap.put("First",cursor.getString(1));
+                    hashMap.put("Second",cursor.getString(2));
+                    hashMap.put("RecordDate",cursor.getString(3));
+                    hashMap.put("RecordTime",cursor.getString(4));
+                    arrayList.add(hashMap);
+                    break;
+                case '3':
+                    hashMap.put("First",cursor.getString(1));
+                    hashMap.put("Second",cursor.getString(2));
+                    hashMap.put("Third",cursor.getString(3));
+                    hashMap.put("RecordDate",cursor.getString(4));
+                    hashMap.put("RecordTime",cursor.getString(5));
+                    arrayList.add(hashMap);
+                    break;
+            }
+
         }
 
         {//取出紀錄好的資料在輸出成json上傳回SQLite

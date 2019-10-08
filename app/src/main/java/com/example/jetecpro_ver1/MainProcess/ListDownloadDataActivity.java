@@ -10,7 +10,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -99,29 +98,26 @@ public class ListDownloadDataActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
         final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                HashMap<String, String> hashMap = new HashMap<>();
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String id           = jsonObject.getString("id");
-                String firstData    = trans2Double1(jsonObject.getString("First"));
-                String secondData   = trans2Double1(jsonObject.getString("Second"));
-                String Date         = jsonObject.getString("RecordDate");
-                String Time         = jsonObject.getString("RecordTime");
-                hashMap.put("DateTime",Date+" "+Time);
-                hashMap.put("id",id);
-                hashMap.put("first",firstData.substring(0,4)+"°C");
-                hashMap.put("second",secondData.substring(0,4)+"%");
-                arrayList.add(hashMap);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        switch (SendType.row){
+
+            case '1':
+
+                break;
+            case '2':
+                row2(jsonArray, arrayList);
+                break;
+
+            case '3':
+                row3(jsonArray, arrayList);
+                break;
+
         }
-        String[] from = {"DateTime", "id","first","second"};
-        int [] to = {R.id.listView_dateTime,R.id.listView_RecordId,R.id.listView_firstData,R.id.listView_SecondData};
-        simpleAdapter = new SimpleAdapter(this,arrayList,R.layout.activity_list_download_data_custom,from,to);
-        listView.setAdapter(simpleAdapter);
+
+
+
         //搜尋ListView內容
         edFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -172,6 +168,155 @@ public class ListDownloadDataActivity extends Activity {
         });
 
     }//getSQLdata
+
+    private void row3(JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList){
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                HashMap<String, String> hashMap = new HashMap<>();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id           = jsonObject.getString("id");
+                String firstData    = trans2Double1(jsonObject.getString("First"));
+                String secondData   = trans2Double1(jsonObject.getString("Second"));
+                String thirdData   = trans2Double1(jsonObject.getString("Third"));
+                String Date         = jsonObject.getString("RecordDate");
+                String Time         = jsonObject.getString("RecordTime");
+                hashMap.put("DateTime",Date+" "+Time);
+                hashMap.put("id",id);
+                hashMap.put("first",firstData+unit(SendType.FirstWord,1));
+                hashMap.put("second",secondData+unit(SendType.SecondWord,2));
+                hashMap.put("third",thirdData+unit(SendType.ThirdWord,3));
+                hashMap.put("title1",Lab(SendType.FirstWord,1));
+                hashMap.put("title2",Lab(SendType.SecondWord,2));
+                hashMap.put("title3",Lab(SendType.ThirdWord,3));
+                arrayList.add(hashMap);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String[] from = {"title1","title2","title3","DateTime", "id","first","second","third"};
+        int [] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle,
+                R.id.listView_ThirdDataTitle,R.id.listView_dateTime,R.id.listView_RecordId,R.id.listView_firstData,R.id.listView_SecendData,R.id.listView_ThirdData};
+        simpleAdapter = new SimpleAdapter(this,arrayList,R.layout.activity_list_download_data_custom,from,to);
+        listView.setAdapter(simpleAdapter);
+    }
+
+    private void row2(JSONArray jsonArray, ArrayList<HashMap<String, String>> arrayList) {
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                HashMap<String, String> hashMap = new HashMap<>();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id           = jsonObject.getString("id");
+                String firstData    = trans2Double1(jsonObject.getString("First"));
+                String secondData   = trans2Double1(jsonObject.getString("Second"));
+                String Date         = jsonObject.getString("RecordDate");
+                String Time         = jsonObject.getString("RecordTime");
+                hashMap.put("DateTime",Date+" "+Time);
+                hashMap.put("id",id);
+                hashMap.put("first",firstData.substring(0,4)+unit(SendType.FirstWord,1));
+                hashMap.put("second",secondData.substring(0,4)+unit(SendType.SecondWord,2));
+                arrayList.add(hashMap);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String[] from = {"DateTime", "id","first","second"};
+        int [] to = {R.id.listView_dateTime,R.id.listView_RecordId,R.id.listView_firstData,R.id.listView_SecendData};
+        simpleAdapter = new SimpleAdapter(this,arrayList,R.layout.activity_list_download_data_custom,from,to);
+        listView.setAdapter(simpleAdapter);
+    }
+    /**揀選標籤*/
+    private String Lab(char name,int x) {
+        switch (name){
+            case 'T':
+
+                return "溫度";
+
+            case 'H':
+                return "濕度";
+
+            case 'C':
+            case 'D':
+            case 'E':
+                return "二氧化碳";
+
+            case 'P':
+                return "壓力";
+
+            case 'M':
+                return "PM2.5";
+
+            case 'Q':
+                return "PM10";
+
+            case 'O':
+                return "噪音";
+
+            case 'G':
+                return "一氧化碳";
+
+            case 'F':
+                return "流量";
+
+            case 'I':
+                if(x == 1){
+                    return "第一排";
+                }else if(x ==2){
+                    return "第二排";
+                }else if(x == 3){
+                    return "第三排";
+                }
+
+                break;
+
+        }
+        return "不知道";
+    }
+    /**揀選單位*/
+    private String unit(char name,int x) {
+        switch (name){
+            case 'T':
+
+                return "°C";
+
+            case 'H':
+                return "%";
+
+            case 'C':
+            case 'D':
+            case 'E':
+                return "ppm";
+
+            case 'P':
+                return "Pa N/m2";
+
+            case 'M':
+            case 'Q':
+                return "μm";
+
+            case 'O':
+                return "db";
+
+            case 'G':
+                return "ppm";
+
+            case 'F':
+                return "m3/s";
+
+            case 'I':
+                if(x == 1){
+                    return " ";
+                }else if(x ==2){
+                    return " ";
+                }else if(x == 3){
+                    return " ";
+                }
+
+                break;
+
+        }
+        return "不知道";
+    }
 
     /**
      * 設置ActionBar的活動

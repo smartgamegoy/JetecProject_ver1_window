@@ -385,6 +385,14 @@ public class DataFilterUIControl {
         } else if (selectType.contains(trans(R.string.Humidity))) {
             editText.setHint("0~100");
             mySelect(editText, numberPickerMath, tvValueRe);
+        }else if (selectType.contains(trans(R.string.CO2))){
+            editText.setHint("0~5000");//幹...懶得寫詳細了
+            mySelect(editText, numberPickerMath, tvValueRe);
+        }else if(selectType.contains("第一排")
+                ||selectType.contains("第二排")
+                ||selectType.contains("第三排")){
+            editText.setHint("-999~9999");
+            mySelect(editText, numberPickerMath, tvValueRe);
         }
 
     }//end
@@ -427,7 +435,7 @@ public class DataFilterUIControl {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_CLASS_NUMBER);
-                if (editText.getHint().toString().contains("-10~65")) {
+                if (editText.getHint().toString().contains("-10~65")) {//溫度
                     try {
                         if (Double.valueOf(String.valueOf(s)) < -10.0) {
                             editText.setText("-10");
@@ -440,7 +448,7 @@ public class DataFilterUIControl {
                         tvValueResult.setText(trans(R.string.dataFilter_YouChoose) + "--");
                     }
 
-                } else if (editText.getHint().toString().contains("0~100")) {
+                } else if (editText.getHint().toString().contains("0~100")) {//濕度
                     try {
                         if (Double.valueOf(String.valueOf(s)) < 0) {
                             editText.setText("0");
@@ -453,6 +461,31 @@ public class DataFilterUIControl {
                         tvValueResult.setText(trans(R.string.dataFilter_YouChoose) + "--");
                     }
 
+                }else if (editText.getHint().toString().contains("0~5000")){//CO2
+                    try {
+                        if (Double.valueOf(String.valueOf(s)) < 0) {
+                            editText.setText("0");
+                        } else if (Double.valueOf(String.valueOf(s)) > 5000) {
+                            editText.setText("5000");
+                        } else {
+                            setTextFunction(tvValueResult, s);
+                        }
+                    } catch (Exception e) {
+                        tvValueResult.setText(trans(R.string.dataFilter_YouChoose) + "--");
+                    }
+                }
+                else if (editText.getHint().toString().contains("-999~9999")){//I
+                    try {
+                        if (Double.valueOf(String.valueOf(s)) < -999) {
+                            editText.setText("-999");
+                        } else if (Double.valueOf(String.valueOf(s)) > 9999) {
+                            editText.setText("9999");
+                        } else {
+                            setTextFunction(tvValueResult, s);
+                        }
+                    } catch (Exception e) {
+                        tvValueResult.setText(trans(R.string.dataFilter_YouChoose) + "--");
+                    }
                 }
             }
 
@@ -523,9 +556,7 @@ public class DataFilterUIControl {
                     DateTimeSelect();
                 } else if (selectType.contains(trans(R.string.dataFilter_plzSelectId))) {
                     IDSelect();
-                } else if (selectType.contains(trans(R.string.Temperature))) {
-                    elseDataSelect();
-                } else if (selectType.contains(trans(R.string.Humidity))) {
+                } else  {
                     elseDataSelect();
                 }
 
@@ -592,6 +623,8 @@ public class DataFilterUIControl {
         }
 
     }
+
+
 
 
 

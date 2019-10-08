@@ -49,7 +49,7 @@ public class CreatePDFandCSV {
 
     String fileName, appendTitle;
     Activity activity;
-    String FIRSTunit, SECONDunti,THIRDunit;
+    String FIRSTunit, SECONDunti, THIRDunit;
     JSONArray jsonArray;
 
 
@@ -63,7 +63,7 @@ public class CreatePDFandCSV {
     public void CSV(Context context) {
 
         this.context = context;
-        fileName = trans(R.string.CSVPDFTitle) + ".csv";
+        fileName = trans(R.string.CSVPDFTitle)+".csv";
         //判斷型號
         String defult = "Id" + "," + trans(R.string.justTime);
         String first = "", second = "", third = "";
@@ -78,8 +78,15 @@ public class CreatePDFandCSV {
                 first = "," + trans(R.string.Humidity);
                 FIRSTunit = "%";
                 break;
+            case 'C':
+            case 'D':
+            case 'E':
+                first = "," + trans(R.string.CO2);
+                FIRSTunit = "ppm";
+                break;
             case 'I':
-
+                first = "," + trans(R.string.FirstRow);
+                FIRSTunit = "";
                 break;
             default:
                 first = "";
@@ -94,8 +101,15 @@ public class CreatePDFandCSV {
                 second = "," + trans(R.string.Humidity);
                 SECONDunti = "%";
                 break;
+            case 'C':
+            case 'D':
+            case 'E':
+                second = "," + trans(R.string.CO2);
+                SECONDunti = "ppm";
+                break;
             case 'I':
-
+                second = "," + trans(R.string.SecondRow);
+                SECONDunti = "";
                 break;
             default:
                 second = "";
@@ -104,14 +118,21 @@ public class CreatePDFandCSV {
         switch (SendType.ThirdWord) {
             case 'T':
                 first = "," + trans(R.string.Temperature);
-                 THIRDunit= "°C";
+                THIRDunit = "°C";
                 break;
             case 'H':
                 first = "," + trans(R.string.Humidity);
-                THIRDunit= "%";
+                THIRDunit = "%";
+                break;
+            case 'C':
+            case 'D':
+            case 'E':
+                third = "," + trans(R.string.CO2);
+                THIRDunit = "ppm";
                 break;
             case 'I':
-
+                third = "," + trans(R.string.ThirdRow);
+                THIRDunit = "";
                 break;
             default:
                 third = "";
@@ -126,7 +147,7 @@ public class CreatePDFandCSV {
         for (String repeatFile : createFile) {
             checkFile = repeatFile;
         }
-        try{
+        try {
             if (checkFile.contains(fileName)) {
 
                 if (context.deleteFile(fileName)) {
@@ -134,7 +155,7 @@ public class CreatePDFandCSV {
                     write(fileName, XTitle);
                 }
             }
-            }catch (Exception e){
+        } catch (Exception e) {
             write(fileName, XTitle);
         }
 
@@ -145,7 +166,7 @@ public class CreatePDFandCSV {
      */
     private void getSQLite() {
         String DB_NAME = SendType.DB_Name;
-        String DB_TABLE = SendType.DB_TABLE+"GETRecord";
+        String DB_TABLE = SendType.DB_TABLE + "GETRecord";
         SQLiteDatabase mCustomDb;
 
         DBHelper db = new DBHelper(context, DB_NAME, null, 1);
@@ -158,11 +179,11 @@ public class CreatePDFandCSV {
             while (cursor.moveToNext()) {
                 getJson = cursor.getString(1);
             }
-            Log.v("BT",getJson);
+            Log.v("BT", getJson);
             jsonArray = new JSONArray(getJson);
 //            Log.v("BT","1: "+jsonArray);
         } catch (JSONException e) {
-            Log.v("BT","資料庫為空？"+e);
+            Log.v("BT", "資料庫為空？" + e);
         }
 
 
@@ -178,11 +199,18 @@ public class CreatePDFandCSV {
         data.append(XTitle);
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                data.append("\n" + jsonObject.getString("id") + ","
-                        + jsonObject.getString("RecordDate") + " " + jsonObject.getString("RecordTime") + ","
-                        + trans2Double(jsonObject.getString("First")) .substring(0,4)+FIRSTunit+ ","
-                        + trans2Double(jsonObject.getString("Second")).substring(0,4)+SECONDunti);
+                switch (SendType.row) {
+                    case '1':
+
+                        break;
+
+                    case '2':
+                        CSVRow2(data, i);
+                        break;
+                    case '3':
+                        CSVRow3(data, i);
+                        break;
+                }
 
 
             } catch (JSONException e) {
@@ -199,7 +227,7 @@ public class CreatePDFandCSV {
             FileOutputStream fos = new FileOutputStream(filelocation);
             fos.write(data.toString().getBytes());
             Uri path = Uri.fromFile(filelocation);
-            Toast.makeText(context,trans(R.string.localHaveAData)+"\n"+trans(R.string.localposition)+filelocation,Toast.LENGTH_LONG).show();
+            Toast.makeText(context, trans(R.string.localHaveAData) + "\n" + trans(R.string.localposition) + filelocation, Toast.LENGTH_LONG).show();
 
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.setType("text/csv");
@@ -213,64 +241,53 @@ public class CreatePDFandCSV {
 
 
     }
-    /**PDF資料處理1排的*/
+
+    /**
+     * CSV兩排
+     */
+    private void CSVRow2(StringBuilder data, int i) throws JSONException {
+        JSONObject jsonObject = jsonArray.getJSONObject(i);
+        data.append("\n" + jsonObject.getString("id") + ","
+                + jsonObject.getString("RecordDate") + " " + jsonObject.getString("RecordTime") + ","
+                + trans2Double(jsonObject.getString("First")) + FIRSTunit + ","
+                + trans2Double(jsonObject.getString("Second")) + SECONDunti);
+    }
+
+    /**
+     * CSV三排
+     */
+    private void CSVRow3(StringBuilder data, int i) throws JSONException {
+        JSONObject jsonObject = jsonArray.getJSONObject(i);
+        data.append("\n" + jsonObject.getString("id") + ","
+                + jsonObject.getString("RecordDate") + " " + jsonObject.getString("RecordTime") + ","
+                + trans2Double(jsonObject.getString("First")) + FIRSTunit + ","
+                + trans2Double(jsonObject.getString("Second")) + SECONDunti + ","
+                + trans2Double(jsonObject.getString("Third")) + THIRDunit);
+    }
+
+    /**
+     * PDF資料處理1排的
+     */
     public void PDF_1C(Context context) {
         this.context = context;
     }
-    /**PDF資料處理2排的*/
+
+    /**
+     * PDF資料處理2排的
+     */
     public void PDF_2C(Context context) {
-
-        switch (SendType.FirstWord) {
-            case 'T':
-                FIRSTunit = "°C";
-                break;
-            case 'H':
-                FIRSTunit = "%";
-                break;
-            case 'I':
-
-                break;
-            default:
-                break;
-        }
-        switch (SendType.SecondWord) {
-            case 'T':
-                SECONDunti = "°C";
-                break;
-            case 'H':
-                SECONDunti = "%";
-                break;
-            case 'I':
-
-                break;
-            default:
-                break;
-        }
-        switch (SendType.ThirdWord) {
-            case 'T':
-                THIRDunit= "°C";
-                break;
-            case 'H':
-                THIRDunit= "%";
-                break;
-            case 'I':
-
-                break;
-            default:
-                break;
-        }
+        selectUnit();//選擇單位
         this.context = context;
         getSQLite();
         String mFileName = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss",
                 Locale.getDefault()).format(System.currentTimeMillis());
-        String mFilePath = Environment.getExternalStorageDirectory() + "/"+ SendType.DeviceName+"數據報表 "+mFileName+".pdf";
+        String mFilePath = Environment.getExternalStorageDirectory() + "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf";
         Document document = new Document(PageSize.A4, 20, 20, 10, 40);
         try {
-//            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(mFilePath));
+//            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStr2eam(mFilePath));
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(mFilePath));
             TOCCreation event = new TOCCreation();
             writer.setPageEvent(event);
-
 
 
             document.open();
@@ -283,13 +300,13 @@ public class CreatePDFandCSV {
             ColumnText ct = new ColumnText(writer.getDirectContent());
             PdfPTable tabbbb = new PdfPTable(9);
             tabbbb.setWidthPercentage(90);
-            PdfPCell cell = new PdfPCell(new Paragraph(new Phrase(24f, "Time")));
+            PdfPCell cell = new PdfPCell(new Paragraph(new Phrase(24f, "Date")));
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
             cell.setBackgroundColor(BaseColor.GRAY);
-            PdfPCell cell2 = new PdfPCell(new Paragraph(new Phrase(24f, "T")));
+            PdfPCell cell2 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.FirstWord,1))));
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
             cell2.setBackgroundColor(BaseColor.GRAY);
-            PdfPCell cell3 = new PdfPCell(new Paragraph(new Phrase(24f, "H")));
+            PdfPCell cell3 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.SecondWord,2))));
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
             cell3.setBackgroundColor(BaseColor.GRAY);
             for (int i = 0; i < 3; i++) {
@@ -303,7 +320,7 @@ public class CreatePDFandCSV {
             int start;
             int end;
 
-            for (int i = 0; i <= jsonArray.length()-1; ) {
+            for (int i = 0; i <= jsonArray.length() - 1; ) {
                 start = (i) + 1;
                 i++;
                 end = i;
@@ -311,7 +328,7 @@ public class CreatePDFandCSV {
                 Chunk c = new Chunk(title);
                 c.setGenericTag(title);
                 ct.addElement(c);
-                ct.addElement(createTable(start, end));
+                ct.addElement(createTable_Row2(start, end));
             }
             int column = 0;
             do {
@@ -323,7 +340,7 @@ public class CreatePDFandCSV {
                     document.add(tabbbb);
                     column = 0;
                 }
-                ct.setSimpleColumn(COLUMNS[column++]);
+                ct.setSimpleColumn(COLUMNS_Row2[column++]);
             }
             while (ColumnText.hasMoreText(ct.go()));
             document.newPage();
@@ -331,14 +348,14 @@ public class CreatePDFandCSV {
 
             //======================================================================================
             document.close();
-            Toast.makeText(activity, SendType.DeviceName+"數據報表.pdf\nis saved to\n" + mFilePath, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, SendType.DeviceName + "數據報表.pdf\nis saved to\n" + mFilePath, Toast.LENGTH_SHORT).show();
 
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             File filelocation = new File(Environment.
-                    getExternalStorageDirectory(),"/"+ SendType.DeviceName+"數據報表 "+mFileName+".pdf");
+                    getExternalStorageDirectory(), "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf");
             Uri path = Uri.fromFile(filelocation);
             fileIntent.setType("text/plain");
-            fileIntent.putExtra(Intent.EXTRA_SUBJECT, SendType.DeviceName+"的數據報表");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT, SendType.DeviceName + "的數據報表");
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
             activity.startActivity(Intent.createChooser(fileIntent, "Send Mail"));
@@ -351,44 +368,209 @@ public class CreatePDFandCSV {
             Log.d("BT", String.valueOf(e));
         }
     }
-    /**PDF資料處理3排的*/
+
+    /**
+     * 篩選單位
+     */
+    private void selectUnit() {
+        switch (SendType.FirstWord) {
+            case 'T':
+
+                FIRSTunit = "°C";
+                break;
+            case 'H':
+
+                FIRSTunit = "%";
+                break;
+            case 'C':
+            case 'D':
+            case 'E':
+
+                FIRSTunit = "ppm";
+                break;
+            case 'I':
+
+                FIRSTunit = "";
+                break;
+            default:
+
+                break;
+        }
+        switch (SendType.SecondWord) {
+            case 'T':
+
+                SECONDunti = "°C";
+                break;
+            case 'H':
+
+                SECONDunti = "%";
+                break;
+            case 'C':
+            case 'D':
+            case 'E':
+
+                SECONDunti = "ppm";
+                break;
+            case 'I':
+
+                SECONDunti = "";
+                break;
+            default:
+
+                break;
+        }
+        switch (SendType.ThirdWord) {
+            case 'T':
+
+                THIRDunit = "°C";
+                break;
+            case 'H':
+
+                THIRDunit = "%";
+                break;
+            case 'C':
+            case 'D':
+            case 'E':
+
+                THIRDunit = "ppm";
+                break;
+            case 'I':
+
+                THIRDunit = "";
+                break;
+            default:
+
+                break;
+        }
+    }
+
+    /**
+     * PDF資料處理3排的
+     */
     public void PDF_3C(Context context) {
         this.context = context;
+        getSQLite();
+        selectUnit();
+        String mFileName = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss",
+                Locale.getDefault()).format(System.currentTimeMillis());
+        String mFilePath = Environment.getExternalStorageDirectory() + "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf";
+        Document document = new Document(PageSize.A4, 20, 20, 10, 40);
+        try {
+//            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(mFilePath));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(mFilePath));
+            TOCCreation event = new TOCCreation();
+            writer.setPageEvent(event);
+
+
+            document.open();
+            //======================================================================================
+
+            document.add(new Paragraph("Jetec Electronics CO,LTD"));
+            document.add(new Paragraph(" "));
+
+            event.setRoot(writer.getRootOutline());
+            ColumnText ct = new ColumnText(writer.getDirectContent());
+            PdfPTable tabbbb = new PdfPTable(8);
+            tabbbb.setWidths(new float[]{20,26,26,26,20,26,26,26});
+            tabbbb.setWidthPercentage(90);
+            PdfPCell cell = new PdfPCell(new Paragraph(new Phrase(24f, "Date")));
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setBackgroundColor(BaseColor.GRAY);
+            PdfPCell cell2 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.FirstWord,1))));
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell2.setBackgroundColor(BaseColor.GRAY);
+            PdfPCell cell3 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.SecondWord,2))));
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell3.setBackgroundColor(BaseColor.GRAY);
+            PdfPCell cell4 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.ThirdWord,3))));
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell4.setBackgroundColor(BaseColor.GRAY);
+            for (int i = 0; i < 2; i++) {
+                tabbbb.addCell(cell);
+                tabbbb.addCell(cell2);
+                tabbbb.addCell(cell3);
+                tabbbb.addCell(cell4);
+            }
+
+            document.add(tabbbb);
+//            Log.v("BT","json長度:"+ jsonArray.length());
+            int start;
+            int end;
+
+            for (int i = 0; i <= jsonArray.length() - 1; ) {
+                start = (i) + 1;
+                i++;
+                end = i;
+                String title = String.format("", start, end);
+                Chunk c = new Chunk(title);
+                c.setGenericTag(title);
+                ct.addElement(c);
+                ct.addElement(createTable_Row3(start, end));
+            }
+            int column = 0;
+            do {
+                if (column == 2) {
+
+                    document.newPage();
+                    document.add(new Paragraph("Jetec Electronics CO,LTD"));
+                    document.add(new Paragraph(" "));
+                    document.add(tabbbb);
+                    column = 0;
+                }
+                ct.setSimpleColumn(COLUMNS_Row3[column++]);
+            }
+            while (ColumnText.hasMoreText(ct.go()));
+            document.newPage();
+
+
+            //======================================================================================
+            document.close();
+            Toast.makeText(activity, SendType.DeviceName + "數據報表.pdf\nis saved to\n" + mFilePath, Toast.LENGTH_SHORT).show();
+
+            Intent fileIntent = new Intent(Intent.ACTION_SEND);
+            File filelocation = new File(Environment.
+                    getExternalStorageDirectory(), "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf");
+            Uri path = Uri.fromFile(filelocation);
+            fileIntent.setType("text/plain");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT, SendType.DeviceName + "的數據報表");
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            fileIntent.putExtra(Intent.EXTRA_STREAM, path);
+            activity.startActivity(Intent.createChooser(fileIntent, "Send Mail"));
+
+        } catch (FileNotFoundException e) {
+            Log.d("BT", String.valueOf(e));
+        } catch (DocumentException e) {
+            Log.d("BT", String.valueOf(e));
+        } catch (Exception e) {
+            Log.d("BT", String.valueOf(e));
+        }
     }
     //=======================================================
     //輔助PDF的(２排)
-    public static final Rectangle[] COLUMNS = {//X,Y,W,H
+    public static final Rectangle[] COLUMNS_Row2 = {//X,Y,W,H
 //            new Rectangle(36, 36, 192, 806),
 //            new Rectangle(204, 36, 348, 806),
 //            new Rectangle(360, 36, 504, 806)
-            new Rectangle(48, 50, 213, 780),
+            new Rectangle(48, 50, 214, 780),
             new Rectangle(215, 50, 380, 780),
             new Rectangle(381, 50, 547, 780)
     };//192是第一區塊的寬度
-    private PdfPTable createTable(int start, int end) throws IOException {
+    private PdfPTable createTable_Row2(int start, int end) throws IOException {
         PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100);
         table.setHorizontalAlignment(Element.ALIGN_RIGHT);
         for (int i = start; i <= end; i++) {//一頁135資料
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i-1);
-                table.addCell(jsonObject.getString("RecordDate").substring(5));
+                PdfPCell dateCell = new PdfPCell(Phrase.getInstance(jsonObject.getString("RecordDate").substring(5)));
+                dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                table.addCell(dateCell);
 //                table.addCell(jsonObject.getString("id"));
                 table.addCell(trans2Double(jsonObject.getString("First")).substring(0,4)+FIRSTunit);
                 table.addCell(trans2Double(jsonObject.getString("Second")).substring(0,4)+SECONDunti);
-
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-//            table.addCell(String.valueOf(i));
-//            table.addCell("Test" + i);
-//            table.addCell("Data");
-
-//            table.addCell(f[i-1]);
-//            table.addCell(S[i-1]);
-//            table.addCell(T[i-1]);
         }
 
 
@@ -402,15 +584,12 @@ public class CreatePDFandCSV {
         public TOCCreation() {
 
         }
-
         public void setRoot(PdfOutline root) {
             this.root = root;
         }
-
         public List<TOCEntry> getToc() {
             return toc;
         }
-
         @Override
         public void onGenericTag(PdfWriter writer, Document document, Rectangle rect, String text) {
             PdfDestination dest = new PdfDestination(PdfDestination.XYZ, rect.getLeft(), rect.getTop(), 0);
@@ -425,8 +604,42 @@ public class CreatePDFandCSV {
         protected PdfAction action;
         protected String title;
     }
+    //輔助PDF的(3排)
+    public static final Rectangle[] COLUMNS_Row3 = {//X,Y,W,H
+//            new Rectangle(36, 36, 192, 806),
+//            new Rectangle(204, 36, 348, 806),
+//            new Rectangle(360, 36, 504, 806)
+            new Rectangle(48, 50, 297, 780),
+            new Rectangle(298, 50, 547, 780),
+//            new Rectangle(381, 50, 547, 780)
+    };//192是第一區塊的寬度
+    private PdfPTable createTable_Row3(int start, int end) throws IOException {
+        PdfPTable table = new PdfPTable(4);
+        try {
+            table.setWidths(new float[]{20,26,26,26});
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        table.setWidthPercentage(100);
+        table.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        for (int i = start; i <= end; i++) {//一頁135資料
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i-1);
+                PdfPCell dateCell = new PdfPCell(Phrase.getInstance(jsonObject.getString("RecordDate").substring(5)));
+                dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                table.addCell(dateCell);
+//                table.addCell(jsonObject.getString("id"));
+                table.addCell(trans2Double(jsonObject.getString("First"))+FIRSTunit);
+                table.addCell(trans2Double(jsonObject.getString("Second"))+SECONDunti);
+                table.addCell(trans2Double(jsonObject.getString("Third"))+THIRDunit);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
 
+        return table;
+    }
 
 
     //=======================================================
@@ -458,6 +671,52 @@ public class CreatePDFandCSV {
 
         }
         return String.valueOf(out);
+    }
+    /**揀選標籤*/
+    private String Lab(char name,int x) {
+        switch (name){
+            case 'T':
+                return "Temperature";
+
+            case 'H':
+                return "humidity";
+
+            case 'C':
+            case 'D':
+            case 'E':
+                return "CO2";
+
+            case 'P':
+                return "Pressure";
+
+            case 'M':
+                return "PM2.5";
+
+            case 'Q':
+                return "PM10";
+
+            case 'O':
+                return "噪音";
+
+            case 'G':
+                return "CO";
+
+            case 'F':
+                return "Noise";
+
+            case 'I':
+                if(x == 1){
+                    return "First";
+                }else if(x ==2){
+                    return "Second";
+                }else if(x == 3){
+                    return "Third";
+                }
+
+                break;
+
+        }
+        return "不知道";
     }
 }
 

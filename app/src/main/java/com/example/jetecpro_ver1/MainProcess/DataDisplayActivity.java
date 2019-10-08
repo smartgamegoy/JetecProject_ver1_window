@@ -496,12 +496,24 @@ public class DataDisplayActivity extends Activity {
                 try{
                     if (GetName.contains(trans(R.string.decimal_point))) {
                         v = getLayoutInflater().inflate(R.layout.activity_data_display_numberpicker_dialog, null);
+
                         mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         });
-                    }else{
+                    }else if ( GetName.contains(trans(R.string.INTER))) {//處理有紀錄的('L')
+                        v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
+
+                        mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+
+                         }
+
+                    else{
                         v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
                         mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
@@ -509,6 +521,7 @@ public class DataDisplayActivity extends Activity {
                             }
                         });
                     }
+
                 }catch (Exception e){
                     v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
 
@@ -517,6 +530,7 @@ public class DataDisplayActivity extends Activity {
 
             } else if ( GetName.contains(trans(R.string.INTER))) {//處理有紀錄的('L')
                 v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
+
                 mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

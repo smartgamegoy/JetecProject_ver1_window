@@ -284,6 +284,8 @@ public class SortData {
                 , SendType.DP1, SendType.DP2
                 , SendType.SPK};
 
+
+
         String[] I = {trans(R.string.device_name)
                 , SendType.IH1, SendType.IL1
                 , SendType.PV1, SendType.EH1
@@ -316,6 +318,11 @@ public class SortData {
                 , SendType.EL1, SendType.EL2, SendType.EL3
                 , SendType.CR1, SendType.CR2, SendType.CR3
                 , SendType.SPK};
+
+        String[] CDEII = {trans(R.string.device_name)
+                , SendType.PV1,SendType.EH1, SendType.EL1, SendType.CR1, SendType.SPK
+                , SendType.PV2,SendType.IH2, SendType.IL2, SendType.EH2, SendType.EL2, SendType.CR2, SendType.DP2
+                , SendType.PV3,SendType.IH3, SendType.IL3, SendType.EH3, SendType.EL3, SendType.CR3, SendType.DP3};
 
         String[] L = {SendType.INTER};
         /**各種型號都放這*/
@@ -351,11 +358,17 @@ public class SortData {
                 switch (SendType.FourthWord) {
                     case 'L':
                         if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return ArrayUtils.addAll(THD,L);}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(CDEII,L);}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(CDEII,L);}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(CDEII,L);}
                         break;
                     default:
                         if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return THI;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return THY;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return THD;}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  CDEII;}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  CDEII;}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  CDEII;}
                         break;
                 }
                 break;
@@ -415,6 +428,10 @@ public class SortData {
                 , SendType.mEL1, SendType.mEL2, SendType.mEL3
                 , SendType.mCR1, SendType.mCR2, SendType.mCR3
                 , SendType.mSPK};
+        String[] mCDEII = {SendType.DeviceName
+                , SendType.mPV1,SendType.mEH1, SendType.mEL1, SendType.mCR1, SendType.mSPK
+                , SendType.mPV2,SendType.mIH2, SendType.mIL2, SendType.mEH2, SendType.mEL2, SendType.mCR2, SendType.mDP2
+                , SendType.mPV3,SendType.mIH3, SendType.mIL3, SendType.mEH3, SendType.mEL3, SendType.mCR3, SendType.mDP3};
 
 
         String[] mL = {SendType.mINTER};
@@ -450,11 +467,17 @@ public class SortData {
                 switch (SendType.FourthWord) {
                     case 'L':
                         if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return ArrayUtils.addAll(mTHD,mL);}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(mCDEII,mL);}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(mCDEII,mL);}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(mCDEII,mL);}
                         break;
                     default:
                         if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return mTHI;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return mTHY;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return mTHD;}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  mCDEII;}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  mCDEII;}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  mCDEII;}
                         break;
                 }
                 break;
@@ -609,6 +632,11 @@ public class SortData {
                 , SendType.CR1, SendType.CR2, SendType.CR3
                 , SendType.SPK};
 
+        String[] CDEII = {trans(R.string.device_name)
+                , SendType.PV1,SendType.EH1, SendType.EL1, SendType.CR1, SendType.SPK
+                , SendType.PV2,SendType.IH2, SendType.IL2, SendType.EH2, SendType.EL2, SendType.CR2, SendType.DP2
+                , SendType.PV3,SendType.IH3, SendType.IL3, SendType.EH3, SendType.EL3, SendType.CR3, SendType.DP3};
+
         String[] L = {SendType.INTER};
         String[] n = {"這", "是", "我", "不", "知", "道", "的", "型", "號"};
 
@@ -642,11 +670,18 @@ public class SortData {
                 switch (SendType.FourthWord) {
                     case 'L':
                         if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return ArrayUtils.addAll(THD,L);}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(CDEII,L);}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(CDEII,L);}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(CDEII,L);}
                         break;
                     default:
                         if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return THI;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return THY;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return THD;}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  CDEII;}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  CDEII;}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  CDEII;}
+
                         break;
                 }
                 break;
@@ -707,6 +742,11 @@ public class SortData {
                 , SendType.mCR1, SendType.mCR2, SendType.mCR3
                 , SendType.mSPK};
 
+        String[] mCDEII = {SendType.DeviceName
+                , SendType.mPV1,SendType.mEH1, SendType.mEL1, SendType.mCR1, SendType.mSPK
+                , SendType.mPV2,SendType.mIH2, SendType.mIL2, SendType.mEH2, SendType.mEL2, SendType.mCR2, SendType.mDP2
+                , SendType.mPV3,SendType.mIH3, SendType.mIL3, SendType.mEH3, SendType.mEL3, SendType.mCR3, SendType.mDP3};
+
         String[] mL = {SendType.INTER2SQL};
         String[] mn = {"這", "是", "我", "不", "知", "道", "的", "型", "號"};
 
@@ -740,11 +780,17 @@ public class SortData {
                 switch (SendType.FourthWord) {
                     case 'L':
                         if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return ArrayUtils.addAll(mTHD,mL);}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(mCDEII,mL);}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(mCDEII,mL);}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  ArrayUtils.addAll(mCDEII,mL);}
                         break;
                     default:
                         if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'I') {return mTHI;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'Y'){return mTHY;}
                         else if(SendType.FirstWord == 'T' && SendType.SecondWord == 'H' && SendType.ThirdWord == 'D'){return mTHD;}
+                        else if(SendType.FirstWord == 'C' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  mCDEII;}
+                        else if(SendType.FirstWord == 'D' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  mCDEII;}
+                        else if(SendType.FirstWord == 'E' && SendType.SecondWord == 'I' && SendType.ThirdWord == 'I'){return  mCDEII;}
                         break;
                 }
                 break;
