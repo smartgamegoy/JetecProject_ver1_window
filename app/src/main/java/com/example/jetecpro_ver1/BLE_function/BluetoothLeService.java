@@ -404,7 +404,9 @@ public class BluetoothLeService extends Service {
      */
     public List<BluetoothGattService> getSupportedGattServices() {
         if (mBluetoothGatt == null) return null;
-
+//        for (int x = 0;x<mBluetoothGatt.getServices().size();x++){
+//            Log.v("BT","DCA.取得Gatt:"+ mBluetoothGatt.getServices().get(x).getUuid().toString());
+//        }
         return mBluetoothGatt.getServices();
     }
 

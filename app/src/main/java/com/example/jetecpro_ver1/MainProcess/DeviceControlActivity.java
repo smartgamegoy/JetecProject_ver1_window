@@ -124,7 +124,9 @@ public class DeviceControlActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-
+//            for (int x = 0;x<mBluetoothLeService.getSupportedGattServices().size();x++){
+//                Log.v("BT","DCA.取得Gatt:"+ mBluetoothLeService.getSupportedGattServices().get(x).getUuid().toString());
+//            }
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 waitdialog.dismiss();
@@ -145,6 +147,8 @@ public class DeviceControlActivity extends Activity {
                 clearUI();
                 /**接下來是重點===============*/
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+
+
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
                 /**送出資訊*/
                 sendData();
@@ -332,7 +336,7 @@ public class DeviceControlActivity extends Activity {
                 @Override
                 public void onFinish() {
                     if (SendType.NormalData.contains("OVER")){
-                        Log.v("BT","已正常連線取得數據");
+//                        Log.v("BT","已正常連線取得數據");
                     }else {
                         SendType.SendForBLEDataType = "get";
                         SendType.getSendBluetoothLeService.
@@ -518,9 +522,6 @@ public class DeviceControlActivity extends Activity {
         ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
         ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
                 = new ArrayList<ArrayList<HashMap<String, String>>>();
-        for (int i = 0;i<gattServices.size();i++){
-            Log.v("BT","DCA.取得Gatt:"+ gattServices.get(i).getUuid());
-        }
 
         //將可用的GATT Service迴圈顯示
         /**這邊顯示的是關於裝置的基本性質*/

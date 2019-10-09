@@ -13,8 +13,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.ScanResult;
 import android.os.Handler;
 import android.os.Bundle;
+import android.os.ParcelUuid;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +36,7 @@ import com.example.jetecpro_ver1.Values.SendType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class DeviceScanActivity extends ListActivity {
     private LeDeviceListAdapter mLeDeviceListAdapter;
@@ -56,7 +59,12 @@ public class DeviceScanActivity extends ListActivity {
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
         getWindow().setStatusBarColor(getResources().getColor(R.color.ActionBarColor));
-//        Log.v("BT", "DSA.取得GATT"+mBluetoothLeService.getSupportedGattServices());
+//        try {
+//            Log.v("BT", "DSA.取得GATT:"+mBluetoothLeService.getSupportedGattServices());
+//        }catch (Exception e){
+//            Log.v("BT", "DSA.取得GATT: 空");
+//        }
+
 
     }
 

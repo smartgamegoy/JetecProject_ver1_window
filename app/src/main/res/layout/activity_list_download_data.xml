@@ -15,7 +15,7 @@
         android:drawableLeft="@drawable/ic_search_black_24dp"
         android:ems="10"
         android:hint="@string/freshSearch"
-        android:digits="1234567890-~.:%"/>
+        android:digits="1234567890-~.:%："/>
 
     <ListView
         android:id="@+id/listView_down"

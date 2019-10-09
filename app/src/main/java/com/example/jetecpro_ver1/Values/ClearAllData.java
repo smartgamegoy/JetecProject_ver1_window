@@ -17,6 +17,7 @@ public class ClearAllData {
         SendType.FirstWord = ' ';
         SendType.SecondWord = ' ';
         SendType.ThirdWord = ' ';
+        SendType.FourthWord = ' ';
         SendType.dpNumberSelectedDP1 = 0;
         SendType.dpNumberSelectedDP2 = 0;
         SendType.dpNumberSelectedDP3 = 0;

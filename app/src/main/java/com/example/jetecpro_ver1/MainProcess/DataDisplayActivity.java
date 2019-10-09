@@ -237,55 +237,27 @@ public class DataDisplayActivity extends Activity {
 
                     break;
                 case R.id.Go_DownloadData:
-                    mBuilder.setTitle(R.string.alertTitle);
-                    mBuilder.setMessage(getBaseContext().getResources().getString(R.string.itWillStopRecord) + "\n" +
-                            getBaseContext().getResources().getString(R.string.notify));
-                    mBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            final Dialog d = ProgressDialog.show(DataDisplayActivity.this,
-                                    getBaseContext().getResources().getString(R.string.plzWait)
-                                    , getBaseContext().getResources().getString(R.string.progressing)
-                                    , true);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
+                    if(btStartRecord.getText().toString().matches(trans(R.string.stopRecord))){
+                        mBuilder.setTitle(R.string.alertTitle);
+                        mBuilder.setMessage(getBaseContext().getResources().getString(R.string.itWillStopRecord) + "\n" +
+                                getBaseContext().getResources().getString(R.string.notify));
+                        mBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                downLoadEvent();//開啟資料下載
+                            }
+                        });
+                        mBuilder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                                    try {
-                                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
-                                        View view = getLayoutInflater().inflate(R.layout.activity_data_display_data_download, null);
-                                        GetRecordDataAndDownload getRecordDataAndDownload = new GetRecordDataAndDownload(getBaseContext(), view, mBuilder);
-                                        getRecordDataAndDownload.ENDRecord();
-                                        Thread.sleep(1500);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    d.dismiss();
+                            }
+                        });
+                        mBuilder.show();
+                    }else{
+                        downLoadEvent();//開啟資料下載
+                    }
 
-                                    runOnUiThread(new Runnable() {
-                                        public void run() {
-
-                                            btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
-                                                            .getDrawable(R.drawable.noun_record_2822351)
-                                                    , null, null, null);
-                                            setActionBarTextB();
-                                            AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
-                                            View view = getLayoutInflater().inflate(R.layout.activity_data_display_data_download, null);
-                                            GetRecordDataAndDownload getRecordDataAndDownload = new GetRecordDataAndDownload(getBaseContext(), view, mBuilder);
-                                            getRecordDataAndDownload.MainCheck();
-                                        }
-                                    });
-                                }
-                            }).start();
-                        }
-                    });
-                    mBuilder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    mBuilder.show();
                     break;
 
                 case R.id.Go_Chart:
@@ -336,8 +308,6 @@ public class DataDisplayActivity extends Activity {
                     break;
 
                 case R.id.Go_StartRecord:
-
-
                     if (SendType.mLOG.contains("OFF")) {
                         new AlertDialog.Builder(DataDisplayActivity.this)
                                 .setTitle(R.string.alertTitle)
@@ -414,6 +384,43 @@ public class DataDisplayActivity extends Activity {
             }
         }
     };
+    /**下載資料*/
+    private void downLoadEvent() {
+        final Dialog d = ProgressDialog.show(DataDisplayActivity.this,
+                getBaseContext().getResources().getString(R.string.plzWait)
+                , getBaseContext().getResources().getString(R.string.progressing)
+                , true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+                    View view = getLayoutInflater().inflate(R.layout.activity_data_display_data_download, null);
+                    GetRecordDataAndDownload getRecordDataAndDownload = new GetRecordDataAndDownload(getBaseContext(), view, mBuilder);
+                    getRecordDataAndDownload.ENDRecord();
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                d.dismiss();
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        btStartRecord.setText(R.string.StartRecord);
+                        btStartRecord.setCompoundDrawablesWithIntrinsicBounds(getBaseContext().getResources()
+                                        .getDrawable(R.drawable.noun_record_2822351)
+                                , null, null, null);
+                        setActionBarTextB();
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+                        View view = getLayoutInflater().inflate(R.layout.activity_data_display_data_download, null);
+                        GetRecordDataAndDownload getRecordDataAndDownload = new GetRecordDataAndDownload(getBaseContext(), view, mBuilder);
+                        getRecordDataAndDownload.MainCheck();
+                    }
+                });
+            }
+        }).start();
+    }
 
     /**
      * 獲取返回鍵活動
@@ -421,7 +428,16 @@ public class DataDisplayActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            drawerLayout.closeDrawers();
+
+
+            if(drawerLayout.isDrawerOpen(GravityCompat.START) == false){
+                mBluetoothLeService.disconnect();
+                Toast.makeText(getBaseContext(), "斷開裝置，請重新連接裝置 ", Toast.LENGTH_SHORT).show();
+                finish();
+            }else{
+                drawerLayout.closeDrawers();
+            }
+
             return true;
         }
 
