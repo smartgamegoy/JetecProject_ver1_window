@@ -55,7 +55,8 @@ public class DeviceScanActivity extends ListActivity {
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
-
+        getWindow().setStatusBarColor(getResources().getColor(R.color.ActionBarColor));
+//        Log.v("BT", "DSA.取得GATT"+mBluetoothLeService.getSupportedGattServices());
 
     }
 

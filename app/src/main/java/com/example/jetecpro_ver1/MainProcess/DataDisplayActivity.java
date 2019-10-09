@@ -155,6 +155,7 @@ public class DataDisplayActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setCustomView(textView);
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.redGINSYU)));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redGINSYU));
         getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         actionBarRecordChoose = 1;
         invalidateOptionsMenu();
@@ -170,6 +171,7 @@ public class DataDisplayActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setCustomView(textView);
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.ActionBarColor));
         getActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         actionBarRecordChoose = 0;
         invalidateOptionsMenu();

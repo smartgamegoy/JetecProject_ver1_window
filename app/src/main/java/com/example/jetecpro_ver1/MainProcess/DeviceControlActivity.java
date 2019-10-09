@@ -414,6 +414,7 @@ public class DeviceControlActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_control);
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.ActionBarColor)));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.ActionBarColor));
         OptionThis = this;
         ClearAllData clearAllData = new ClearAllData();
         clearAllData.clearAllData();//清除上一個裝置連線的所有資料
@@ -422,6 +423,7 @@ public class DeviceControlActivity extends Activity {
         ((TextView) findViewById(R.id.device_address)).setText(SendType.DeviceName);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         mDataField = (TextView) findViewById(R.id.data_value);
+
 
 
         getActionBar().setTitle(R.string.Connecting3);
@@ -516,6 +518,9 @@ public class DeviceControlActivity extends Activity {
         ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
         ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
                 = new ArrayList<ArrayList<HashMap<String, String>>>();
+        for (int i = 0;i<gattServices.size();i++){
+            Log.v("BT","DCA.取得Gatt:"+ gattServices.get(i).getUuid());
+        }
 
         //將可用的GATT Service迴圈顯示
         /**這邊顯示的是關於裝置的基本性質*/
@@ -523,7 +528,7 @@ public class DeviceControlActivity extends Activity {
 //        for (BluetoothGattService gattService : gattServices) {
             HashMap<String, String> currentServiceData = new HashMap<String, String>();
             uuid = gattService.getUuid().toString();
-//            Log.v("BT",uuid);
+
             currentServiceData.put(
                     LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
             currentServiceData.put(LIST_UUID, uuid);

@@ -1,6 +1,9 @@
 package com.example.jetecpro_ver1.PDFandCSVHelper_ChartAct;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +13,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.jetecpro_ver1.MainProcess.ChartActivity;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SQLite.DBHelper;
 import com.example.jetecpro_ver1.Values.SendType;
@@ -464,112 +468,117 @@ public class CreatePDFandCSV {
         this.context = context;
         getSQLite();
         selectUnit();
-        String mFileName = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss",
-                Locale.getDefault()).format(System.currentTimeMillis());
-        String mFilePath = Environment.getExternalStorageDirectory() + "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf";
-        Document document = new Document(PageSize.A4, 20, 20, 10, 40);
-        try {
+
+                String mFileName = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss",
+                        Locale.getDefault()).format(System.currentTimeMillis());
+                String mFilePath = Environment.getExternalStorageDirectory() + "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf";
+                Document document = new Document(PageSize.A4, 20, 20, 10, 40);
+                try {
 //            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(mFilePath));
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(mFilePath));
-            TOCCreation event = new TOCCreation();
-            writer.setPageEvent(event);
+                    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(mFilePath));
+                    TOCCreation event = new TOCCreation();
+                    writer.setPageEvent(event);
 
 
-            document.open();
-            //======================================================================================
+                    document.open();
+                    //======================================================================================
 
-            document.add(new Paragraph("Jetec Electronics CO,LTD"));
-            document.add(new Paragraph(" "));
-
-            event.setRoot(writer.getRootOutline());
-            ColumnText ct = new ColumnText(writer.getDirectContent());
-            PdfPTable tabbbb = new PdfPTable(8);
-            tabbbb.setWidths(new float[]{20,26,26,26,20,26,26,26});
-            tabbbb.setWidthPercentage(90);
-            PdfPCell cell = new PdfPCell(new Paragraph(new Phrase(24f, "Date")));
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell.setBackgroundColor(BaseColor.GRAY);
-            PdfPCell cell2 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.FirstWord,1))));
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell2.setBackgroundColor(BaseColor.GRAY);
-            PdfPCell cell3 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.SecondWord,2))));
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell3.setBackgroundColor(BaseColor.GRAY);
-            PdfPCell cell4 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.ThirdWord,3))));
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cell4.setBackgroundColor(BaseColor.GRAY);
-            for (int i = 0; i < 2; i++) {
-                tabbbb.addCell(cell);
-                tabbbb.addCell(cell2);
-                tabbbb.addCell(cell3);
-                tabbbb.addCell(cell4);
-            }
-
-            document.add(tabbbb);
-//            Log.v("BT","json長度:"+ jsonArray.length());
-            int start;
-            int end = 0;
-
-            for (int i = 0; i <= jsonArray.length() - 1; ) {
-                start = (i) + 1;
-                i++;
-                end = i;
-                String title = String.format("", start, end);
-                Chunk c = new Chunk(title);
-                c.setGenericTag(title);
-                ct.addElement(c);
-                ct.addElement(createTable_Row3(start, end));
-            }
-            //補格子～
-            int fullPageCell = 90;
-            if(end%fullPageCell >0){
-                int func = ((end/fullPageCell)+1)*fullPageCell;
-                for (int i = 0;i<func-end;i++){
-                    PdfPCell dateCell = new PdfPCell(Phrase.getInstance(" "));
-                    dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                    table_Row3.addCell(dateCell);
-                    table_Row3.addCell(" ");
-                    table_Row3.addCell(" ");
-                    table_Row3.addCell(" ");
-                }
-            }
-            int column = 0;
-            do {
-                if (column == 2) {
-
-                    document.newPage();
                     document.add(new Paragraph("Jetec Electronics CO,LTD"));
                     document.add(new Paragraph(" "));
+
+                    event.setRoot(writer.getRootOutline());
+                    ColumnText ct = new ColumnText(writer.getDirectContent());
+                    PdfPTable tabbbb = new PdfPTable(8);
+                    tabbbb.setWidths(new float[]{20,26,26,26,20,26,26,26});
+                    tabbbb.setWidthPercentage(90);
+                    PdfPCell cell = new PdfPCell(new Paragraph(new Phrase(24f, "Date")));
+                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell.setBackgroundColor(BaseColor.GRAY);
+                    PdfPCell cell2 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.FirstWord,1))));
+                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell2.setBackgroundColor(BaseColor.GRAY);
+                    PdfPCell cell3 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.SecondWord,2))));
+                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell3.setBackgroundColor(BaseColor.GRAY);
+                    PdfPCell cell4 = new PdfPCell(new Paragraph(new Phrase(24f, Lab(SendType.ThirdWord,3))));
+                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell4.setBackgroundColor(BaseColor.GRAY);
+                    for (int i = 0; i < 2; i++) {
+                        tabbbb.addCell(cell);
+                        tabbbb.addCell(cell2);
+                        tabbbb.addCell(cell3);
+                        tabbbb.addCell(cell4);
+                    }
+
                     document.add(tabbbb);
-                    column = 0;
+
+
+//            Log.v("BT","json長度:"+ jsonArray.length());
+                    int start;
+                    int end = 0;
+
+                    for (int i = 0; i <= jsonArray.length() - 1; ) {
+                        start = (i) + 1;
+                        i++;
+                        end = i;
+                        String title = String.format("", start, end);
+                        Chunk c = new Chunk(title);
+                        c.setGenericTag(title);
+                        ct.addElement(c);
+                        ct.addElement(createTable_Row3(start, end));
+                    }
+                    //補格子～
+                    int fullPageCell = 90;
+                    if(end%fullPageCell >0){
+                        int func = ((end/fullPageCell)+1)*fullPageCell;
+                        for (int i = 0;i<func-end;i++){
+                            PdfPCell dateCell = new PdfPCell(Phrase.getInstance(" "));
+                            dateCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                            table_Row3.addCell(dateCell);
+                            table_Row3.addCell(" ");
+                            table_Row3.addCell(" ");
+                            table_Row3.addCell(" ");
+                        }
+                    }
+                    int column = 0;
+                    do {
+                        if (column == 2) {
+
+                            document.newPage();
+                            document.add(new Paragraph("Jetec Electronics CO,LTD"));
+                            document.add(new Paragraph(" "));
+                            document.add(tabbbb);
+                            column = 0;
+                        }
+                        ct.setSimpleColumn(COLUMNS_Row3[column++]);
+                    }
+                    while (ColumnText.hasMoreText(ct.go()));
+                    document.newPage();
+
+
+                    //======================================================================================
+                    document.close();
+                    Toast.makeText(activity, SendType.DeviceName + "數據報表.pdf\nis saved to\n" + mFilePath, Toast.LENGTH_SHORT).show();
+
+                    Intent fileIntent = new Intent(Intent.ACTION_SEND);
+                    File filelocation = new File(Environment.
+                            getExternalStorageDirectory(), "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf");
+                    Uri path = Uri.fromFile(filelocation);
+                    fileIntent.setType("text/plain");
+                    fileIntent.putExtra(Intent.EXTRA_SUBJECT, SendType.DeviceName + "的數據報表");
+                    fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    fileIntent.putExtra(Intent.EXTRA_STREAM, path);
+                    activity.startActivity(Intent.createChooser(fileIntent, "Send Mail"));
+
+                } catch (FileNotFoundException e) {
+                    Log.d("BT", String.valueOf(e));
+                } catch (DocumentException e) {
+                    Log.d("BT", String.valueOf(e));
+                } catch (Exception e) {
+                    Log.d("BT", String.valueOf(e));
                 }
-                ct.setSimpleColumn(COLUMNS_Row3[column++]);
-            }
-            while (ColumnText.hasMoreText(ct.go()));
-            document.newPage();
 
 
-            //======================================================================================
-            document.close();
-            Toast.makeText(activity, SendType.DeviceName + "數據報表.pdf\nis saved to\n" + mFilePath, Toast.LENGTH_SHORT).show();
-
-            Intent fileIntent = new Intent(Intent.ACTION_SEND);
-            File filelocation = new File(Environment.
-                    getExternalStorageDirectory(), "/" + SendType.DeviceName + "數據報表 " + mFileName + ".pdf");
-            Uri path = Uri.fromFile(filelocation);
-            fileIntent.setType("text/plain");
-            fileIntent.putExtra(Intent.EXTRA_SUBJECT, SendType.DeviceName + "的數據報表");
-            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            fileIntent.putExtra(Intent.EXTRA_STREAM, path);
-            activity.startActivity(Intent.createChooser(fileIntent, "Send Mail"));
-
-        } catch (FileNotFoundException e) {
-            Log.d("BT", String.valueOf(e));
-        } catch (DocumentException e) {
-            Log.d("BT", String.valueOf(e));
-        } catch (Exception e) {
-            Log.d("BT", String.valueOf(e));
-        }
     }
     //=======================================================
     //輔助PDF的(２排)
@@ -702,7 +711,7 @@ public class CreatePDFandCSV {
     private String Lab(char name,int x) {
         switch (name){
             case 'T':
-                return "Temperature";
+                return "Tempe.";
 
             case 'H':
                 return "humidity";

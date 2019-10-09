@@ -271,7 +271,7 @@ public class GetRecord {
                     case '2':
                         mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("
                                 + "_id INTEGER PRIMARY KEY," + "First TEXT,"
-                                + "SecondData TEXT,"+ "RecordDate TEXT," + "RecordTime TEXT);");
+                                + "SecondData TEXT,"+"RecordDate TEXT," + "RecordTime TEXT);");
                         break;
                     case '3':
                         mCustomDb.execSQL("CREATE TABLE " + DB_TABLE + " ("

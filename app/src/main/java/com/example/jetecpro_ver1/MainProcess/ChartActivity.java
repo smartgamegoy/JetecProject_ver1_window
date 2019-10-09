@@ -71,6 +71,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chart);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.White));
         //連接各按鈕
         setButtons();
         //設定圖表
@@ -328,8 +329,64 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
             chooseChhartName(leftAxis, SendType.ThirdWord);
             dataSets.add(set3);
         } else if (displayChartCentrol == 3) {
-            leftAxis.setAxisMaximum(10000f);//顯示上限
-            leftAxis.setAxisMinimum(-10000f);//顯示下限
+            //因為需要三個輸入值一起判斷，因此無法用switch-case寫
+            if (SendType.FirstWord == 'I'
+                    || SendType.SecondWord == 'I'
+                    || SendType.ThirdWord == 'I'){
+                leftAxis.setAxisMaximum(10000f);//顯示上限
+                leftAxis.setAxisMinimum(-10000f);//顯示下限
+            }else if(SendType.FirstWord == 'F'
+                    || SendType.SecondWord == 'F'
+                    || SendType.ThirdWord == 'F'){
+                leftAxis.setAxisMaximum(999f);//顯示上限
+                leftAxis.setAxisMinimum(-999f);//顯示下限
+            }else if(SendType.FirstWord == 'E'
+                    ||SendType.SecondWord == 'E'
+                    || SendType.ThirdWord == 'E'){
+                leftAxis.setAxisMaximum(5000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'D'
+                    ||SendType.SecondWord == 'D'
+                    || SendType.ThirdWord == 'D'){
+                leftAxis.setAxisMaximum(3000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'C'
+                    ||SendType.SecondWord == 'C'
+                    || SendType.ThirdWord == 'C'){
+                leftAxis.setAxisMaximum(2000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'P'
+                    ||SendType.SecondWord == 'P'
+                    || SendType.ThirdWord == 'P'
+                    ||SendType.FirstWord == 'M'
+                    ||SendType.SecondWord == 'M'
+                    || SendType.ThirdWord == 'M'
+                    ||SendType.FirstWord == 'Q'
+                    ||SendType.SecondWord == 'Q'
+                    || SendType.ThirdWord == 'Q'){
+                leftAxis.setAxisMaximum(1000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'G'
+                    ||SendType.SecondWord == 'G'
+                    || SendType.ThirdWord == 'G'){
+                leftAxis.setAxisMaximum(300f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'O'
+                    ||SendType.SecondWord == 'O'
+                    || SendType.ThirdWord == 'O'){
+                leftAxis.setAxisMaximum(130f);//顯示上限
+                leftAxis.setAxisMinimum(30f);//顯示下限
+            }else if (SendType.FirstWord == 'H'
+                    ||SendType.SecondWord == 'H'
+                    || SendType.ThirdWord == 'H'){
+                leftAxis.setAxisMaximum(100f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if (SendType.FirstWord == 'T'
+                    ||SendType.SecondWord == 'T'
+                    || SendType.ThirdWord == 'T'){
+                leftAxis.setAxisMaximum(65f);//顯示上限
+                leftAxis.setAxisMinimum(-10f);//顯示下限
+            }
             dataSets.add(set1);
             dataSets.add(set2);
             dataSets.add(set3);
@@ -440,7 +497,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         }
         return "不知道";
     }
-
+    /**畫兩排圖表*/
     private void Row2(JSONArray jsonArray, YAxis leftAxis) {
         ArrayList<Entry> yValues1 = new ArrayList<>();
         ArrayList<Entry> yValues2 = new ArrayList<>();
@@ -495,8 +552,53 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
             chooseChhartName(leftAxis, SendType.SecondWord);
             dataSets.add(set2);
         } else if (displayChartCentrol == 2) {
-            leftAxis.setAxisMaximum(10000f);//顯示上限
-            leftAxis.setAxisMinimum(-10000f);//顯示下限
+            //因為需要兩個輸入值一起判斷，因此無法用switch-case寫
+            if (SendType.FirstWord == 'I'
+                    || SendType.SecondWord == 'I'){
+                leftAxis.setAxisMaximum(10000f);//顯示上限
+                leftAxis.setAxisMinimum(-10000f);//顯示下限
+            }else if(SendType.FirstWord == 'F'
+                    || SendType.SecondWord == 'F'){
+                leftAxis.setAxisMaximum(999f);//顯示上限
+                leftAxis.setAxisMinimum(-999f);//顯示下限
+            }else if(SendType.FirstWord == 'E'
+                    ||SendType.SecondWord == 'E'){
+                leftAxis.setAxisMaximum(5000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'D'
+                    ||SendType.SecondWord == 'D'){
+                leftAxis.setAxisMaximum(3000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'C'
+                    ||SendType.SecondWord == 'C'){
+                leftAxis.setAxisMaximum(2000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'P'
+                    ||SendType.SecondWord == 'P'
+                    ||SendType.FirstWord == 'M'
+                    ||SendType.SecondWord == 'M'
+                    ||SendType.FirstWord == 'Q'
+                    ||SendType.SecondWord == 'Q'){
+                leftAxis.setAxisMaximum(1000f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'G'
+                    ||SendType.SecondWord == 'G'){
+                leftAxis.setAxisMaximum(300f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if(SendType.FirstWord == 'O'
+                    ||SendType.SecondWord == 'O'){
+                leftAxis.setAxisMaximum(130f);//顯示上限
+                leftAxis.setAxisMinimum(30f);//顯示下限
+            }else if (SendType.FirstWord == 'H'
+                    ||SendType.SecondWord == 'H'){
+                leftAxis.setAxisMaximum(100f);//顯示上限
+                leftAxis.setAxisMinimum(0f);//顯示下限
+            }else if (SendType.FirstWord == 'T'
+                    ||SendType.SecondWord == 'T'){
+                leftAxis.setAxisMaximum(65f);//顯示上限
+                leftAxis.setAxisMinimum(-10f);//顯示下限
+            }
+
             dataSets.add(set1);
             dataSets.add(set2);
         }

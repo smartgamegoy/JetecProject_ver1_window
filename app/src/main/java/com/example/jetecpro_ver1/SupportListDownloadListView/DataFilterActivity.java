@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,13 +46,14 @@ public class DataFilterActivity extends Activity {
         setActionBar();
         //設置Spinner
         spinnerSelect();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);//取消一開畫面就彈出鍵盤
 
 
     }//onCreate
 
     private void setActionBar() {
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.redKABA)));
-
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redKABA));
         TextView textView = new TextView(this);
         textView.setText(R.string.dataFilter);
         textView.setTextSize(24);

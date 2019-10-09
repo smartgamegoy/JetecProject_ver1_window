@@ -65,7 +65,7 @@ public class ListDownloadDataActivity extends Activity {
      */
     private void setActionBar() {
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.yellowNAMAKABE)));
-
+        getWindow().setStatusBarColor(getResources().getColor(R.color.yellowNAMAKABE));
         TextView textView = new TextView(this);
         textView.setText(R.string.listDisplay);
         textView.setTextSize(24);
@@ -215,13 +215,15 @@ public class ListDownloadDataActivity extends Activity {
                 hashMap.put("id",id);
                 hashMap.put("first",firstData.substring(0,4)+unit(SendType.FirstWord,1));
                 hashMap.put("second",secondData.substring(0,4)+unit(SendType.SecondWord,2));
+                hashMap.put("firstT",Lab(SendType.FirstWord,1));
+                hashMap.put("secondT",Lab(SendType.SecondWord,2));
                 arrayList.add(hashMap);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String[] from = {"DateTime", "id","first","second"};
-        int [] to = {R.id.listView_dateTime,R.id.listView_RecordId,R.id.listView_firstData,R.id.listView_SecendData};
+        String[] from = {"firstT","secondT","DateTime","id","first","second"};
+        int [] to = {R.id.listView_FirstDataTitle,R.id.listView_SecendDataTitle,R.id.listView_dateTime,R.id.listView_RecordId,R.id.listView_firstData,R.id.listView_SecendData};
         simpleAdapter = new SimpleAdapter(this,arrayList,R.layout.activity_list_download_data_custom,from,to);
         listView.setAdapter(simpleAdapter);
     }

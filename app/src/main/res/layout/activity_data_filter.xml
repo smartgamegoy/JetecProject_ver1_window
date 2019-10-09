@@ -6,252 +6,266 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".SupportListDownloadListView.DataFilterActivity">
+
+
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/roundforspinner" />
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
-        android:id="@+id/LayoutDateTimeSelecter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical"
-
-        >
-
-        <TextView
-            android:id="@+id/textViewTTTTTTTTTititititi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:text="@string/dataFilter_plzSelectIFTitle"
-            android:textColor="@color/Black2"
-            android:textSize="18dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/LayoutDateTimeSelecter"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
 
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <NumberPicker
-                    android:id="@+id/dataFilter_numberPicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <NumberPicker
+                        android:id="@+id/dataFilter_numberPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/dataFilter_buttonSelectDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/roundforbutton_blue"
+                    android:text="@string/dataFilter_plzSelectDateTitle"
+                    android:textColor="@color/White" />
+
+                <Button
+                    android:id="@+id/dataFilter_buttonSelectTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/roundforbutton_green"
+                    android:text="@string/dataFilter_plzSelectTimeTitle"
+                    android:textColor="@color/White" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dataFilter_textViewResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="範圍"
+                android:textColor="@color/Black2"
+                android:textSize="16sp"
+
+                />
+
+            <TextView
+                android:id="@+id/textViewTTTTTTTTTititititi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:text="@string/dataFilter_plzSelectIFTitle"
+                android:textColor="@color/Black2"
+                android:textSize="18dp" />
+
+
         </LinearLayout>
-        <TextView
-            android:id="@+id/dataFilter_textViewResult"
+
+        <LinearLayout
+            android:id="@+id/LayoutIdSelecter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="範圍"
-            android:textColor="@color/Black2"
-            android:textSize="16sp"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <NumberPicker
+                        android:id="@+id/numberPickerStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/dataFilter_StartValue"
+                        android:textColor="@color/Black2" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <NumberPicker
+                        android:id="@+id/numberPickerEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/dataFilter_EndValue"
+                        android:textColor="@color/Black2" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/dataFilter_plzSelectIFTitle"
+                android:textColor="@color/Black"
+                android:textSize="24sp" />
+
+
+            <TextView
+                android:id="@+id/dataFilter_IdResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="@string/dataFilter_IDSelectHint"
+                android:textColor="@color/Black2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LayoutElseData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+
+
+            <NumberPicker
+                android:id="@+id/numberPickerValueSelect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dataFilter_plzSelectIFTitle"
+                android:textColor="@color/Black2"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/dataFilter_dataResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/dataFilter_plzSelectValueTitle"
+                android:textColor="@color/Black2"
+                android:textSize="18dp" />
+            <EditText
+                android:id="@+id/dataFilter_EditInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:inputType="numberSigned" />
+
+        </LinearLayout>
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_gravity="bottom"
+            android:layout_marginTop="30dp"
+            android:foregroundGravity="bottom"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/dataFilter_buttonSelectDate"
-                android:layout_width="wrap_content"
+                android:id="@+id/buttonGoFilter"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/roundforbutton_blue"
-                android:text="@string/dataFilter_plzSelectDateTitle"
-                android:textColor="@color/White" />
-
-            <Button
-                android:id="@+id/dataFilter_buttonSelectTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/roundforbutton_green"
-                android:text="@string/dataFilter_plzSelectTimeTitle"
-                android:textColor="@color/White" />
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/roundforbutton_yellow"
+                android:text="@string/dataFilter_search"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
 
         </LinearLayout>
-
-
-
-
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LayoutIdSelecter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/dataFilter_plzSelectIFTitle"
-            android:textColor="@color/Black"
-            android:textSize="24sp" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_horizontal"
-                    android:text="@string/dataFilter_StartValue"
-                    android:textColor="@color/Black2" />
-
-                <NumberPicker
-                    android:id="@+id/numberPickerStart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+</ScrollView>
 
 
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_horizontal"
-                    android:text="@string/dataFilter_EndValue"
-                    android:textColor="@color/Black2" />
-
-                <NumberPicker
-                    android:id="@+id/numberPickerEnd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-
-
-        <TextView
-            android:id="@+id/dataFilter_IdResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:text="@string/dataFilter_IDSelectHint"
-            android:textColor="@color/Black2" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LayoutElseData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp"
-        android:gravity="center_horizontal"
-        android:visibility="gone"
-        >
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dataFilter_plzSelectIFTitle"
-            android:textColor="@color/Black2"
-            android:textSize="18dp"
-            />
-        <NumberPicker
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/numberPickerValueSelect"
-            />
-
-        <TextView
-            android:id="@+id/dataFilter_dataResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dataFilter_plzSelectValueTitle"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/Black2"
-            android:textSize="18dp"
-            />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="5dp"
-            android:id="@+id/dataFilter_EditInput"
-            android:inputType="numberSigned"
-            />
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:foregroundGravity="bottom"
-        android:gravity="bottom"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/buttonGoFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/roundforbutton_yellow"
-            android:text="@string/dataFilter_search"
-            android:textColor="@color/White"
-            android:textSize="24sp" />
-
-    </LinearLayout>
 
 
 </LinearLayout>

@@ -61,7 +61,7 @@ public class DownloadDataFilteredActivity extends Activity {
      */
     private void setActionBar() {
         getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.redGINSYU)));
-
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redGINSYU));
         TextView textView = new TextView(this);
         textView.setText(R.string.dataFilter);
         textView.setTextSize(24);

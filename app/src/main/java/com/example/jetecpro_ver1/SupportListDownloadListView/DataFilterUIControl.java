@@ -53,7 +53,7 @@ public class DataFilterUIControl {
     String DB_TABLE = SendType.DB_TABLE + "GETRecord";
     SQLiteDatabase mCustomDb;
     TextView tvIdResult,tvResult;
-    int startOld, endOld, startNew, endNew, NpMathFunction;
+    int startOld, endOld, startNew, endNew, NpMathFunction,FirstTimeSelectIdPicker = 0;
     EditText editText;
 
     String FirstID, LastID, FirstDateRecord, LastDateRecord, FirstTimeRecord, LastTimeRecord, getSelectedDate, getSelectedTime, selectType;
@@ -345,6 +345,11 @@ public class DataFilterUIControl {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 endOld = oldVal;
                 endNew = newVal;
+                if(FirstTimeSelectIdPicker == 0){
+                    startNew = 1;
+                    FirstTimeSelectIdPicker++;
+                }
+
                 if (startOld < newVal) {
                     numberPickerStart.setMaxValue(newVal);
                 } else {
