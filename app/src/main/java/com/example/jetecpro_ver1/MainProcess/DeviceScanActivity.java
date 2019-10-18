@@ -139,6 +139,8 @@ public class DeviceScanActivity extends ListActivity {
     private void scanLeDevice(final boolean enable) {
         if (enable) {
             // Stops scanning after a pre-defined scan period.
+            UUID targetUUID = UUID.fromString(SampleGattAttributes.Service_uuid);//濾掉不是本公司產品的型號
+            UUID uuids[] = {targetUUID};
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -148,7 +150,7 @@ public class DeviceScanActivity extends ListActivity {
                 }
             }, SCAN_PERIOD);
             mScanning = true;
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
+            mBluetoothAdapter.startLeScan(uuids,mLeScanCallback);
 
         } else {
             mScanning = false;
@@ -158,12 +160,15 @@ public class DeviceScanActivity extends ListActivity {
     }
 
     private class LeDeviceListAdapter extends BaseAdapter {
+//        private ArrayList<BluetoothDevice> mLeDevices;
         private ArrayList<BluetoothDevice> mLeDevices;
+        private ArrayList<Integer> mRssi;
         private LayoutInflater mInflator;
 
         public LeDeviceListAdapter() {
             super();
             mLeDevices = new ArrayList<BluetoothDevice>();
+            mRssi = new ArrayList<Integer>();
             mInflator = DeviceScanActivity.this.getLayoutInflater();
         }
 
@@ -171,6 +176,11 @@ public class DeviceScanActivity extends ListActivity {
         public void addDevice(BluetoothDevice device) {
             if (!mLeDevices.contains(device)) {
                 mLeDevices.add(device);
+            }
+        }
+        public void addRssi(int rssi){
+            if (!mRssi.contains(rssi)) {
+                mRssi.add(rssi);
             }
         }
 
@@ -212,13 +222,17 @@ public class DeviceScanActivity extends ListActivity {
             }
 
             BluetoothDevice device = mLeDevices.get(i);
+//            Integer rssi = mRssi.get(i);
             final String deviceName = device.getName();
+//            final String deviceRssi = rssi.toString();
             if (deviceName != null && deviceName.length() > 0) {
                 viewHolder.deviceName.setText(deviceName);
+//                viewHolder.deviceAddress.setText(deviceRssi);
 
             } else {
                 viewHolder.deviceName.setText(R.string.unknown_device);
             }
+
             viewHolder.deviceAddress.setText(device.getAddress());
 
             return view;
@@ -235,8 +249,9 @@ public class DeviceScanActivity extends ListActivity {
                         @Override
                         public void run() {
                             if (device.getName() != null) {
+                                Log.v("BT",device.getName()+",Rssi:"+rssi);
                                 mLeDeviceListAdapter.addDevice(device);
-
+//                                mLeDeviceListAdapter.addRssi(rssi);
                                 mLeDeviceListAdapter.notifyDataSetChanged();
                             }
 

@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         Button btn = (Button) findViewById(R.id.nt01);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.White));
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
