@@ -108,6 +108,22 @@ public class ClearAllData {
         SendType.arrayDate = null;
         SendType.arrayTime = null;
 
+        //三色大顯
+        SendType.mALARM = null;
+        SendType.mHH1 = null;
+        SendType.mHH2 = null;
+        SendType.mHH3 = null;
+        SendType.mLL1 = null;
+        SendType.mLL2 = null;
+        SendType.mLL3 = null;
+        SendType.HH1 = null;
+        SendType.HH2 = null;
+        SendType.HH3 = null;
+        SendType.LL1 = null;
+        SendType.LL2 = null;
+        SendType.LL3 = null;
+
+
 
 
 

@@ -105,9 +105,9 @@ public class DDA_SendData {
             case 'T':
                 if (selectName.contains(SendType.PV1)) {
                     edInput.setHint("-5~5");
-                } else if (selectName.contains(SendType.EH1)) {
+                } else if (selectName.contains(SendType.EH1)||selectName.contains(SendType.HH1)) {
                     edInput.setHint("-10~65");
-                } else if (selectName.contains(SendType.EL1)) {
+                } else if (selectName.contains(SendType.EL1)||selectName.contains(SendType.LL1)) {
                     edInput.setHint("-10~65");
                 } else if (selectName.contains(SendType.CR1)) {
                     edInput.setHint("-10~65");
@@ -120,9 +120,9 @@ public class DDA_SendData {
             case 'C':
                 if (selectName.contains(SendType.PV1)) {
                     edInput.setHint("-500~500");
-                } else if (selectName.contains(SendType.EH1)) {
-                    edInput.setHint("0~2000");
-                } else if (selectName.contains(SendType.EL1)) {
+                } else if (selectName.contains(SendType.EH1)||selectName.contains(SendType.HH1)) {
+                    edInput.setHint("-10~65");
+                } else if (selectName.contains(SendType.EL1)||selectName.contains(SendType.LL1)) {
                     edInput.setHint("0~2000");
                 } else if (selectName.contains(SendType.CR1)) {
                     edInput.setHint("0~2000");
@@ -131,9 +131,9 @@ public class DDA_SendData {
             case 'D':
                 if (selectName.contains(SendType.PV1)) {
                     edInput.setHint("-500~500");
-                } else if (selectName.contains(SendType.EH1)) {
-                    edInput.setHint("0~3000");
-                } else if (selectName.contains(SendType.EL1)) {
+                } else if (selectName.contains(SendType.EH1)||selectName.contains(SendType.HH1)) {
+                    edInput.setHint("-10~65");
+                } else if (selectName.contains(SendType.EL1)||selectName.contains(SendType.LL1)) {
                     edInput.setHint("0~3000");
                 } else if (selectName.contains(SendType.CR1)) {
                     edInput.setHint("0~3000");
@@ -142,9 +142,9 @@ public class DDA_SendData {
             case 'E':
                 if (selectName.contains(SendType.PV1)) {
                     edInput.setHint("-500~500");
-                } else if (selectName.contains(SendType.EH1)) {
-                    edInput.setHint("0~5000");
-                } else if (selectName.contains(SendType.EL1)) {
+                } else if (selectName.contains(SendType.EH1)||selectName.contains(SendType.HH1)) {
+                    edInput.setHint("-10~65");
+                } else if (selectName.contains(SendType.EL1)||selectName.contains(SendType.LL1)) {
                     edInput.setHint("0~5000");
                 } else if (selectName.contains(SendType.CR1)) {
                     edInput.setHint("0~5000");
@@ -227,9 +227,9 @@ public class DDA_SendData {
             case 'H':
                 if (selectName.contains(SendType.PV2)) {
                     edInput.setHint("-20~20");
-                } else if (selectName.contains(SendType.EH2)) {
+                } else if (selectName.contains(SendType.EH2)||selectName.contains(SendType.HH2)) {
                     edInput.setHint("0~100");
-                } else if (selectName.contains(SendType.EL2)) {
+                } else if (selectName.contains(SendType.EL2)||selectName.contains(SendType.LL2)) {
                     edInput.setHint("0~100");
                 } else if (selectName.contains(SendType.CR2)) {
                     edInput.setHint("0~100");
@@ -238,9 +238,9 @@ public class DDA_SendData {
             case 'C':
                 if (selectName.contains(SendType.PV2)) {
                     edInput.setHint("-500~500");
-                } else if (selectName.contains(SendType.EH2)) {
-                    edInput.setHint("0~2000");
-                } else if (selectName.contains(SendType.EL2)) {
+                } else if (selectName.contains(SendType.EH2)||selectName.contains(SendType.HH2)) {
+                    edInput.setHint("0~100");
+                } else if (selectName.contains(SendType.EL2)||selectName.contains(SendType.LL2)) {
                     edInput.setHint("0~2000");
                 } else if (selectName.contains(SendType.CR2)) {
                     edInput.setHint("0~2000");
@@ -249,9 +249,9 @@ public class DDA_SendData {
             case 'D':
                 if (selectName.contains(SendType.PV2)) {
                     edInput.setHint("-500~500");
-                } else if (selectName.contains(SendType.EH2)) {
-                    edInput.setHint("0~3000");
-                } else if (selectName.contains(SendType.EL2)) {
+                } else if (selectName.contains(SendType.EH2)||selectName.contains(SendType.HH2)) {
+                    edInput.setHint("0~100");
+                } else if (selectName.contains(SendType.EL2)||selectName.contains(SendType.LL2)) {
                     edInput.setHint("0~3000");
                 } else if (selectName.contains(SendType.CR2)) {
                     edInput.setHint("0~3000");
@@ -260,9 +260,9 @@ public class DDA_SendData {
             case 'E':
                 if (selectName.contains(SendType.PV2)) {
                     edInput.setHint("-500~500");
-                } else if (selectName.contains(SendType.EH2)) {
-                    edInput.setHint("0~5000");
-                } else if (selectName.contains(SendType.EL2)) {
+                } else if (selectName.contains(SendType.EH2)||selectName.contains(SendType.HH2)) {
+                    edInput.setHint("0~100");
+                } else if (selectName.contains(SendType.EL2)||selectName.contains(SendType.LL2)) {
                     edInput.setHint("0~5000");
                 } else if (selectName.contains(SendType.CR2)) {
                     edInput.setHint("0~5000");
@@ -939,6 +939,10 @@ public class DDA_SendData {
                     return "EL1";
                 } else if (input.contains(trans(R.string.Temperature) + trans(R.string.CR))) {
                     return "CR1";
+                }else if (input.contains(trans(R.string.Temperature) + trans(R.string.HH))) {
+                    return "HH1";
+                }else if (input.contains(trans(R.string.Temperature) + trans(R.string.LL))) {
+                    return "LL1";
                 }
 
                 break;
@@ -963,6 +967,11 @@ public class DDA_SendData {
                 }else if (input.contains(trans(R.string.FirstRow) + trans(R.string.decimal_point))) {//小數點
                     return "DP1";
                 }
+                else if (input.contains(trans(R.string.FirstRow) + trans(R.string.HH))) {
+                    return "HH1";
+                }else if (input.contains(trans(R.string.FirstRow) + trans(R.string.LL))) {
+                    return "LL1";
+                }
                 break;
 
             case 'C':
@@ -976,6 +985,11 @@ public class DDA_SendData {
                     return "EL1";
                 } else if (input.contains(trans(R.string.CO2) + trans(R.string.CR))) {
                     return "CR1";
+                }
+                else if (input.contains(trans(R.string.CO2) + trans(R.string.HH))) {
+                    return "HH1";
+                }else if (input.contains(trans(R.string.CO2) + trans(R.string.LL))) {
+                    return "LL1";
                 }
                 break;
 
@@ -993,6 +1007,10 @@ public class DDA_SendData {
                     return "EL2";
                 } else if (input.contains(trans(R.string.Humidity) + trans(R.string.CR))) {
                     return "CR2";
+                } else if (input.contains(trans(R.string.Humidity) + trans(R.string.HH))) {
+                    return "HH2";
+                } else if (input.contains(trans(R.string.Humidity) + trans(R.string.LL))) {
+                    return "LL2";
                 }
                 break;
             case 'I':
@@ -1010,6 +1028,10 @@ public class DDA_SendData {
                     return "CR2";
                 }else if (input.contains(trans(R.string.SecondRow) + trans(R.string.decimal_point))) {//小數點
                     return "DP2";
+                } else if (input.contains(trans(R.string.SecondRow) + trans(R.string.HH))) {
+                    return "HH2";
+                } else if (input.contains(trans(R.string.SecondRow) + trans(R.string.LL))) {
+                    return "LL2";
                 }
                 break;
             case 'C':
@@ -1023,7 +1045,12 @@ public class DDA_SendData {
                     return "EL2";
                 } else if (input.contains(trans(R.string.CO2) + trans(R.string.CR))) {
                     return "CR2";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.HH))) {
+                    return "HH2";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.LL))) {
+                    return "LL2";
                 }
+
                 break;
         }
         switch (SendType.ThirdWord){
@@ -1049,6 +1076,11 @@ public class DDA_SendData {
                 }else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.decimal_point))) {//小數點
                     return "DP3";
                 }
+                else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.HH))) {
+                    return "HH3";
+                } else if (input.contains(trans(R.string.ThirdRow) + trans(R.string.LL))) {
+                    return "LL3";
+                }
                 break;
             case 'C':
             case 'D':
@@ -1061,6 +1093,10 @@ public class DDA_SendData {
                     return "EL3";
                 } else if (input.contains(trans(R.string.CO2) + trans(R.string.CR))) {
                     return "CR3";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.HH))) {
+                    return "HH3";
+                } else if (input.contains(trans(R.string.CO2) + trans(R.string.LL))) {
+                    return "LL3";
                 }
                 break;
 

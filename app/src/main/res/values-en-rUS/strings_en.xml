@@ -1,0 +1,208 @@
+<resources>
+    <string name="app_name">Remote</string>
+
+
+    <!--MainActivity-->
+    <string name="main_button">Scan</string>
+    <string name="ble_not_supported">該裝置不支援藍芽</string>
+
+    <!--DeviceScanActivity-->
+    <string name="unknown_device">未知裝置</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
+    <string name="title_devices">Scan Device</string>
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="trySecond">Try again..</string>
+    <string name="maybeSoFair">Connect field ,Maybe so far</string>
+
+
+    <!--DeviceControlActivity-->
+    <string name="Device_name">Device name: </string>
+    <string name="Status">Status: </string>
+    <string name="Connect_Progress">Prorerss: </string>
+    <string name="Connect_true">Connected</string>
+    <string name="Connect_false">blank</string>
+    <string name="Connecting1">Connecting</string>
+    <string name="Connecting2">Connecting</string>
+    <string name="Connecting3">Connecting</string>
+    <string name="Pz_input_psw">Please input Password</string>
+    <string name="Correct">Correct!</string>
+    <string name="Error">Field</string>
+    <string name="OK">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_data">如果沒反應，請手動幫我點右上的連線</string>
+    <string name="inputDevicePassword">Please input password</string>
+    <string name="inputDevicePasswordHint">input..</string>
+    <string name="inputError">Error!</string>
+
+    <!--所有的資料中文名稱-->
+    <string name="HH">Highest Alarm</string>
+    <string name="LL">Lowest Alarm</string>
+    <string name="PV">Offset</string>
+    <string name="EH">Alarm Max</string>
+    <string name="EL">Alarm Min</string>
+    <string name="CR">Color</string>
+    <string name="SPK">Speaker</string>
+    <string name="IH">4~20 Max</string>
+    <string name="IL">4~20 Minm</string>
+    <string name="INTER">Interval</string>
+    <string name="device_name">DeviceName</string>
+
+    <!--TH-->
+    <string name="Temperature">Temperature</string>
+    <string name="Humidity">Humidity</string>
+
+    <!--II-->
+    <string name="FirstRow">FirstRow</string>
+    <string name="SecondRow">SecondRow</string>
+    <string name="ThirdRow">ThirdRow</string>
+    <string name="decimal_point">decimal_point</string>
+
+    <!--DataDisplayActivity-->
+    <string name="dont_blank">Dont blank!</string>
+    <string name="DWTitle">Jetec Remote</string>
+    <string name="DWweb">www.jetec.com.tw</string>
+    <string name="Save"> Save</string>
+    <string name="Load"> Export</string>
+    <string name="Download"> Download</string>
+    <string name="DisplayChart"> Chart</string>
+    <string name="ModifyPSW"> Password modify</string>
+    <string name="stopRecord"> Record Stop</string>
+    <string name="StartRecord"> Record Start</string>
+    <string name="plzGetName">Please Name</string>
+    <string name="createSuccess">Success</string>
+    <string name="plzSelectModifyItem">Please select item</string>
+    <string name="plzInputModifyName">Please select Name</string>
+    <string name="modify">Modify</string>
+    <string name="Dont_blank1">Not blank </string>
+    <string name="plzSelectDeleteItem">Please select..</string>
+    <string name="deleteSuccess">Success</string>
+    <string name="NameIsTooLong">Name is too long..</string>
+
+    <!--DataDisplayActivityRecordFunction-->
+    <string name="hour">Hour: </string>
+    <string name="min">Min: </string>
+    <string name="sec">Set: </string>
+    <string name="hour1">Hour</string>
+    <string name="min1">Min</string>
+    <string name="sec1">Sec</string>
+
+    <!--setting dialog-->
+    <string name="btCreate">Create</string>
+    <string name="btModify">Modify</string>
+    <string name="btDelete">Delete</string>
+    <string name="btClose">Cancel</string>
+
+    <!--finalCheckDialog-->
+    <string name="finalCheckTitle">Sure?</string>
+    <string name="loading">Exporting...</string>
+    <string name="loadFinal">Success!</string>
+
+    <!--RecordFunction-->
+    <string name="opening">Opening..</string>
+    <string name="closing">Closing..</string>
+    <string name="opened">Opened!</string>
+    <string name="closed">Closed!</string>
+
+    <!--ModifyPassWord-->
+    <string name="oldPSW">Old Password: </string>
+    <string name="newPSW">New Password: </string>
+    <string name="modifytitle">Modify Password</string>
+    <string name="oldPSWHint">Please input Old Password(6 Word)</string>
+    <string name="newPSWHint">Please input New Password(6 Word)</string>
+    <string name="oldPSWError">Error!</string>
+    <string name="lessSixWord">Must be 6 word</string>
+    <string name="modifySuccess">Success! New Password is : </string>
+    <string name="noUseThePSW">因為某些不可告人的原因～不能用這組密碼喔(´ｖ｀)</string>
+    <string name="noUseThePSW2">Gosh，這種密碼也能被你猜中！可是這組密碼不能用(•ﾟдﾟ•)</string>
+
+    <!--ActionBar-->
+    <string name="isRecoeding">(Recording..)</string>
+
+    <!--DownloadDataAlert-->
+    <string name="alertTitle">Notice:</string>
+    <string name="itWillStopRecord">It will stop record</string>
+    <string name="notify">The function will cost large time, continue?</string>
+    <string name="CountQuantity">Count: </string>
+    <string name="downloadDataTitle">Download</string>
+    <string name="chooseDownModeTitle">Please select Download mode</string>
+    <string name="notifyToDevice">Notice:Fresh download just support the device large at Android 8</string>
+    <string name="stableMode">Stable</string>
+    <string name="HighMode">Fresh</string>
+    <string name="progressing">Progressing...</string>
+    <string name="plzWait">Please wait</string>
+    <string name="Final">Success!</string>
+    <string name="FinalINput">Success!</string>
+    <string name="option">本操作大約會費時:</string>
+    <string name="dataDownloadfield">Field</string>
+    <string name="reTry">Retry</string>
+    <string name="itHaveData">打開圖表仍有部分資料可以使用</string>
+    <string name="noData">尚無資料；請點選資料下載取得資料</string>
+    <string name="itWillDeleteAllofData">This function will Clear ALL OF DATA IN DEVICE, continue?</string>
+    <string name="recordWillStop">Recording will stop, continue?</string>
+    <string name="downDataHint">Hint:If check CANCEL also have some data</string>
+
+    <!--ChartActivity-->
+    <string name="btlist">List</string>
+    <string name="btChoose">Choose Chart</string>
+    <string name="btOutPut">Export</string>
+    <string name="btLookPDF">Report</string>
+    <!--ChartActivity_Dialog-->
+    <string name="MixxxxxChart">Mix Chart</string>
+    <string name="choooooseChartLine">Please select report</string>
+
+    <!--ListDownloadDataActivity-->
+    <string name="listDisplay">List Of Data</string>
+    <string name="dataFilter">Filter Data</string>
+    <string name="freshSearch"><i>search..(EX 22:00)</i></string>
+    <string name="plzPushTwo">Please double check </string>
+
+    <!--DataFilterActivity-->
+    <string name="dataFilter_plzSelectDateTitle">Please select Date</string>
+    <string name="dataFilter_plzSelectTimeTitle">Pleasr select Time</string>
+    <string name="dataFilter_plzSelectIFTitle">Please select:</string>
+    <string name="dataFilter_plzSelectValueTitle">Please input value:</string>
+    <string name="dataFilter_plzSelect">Please select..</string>
+    <string name="dataFilter_plzSelectId">Record ID</string>
+    <string name="dataFilter_plzSelectDateAndTime">Time And Date</string>
+    <string name="dataFilter_search">Search</string>
+    <string name="dataFilter_SelectRange">range is: </string>
+    <string name="dataFilter_YouChoose">Range: </string>
+    <string name="dataFilter_plzChooseDT">please select Date and Time</string>
+    <string name="dataFilter_StartValue">Start ID</string>
+    <string name="dataFilter_EndValue">End ID</string>
+    <string name="dataFilter_IDSelectHint">Hint: It can chick picker input number</string>
+    <string name="BBBBBig">Large</string>
+    <string name="BBBBBefore">Before</string>
+    <string name="SSSSmail">less</string>
+    <string name="AAAAAfter">After</string>
+    <string name="equal">Equal</string>
+    <string name="sorry">Sorry, no data..</string>
+    <string name="ExMessage1">It is not large one day</string>
+    <string name="dataFilter_plzInputDT＿dontblank">Do not blank</string>
+    <string name="plz_notify">(Please notice Cross-day)</string>
+
+    <!--PDF&CSV Chooser-->
+    <string name="CSVPDFTitle">DeviceReport</string>
+    <string name="reportTitle">Report</string>
+    <string name="plzChooseExportType">Please select type of report</string>
+    <string name="fileHasExportSuccess">Success save at</string>
+    <string name="justTime">Time</string>
+    <string name="localHaveAData">The Report is alse open at mobile</string>
+    <string name="localposition">Path: </string>
+
+    <!--新增字串-->
+    <string name="Y_function_TimeSet">Time Setting</string>
+    <string name="question">How to setting？</string>
+    <string name="Y_freshSet">Fresh setting</string>
+    <string name="Y_mutSet">Custom setting</string>
+    <string name="Y_modifyOK">Success!</string>
+    <string name="CO2">CO2</string>
+
+    <!--記錄功能-->
+
+    <string name="capture">Leave this function</string>
+
+
+</resources>

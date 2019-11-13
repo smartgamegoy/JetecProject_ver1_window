@@ -103,6 +103,23 @@ public class SendType {
 
     public static String mSPK;
 
+    public static String mALARM;//三色大顯用
+    public static String mHH1;//三色大顯用
+    public static String mLL1;//三色大顯用
+
+    public static String mHH2;//三色大顯用
+    public static String mLL2;//三色大顯用
+
+    public static String mHH3;//三色大顯用
+    public static String mLL3;//三色大顯用
+
+    public static String HH1;//三色大顯用
+    public static String HH2;//三色大顯用
+    public static String HH3;//三色大顯用
+    public static String LL1;//三色大顯用
+    public static String LL2;//三色大顯用
+    public static String LL3;//三色大顯用
+
     //記錄系列
     public static String mDATE;//日期
     public static String mTIME;//時間

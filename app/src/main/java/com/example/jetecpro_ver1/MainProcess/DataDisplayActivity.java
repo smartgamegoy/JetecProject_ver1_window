@@ -149,7 +149,7 @@ public class DataDisplayActivity extends Activity {
         TextView textView = new TextView(this);
         textView.setText(SendType.DeviceName+"\n"+trans(R.string.isRecoeding));
         textView.setTextColor(Color.WHITE);
-        textView.setTextSize(22);
+        textView.setTextSize(18);
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setDisplayHomeAsUpEnabled(true);

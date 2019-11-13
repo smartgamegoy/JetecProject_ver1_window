@@ -37,7 +37,7 @@ public class SQLiteFunction {
     View                 view;
 
     String               DB_NAME  = SendType.DB_Name;
-    String               DB_TABLE = SendType.DB_TABLE;
+    String               DB_TABLE = SendType.DB_TABLE+SendType.mALARM;
     SQLiteDatabase       mCustomDb;
     private JSONArray    jsonArray;
     ListView             SimpleListView;

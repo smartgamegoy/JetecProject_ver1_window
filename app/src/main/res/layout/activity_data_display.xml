@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="紀錄功能:"
+                    android:text="一般功能:"
                     android:layout_marginTop="30dp"
                     android:textColor="@color/Black2"
                     android:textSize="18sp" />
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="30dp"
-                    android:text="一般功能:"
+                    android:text="記錄功能:"
                     android:textColor="@color/Black2"
                     android:textSize="18sp" />
                 <Button

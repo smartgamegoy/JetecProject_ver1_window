@@ -170,7 +170,43 @@ public class GetDisplayData {
                 SendType.mSPK = d.transformToswitch(data);
                 break;
 
+            case "HH1":
+                SendType.HH1 = getMain;
+                transform(data);
+                SendType.mHH1 = d.transform(data);
+                break;
+            case "LL1":
+                SendType.LL1 = getMain;
+                transform(data);
+                SendType.mLL1 = d.transform(data);
+                break;
+            case "HH2":
+                SendType.HH2 = getMain;
+                transform(data);
+                SendType.mHH2 = d.transform(data);
+                break;
+            case "LL2":
+                SendType.LL2 = getMain;
+                transform(data);
+                SendType.mLL2 = d.transform(data);
+                break;
+            case "HH3":
+                SendType.HH3 = getMain;
+                transform(data);
+                SendType.mHH3 = d.transform(data);
+                break;
+            case "LL3":
+                SendType.LL3 = getMain;
+                transform(data);
+                SendType.mLL3 = d.transform(data);
+                break;
+
+
         }//Switch
+
+        if (data.contains("ALARM")){
+            SendType.mALARM = data.substring(5,data.indexOf("\n"));
+        }
         if (data.contains("COUNT")) {
             SendType.COUNT = data.substring(0, 5);
             int count = Integer.parseInt(data.substring(5, 10));

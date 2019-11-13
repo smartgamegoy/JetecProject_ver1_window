@@ -37,6 +37,8 @@
     <string name="inputError">輸入錯誤！</string>
 
     <!--所有的資料中文名稱-->
+    <string name="HH">最高警報</string>
+    <string name="LL">最低警報</string>
     <string name="PV">補正</string>
     <string name="EH">上限警報</string>
     <string name="EL">下限警報</string>
@@ -66,7 +68,7 @@
     <string name="Download">  資料下載</string>
     <string name="DisplayChart">  顯示圖表</string>
     <string name="ModifyPSW">  修改密碼</string>
-    <string name="stopRecord">  停止紀錄</string>
+    <string name="stopRecord">  停止記錄</string>
     <string name="StartRecord">  開始記錄</string>
     <string name="plzGetName">請取個喜歡的名字吧</string>
     <string name="createSuccess">新增成功</string>
@@ -98,10 +100,10 @@
     <string name="loadFinal">已匯入</string>
 
     <!--RecordFunction-->
-    <string name="opening">開啟紀錄中...</string>
-    <string name="closing">關閉紀錄中...</string>
-    <string name="opened">已開啟紀錄</string>
-    <string name="closed">已停止紀錄</string>
+    <string name="opening">開啟記錄中...</string>
+    <string name="closing">關閉記錄中...</string>
+    <string name="opened">已開啟記錄</string>
+    <string name="closed">已停止記錄</string>
 
     <!--ModifyPassWord-->
     <string name="oldPSW">舊密碼: </string>
@@ -116,11 +118,11 @@
     <string name="noUseThePSW2">Gosh，這種密碼也能被你猜中！可是這組密碼不能用(•ﾟдﾟ•)</string>
 
     <!--ActionBar-->
-    <string name="isRecoeding">(設備紀錄中)</string>
+    <string name="isRecoeding">(設備記錄中)</string>
 
     <!--DownloadDataAlert-->
     <string name="alertTitle">注意:</string>
-    <string name="itWillStopRecord">即將停止紀錄，並開始下載</string>
+    <string name="itWillStopRecord">即將停止記錄，並開始下載</string>
     <string name="notify">該功能可能會花費大量時間，確定繼續?</string>
     <string name="CountQuantity">資料筆數: </string>
     <string name="downloadDataTitle">資料下載</string>
@@ -137,8 +139,8 @@
     <string name="reTry">重試</string>
     <string name="itHaveData">打開圖表仍有部分資料可以使用</string>
     <string name="noData">尚無資料；請點選資料下載取得資料</string>
-    <string name="itWillDeleteAllofData">開啟功能後，將會清除顯示器上已紀錄的資料，確定要繼續嗎?</string>
-    <string name="recordWillStop">即將停止紀錄，繼續嗎?</string>
+    <string name="itWillDeleteAllofData">開啟功能後，將會清除顯示器上已記錄的資料，確定要繼續嗎?</string>
+    <string name="recordWillStop">即將停止記錄，繼續嗎?</string>
     <string name="downDataHint">提示:中途按下取消仍可查看部分已下載資料</string>
 
     <!--ChartActivity-->
@@ -162,7 +164,7 @@
     <string name="dataFilter_plzSelectIFTitle">請選擇篩選條件:</string>
     <string name="dataFilter_plzSelectValueTitle">請輸入篩選數值:</string>
     <string name="dataFilter_plzSelect">請選擇項目</string>
-    <string name="dataFilter_plzSelectId">紀錄編號</string>
+    <string name="dataFilter_plzSelectId">記錄編號</string>
     <string name="dataFilter_plzSelectDateAndTime">日期與時間</string>
     <string name="dataFilter_search">搜尋</string>
     <string name="dataFilter_SelectRange">選取範圍: </string>
@@ -177,7 +179,7 @@
     <string name="AAAAAfter">之後的所有數值</string>
     <string name="equal">等於</string>
     <string name="sorry">很抱歉，沒有相符的數據</string>
-    <string name="ExMessage1">因紀錄未超過一日，故以當日作為日期範圍之日期</string>
+    <string name="ExMessage1">因記錄未超過一日，故以當日作為日期範圍之日期</string>
     <string name="dataFilter_plzInputDT＿dontblank">篩選請勿空白!請選擇時間與日期</string>
     <string name="plz_notify">(請注意跨日，00:00即為隔日)</string>
 
@@ -198,7 +200,7 @@
     <string name="Y_modifyOK">完成設定！</string>
     <string name="CO2">二氧化碳</string>
 
-<!--紀錄功能-->
+<!--記錄功能-->
     
     <string name="capture">擷取並離開下載</string>
 
