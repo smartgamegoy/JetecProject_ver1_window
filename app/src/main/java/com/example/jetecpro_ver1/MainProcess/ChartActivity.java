@@ -12,7 +12,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -26,6 +28,7 @@ import com.example.jetecpro_ver1.PDFandCSVHelper_ChartAct.CreatePDFandCSV;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.SQLite.DBHelper;
 import com.example.jetecpro_ver1.Values.SendType;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -65,6 +68,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
     SQLiteDatabase mCustomDb;
     int displayChartCentrol = Integer.parseInt(String.valueOf(SendType.row));
     JSONArray mJsonArray;
+     ArrayList<String> xLabel = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,21 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chart);
         getWindow().setStatusBarColor(getResources().getColor(R.color.White));
+        if (SendType.FirstWord =='Y'
+                || SendType.SecondWord == 'Y'
+                || SendType.ThirdWord == 'Y'
+                || SendType.FourthWord == 'Y'){
+            switch (SendType.row){
+                case '3':
+                    SendType.row = '2';
+                    break;
+                case '2':
+                    SendType.row = '1';
+                    break;
+            }
+
+            displayChartCentrol =Integer.parseInt(String.valueOf(SendType.row));
+        }
         //連接各按鈕
         setButtons();
         //設定圖表
@@ -234,7 +253,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
             e.printStackTrace();
         }
 
-
+        setXLabel();
         YAxis leftAxis = chart.getAxisLeft();//設置Y軸(左)
         YAxis rightAxis = chart.getAxisRight();//設置Y軸(右)
         rightAxis.setEnabled(false);//讓右邊Y消失
@@ -259,9 +278,6 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
                 Row3(jsonArray, leftAxis);
                 break;
         }
-
-
-
     }
 
     private void Row3(JSONArray jsonArray, YAxis leftAxis) {
@@ -513,7 +529,7 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
             }
 
         } catch (Exception e) {
-
+            Log.v("BT", "Row2: "+e.getMessage());
         }
 
 
@@ -671,6 +687,28 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            if (SendType.FirstWord =='Y'
+                    || SendType.SecondWord == 'Y'
+                    || SendType.ThirdWord == 'Y'
+                    || SendType.FourthWord == 'Y'){
+                switch (SendType.row){
+                    case '2':
+                        SendType.row = '3';
+                        break;
+                    case '1':
+                        SendType.row = '2';
+                        break;
+                }
+            }
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     /**
      * 設置X軸
      */
@@ -678,19 +716,23 @@ public class ChartActivity extends Activity implements OnChartValueSelectedListe
         @Override
         public String getFormattedValue(float value) {
 
-            final ArrayList<String> xLabel = new ArrayList<>();
-            for (int i = 0; i < mJsonArray.length(); i++) {
-                try {
-                    JSONObject jsonObject = mJsonArray.getJSONObject(i);
-                    String Date = jsonObject.getString("RecordDate");
-                    String Time = jsonObject.getString("RecordTime");
-                    xLabel.add(Date + " " + Time);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
-            }
+
             return xLabel.get((int) value);
+        }
+    }
+    /**取得X軸標籤陣列*/
+    private void setXLabel() {
+        for (int i = 0; i < mJsonArray.length(); i++) {
+            try {
+                JSONObject jsonObject = mJsonArray.getJSONObject(i);
+                String Date = jsonObject.getString("RecordDate");
+                String Time = jsonObject.getString("RecordTime");
+                xLabel.add(Date + " " + Time);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

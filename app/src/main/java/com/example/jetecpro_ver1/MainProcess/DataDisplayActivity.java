@@ -261,6 +261,7 @@ public class DataDisplayActivity extends Activity {
                     break;
 
                 case R.id.Go_Chart:
+
                     SQLiteDatabase mCustomDb;
                     String DB_NAME = SendType.DB_Name;
                     String DB_TABLE = SendType.DB_TABLE + "GETRecord";
@@ -452,6 +453,7 @@ public class DataDisplayActivity extends Activity {
         SortData sortData = new SortData(SendType.DeviceType, getBaseContext());
         String[] nameItems = sortData.getNames();
         String[] valuesItems = sortData.getValues();
+
         SimpleListView = findViewById(R.id.listView);
         final ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
         for (int i = 0; i < nameItems.length; i++) {

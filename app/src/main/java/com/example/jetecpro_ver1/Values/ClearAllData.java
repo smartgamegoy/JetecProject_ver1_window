@@ -124,7 +124,7 @@ public class ClearAllData {
         SendType.LL3 = null;
 
 
-
+        SendType.newMonitorChooser = 0;
 
 
 

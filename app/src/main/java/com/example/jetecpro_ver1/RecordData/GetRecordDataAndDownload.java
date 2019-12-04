@@ -133,11 +133,11 @@ public class GetRecordDataAndDownload {
                 SendType.getSendBluetoothLeService.
                         setCharacteristicNotification(SendType.Mycharacteristic, true);
                 SystemClock.sleep(500);
-                SendType.SendForBLEDataType = "get";
-                SendType.getSendBluetoothLeService.
-                        setCharacteristicNotification(SendType.Mycharacteristic, true);
-                SystemClock.sleep(500);
-                SendType.SendForBLEDataType = "Count" + SendType.Count2Send;
+//                SendType.SendForBLEDataType = "get";
+//                SendType.getSendBluetoothLeService.
+//                        setCharacteristicNotification(SendType.Mycharacteristic, true);
+//                SystemClock.sleep(500);
+                SendType.SendForBLEDataType = "Count" + SendType.Count2Send;//指定下載數量
                 SendType.getSendBluetoothLeService.
                         setCharacteristicNotification(SendType.Mycharacteristic, true);
                 SystemClock.sleep(500);

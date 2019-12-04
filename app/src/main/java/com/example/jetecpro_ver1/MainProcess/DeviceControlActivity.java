@@ -36,6 +36,7 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,7 +65,7 @@ import java.util.TimerTask;
  * Bluetooth LE API.
  */
 public class DeviceControlActivity extends Activity {
-    private final static String TAG = DeviceControlActivity.class.getSimpleName();
+    private final static String TAG = DeviceControlActivity.class.getSimpleName()+"My";
 
     public static Activity OptionThis;
 
@@ -147,17 +148,42 @@ public class DeviceControlActivity extends Activity {
                 clearUI();
                 /**接下來是重點===============*/
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-
-
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
                 /**送出資訊*/
                 sendData();
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 /**接收來自Service的訊息*/
-                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                byte[] getByteData= intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
+                final StringBuilder stringBuilder = new StringBuilder(getByteData.length);
+                for (byte byteChar : getByteData)
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
+                if (stringData.contains("BYTE")){
+                    SendType.newMonitorChooser =1;
+                }
+                if (SendType.newMonitorChooser ==1){
+                    newGetValue(stringData,byteArrayToHexStr(getByteData));
+                }else{
+                    displayData(stringData);
+                }
+
             }
         }
     };//onReceive
+
+    /**===========================================================================================*/
+    /*組合式大顯*/
+    private void newGetValue(String stringData,String byteData){
+        Log.d(TAG, "newGetValue byte： "+byteData+", 字串: "+stringData);
+        mDataField.setText("byte： "+byteData+"\n"+"字串: "+stringData);
+        if (stringData.contains("OVER")){
+            waitdialog.dismiss();
+        }
+
+    }
+
+
+    /**===========================================================================================*/
     private boolean count(){
         new CountDownTimer(5000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -193,6 +219,13 @@ public class DeviceControlActivity extends Activity {
     }
 
     private void displayData(final String data) {
+        if (data.contains("ERR")){//如果是組合式大顯顯顯顯顯.....(還沒設定前)
+            AlertDialog.Builder sendType = new AlertDialog.Builder(DeviceControlActivity.this);
+            View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.new_dialog_type_chooser,null);
+            sendType.setView(view);
+            sendType.show();
+
+        }
 
 
         if (data != null) {
@@ -567,6 +600,23 @@ public class DeviceControlActivity extends Activity {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);//查找GATT服務
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);//從服務中接受(收?)數據
         return intentFilter;
+    }
+
+    /**
+     * Byte轉16進字串工具
+     */
+    public static String byteArrayToHexStr(byte[] byteArray) {
+        if (byteArray == null) {
+            return null;
+        }
+
+        StringBuilder hex = new StringBuilder(byteArray.length * 2);
+        for (byte aData : byteArray) {
+            hex.append(String.format("%02X", aData));
+        }
+        String gethex = hex.toString();
+        return gethex;
+
     }
 
 }

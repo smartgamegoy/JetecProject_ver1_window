@@ -29,6 +29,8 @@ public class SendType {
     public static String DB_Name = "LeCustomDB.db";
     public static String DB_TABLE;
 
+    public static int newMonitorChooser;
+
 
 
 //    以下是所有會出現的資料

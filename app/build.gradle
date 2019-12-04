@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
 
-    signingConfigs{
-        Remot{
+    signingConfigs {
+        Remot {
             keyAlias 'Jetec'
             keyPassword 'jetec0000'
-            storeFile(  )
+            storeFile()
             storePassword 'jetec0000'
         }
     }
@@ -15,8 +15,8 @@ android {
         applicationId "com.jetec.nordic_googleplay"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 54
-        versionName "6.0.4"
+        versionCode 57
+        versionName "6.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -54,6 +54,7 @@ dependencies {
     implementation 'com.itextpdf:itextpdf:5.5.12'//寫PDF,來源->
     // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
     implementation 'com.itextpdf:itext-asian:5.2.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 
 //    implementation 'org.apache.pdfbox:pdfbox:2.0.17'//另一個寫PDF的,來源->
     //https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox/2.0.17
