@@ -264,18 +264,16 @@ public class DeviceControlActivity extends Activity {
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
                     SystemClock.sleep(500);
-                    SendType.SendForBLEDataType = "NAMEMyJTC-N";
+                    SendType.SendForBLEDataType = "NAMEJTC"+getType;
                     SendType.getSendBluetoothLeService.
                             setCharacteristicNotification(SendType.Mycharacteristic, true);
                     SystemClock.sleep(500);
                     mChoose.clear();
                     runOnUiThread(()->{
                         progressDialog.dismiss();
-                        finish();
+//                        finish();
                     });
                 }).start();
-
-
 
             }
 
@@ -319,6 +317,11 @@ public class DeviceControlActivity extends Activity {
                 int position_target = target.getAdapterPosition();
                 Collections.swap(mChoose, position_dragged, position_target);
                 mAdapter.notifyItemMoved(position_dragged, position_target);
+                if (mChoose.indexOf("L") !=mChoose.size()-1){
+                    Collections.swap(mChoose,position_target,position_dragged);
+                    mAdapter.notifyItemMoved(position_target,position_dragged);
+                }
+
                 return false;
             }
 
@@ -369,8 +372,19 @@ public class DeviceControlActivity extends Activity {
             mListView.setOnItemClickListener(((parent, view1, position, id) -> {
                 if (mChoose.size() < 6) {
                     String getType = ableSetType[position];
-                    mChoose.add(getType);
-                    mAdapter.notifyDataSetChanged();
+                    if(mChoose.indexOf("L")==-1){//如果L不在最後一個
+                        mChoose.add(getType);
+                        mAdapter.notifyDataSetChanged();
+                    }else {
+                        mChoose.add(getType);
+                        Collections.swap(mChoose,mChoose.size()-1,mChoose.size()-2);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    if (mChoose.indexOf("L")==0){
+                        mChoose.remove(0);
+                        mAdapter.notifyItemRemoved(0);
+                    }
+
                 } else {
                     Toast.makeText(mV.getContext(), "不可以再新增了", Toast.LENGTH_SHORT).show();
                 }
