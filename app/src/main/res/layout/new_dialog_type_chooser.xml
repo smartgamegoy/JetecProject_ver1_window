@@ -19,7 +19,7 @@
 
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/button_DCA_dialog_cancel"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@color/none"
@@ -30,14 +30,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/button_DCA_dialog_clear"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@color/none"
             android:text="清除"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button5"
+            app:layout_constraintStart_toEndOf="@+id/button_DCA_dialog_cancel"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -69,8 +69,8 @@
         <Button
             android:id="@+id/button_DCA_dialog_add"
             style="@android:style/Widget.Button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:background="@drawable/ic_add_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +78,9 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleView_DCA_dialog_getType"
         android:layout_width="match_parent"
-        android:layout_height="600dp" />
+        android:layout_height="600dp"
+        android:layout_margin="10dp"
+        />
 </LinearLayout>

@@ -30,20 +30,34 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jetecpro_ver1.AllOfNewMonitor.NewSupportDeviceControlActivity.NewSupportDCARecycleViewTypeChooser;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.BLE_function.SampleGattAttributes;
 import com.example.jetecpro_ver1.EngineerMode.EngineerMode;
@@ -53,10 +67,13 @@ import com.example.jetecpro_ver1.Values.ClearAllData;
 import com.example.jetecpro_ver1.Values.SendType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect, display data,
@@ -65,20 +82,20 @@ import java.util.TimerTask;
  * Bluetooth LE API.
  */
 public class DeviceControlActivity extends Activity {
-    private final static String TAG = DeviceControlActivity.class.getSimpleName()+"My";
+    private final static String TAG = DeviceControlActivity.class.getSimpleName() + "My";
 
     public static Activity OptionThis;
 
-    public  Dialog waitdialog;
+    public Dialog waitdialog;
     private TextView mConnectionState;
     private TextView mDataField;
     private BluetoothLeService mBluetoothLeService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-    HashMap<String,String> hashMap = new HashMap<>();
+    HashMap<String, String> hashMap = new HashMap<>();
 
     private boolean mConnected = false;
-    int tt=0;
+    int tt = 0;
     int coint = 0;
     boolean PASSOK = false;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
@@ -100,9 +117,9 @@ public class DeviceControlActivity extends Activity {
 
             // Automatically connects to the device upon successful start-up initialization.
             waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
-                    getResources().getString(R.string.plzWait),getResources().getString(R.string.progressing),true);
-                Log.v("BT","自動連線第一次");
-                mBluetoothLeService.connect(SendType.DeviceAddress);
+                    getResources().getString(R.string.plzWait), getResources().getString(R.string.progressing), true);
+            Log.v("BT", "自動連線第一次");
+            mBluetoothLeService.connect(SendType.DeviceAddress);
 
         }
 
@@ -137,8 +154,8 @@ public class DeviceControlActivity extends Activity {
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 updateConnectionState(R.string.Connect_false, getBaseContext().getResources().getColor(R.color.Red_Syojyohi));
-                if (tt <= 0){
-                    Log.v("BT","自動連線第二次");
+                if (tt <= 0) {
+                    Log.v("BT", "自動連線第二次");
 
                     mBluetoothLeService.connect(SendType.DeviceAddress);
                     count();
@@ -153,17 +170,17 @@ public class DeviceControlActivity extends Activity {
                 sendData();
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 /**接收來自Service的訊息*/
-                byte[] getByteData= intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
+                byte[] getByteData = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
                 final StringBuilder stringBuilder = new StringBuilder(getByteData.length);
                 for (byte byteChar : getByteData)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
-                if (stringData.contains("BYTE")){
-                    SendType.newMonitorChooser =1;
+                if (stringData.contains("BYTE")) {
+                    SendType.newMonitorChooser = 1;
                 }
-                if (SendType.newMonitorChooser ==1){
-                    newGetValue(stringData,byteArrayToHexStr(getByteData));
-                }else{
+                if (SendType.newMonitorChooser == 1) {
+                    newGetValue(stringData, byteArrayToHexStr(getByteData));
+                } else {
                     displayData(stringData);
                 }
 
@@ -171,32 +188,215 @@ public class DeviceControlActivity extends Activity {
         }
     };//onReceive
 
-    /**===========================================================================================*/
+    /**
+     * ===========================================================================================
+     */
     /*組合式大顯*/
-    private void newGetValue(String stringData,String byteData){
-        Log.d(TAG, "newGetValue byte： "+byteData+", 字串: "+stringData);
-        mDataField.setText("byte： "+byteData+"\n"+"字串: "+stringData);
-        if (stringData.contains("OVER")){
+    private void newGetValue(String stringData, String byteData) {
+        Log.d(TAG, "newGetValue byte： " + byteData + ", 字串: " + stringData);
+        mDataField.setText("byte： " + byteData + "\n" + "字串: " + stringData);
+
+
+        if (stringData.contains("OVER")) {
             waitdialog.dismiss();
         }
 
     }
 
 
-    /**===========================================================================================*/
-    private boolean count(){
+    /**
+     * 設定組合大顯型號
+     */
+    private void setNewMonitorTypeSetter() {
+        AlertDialog.Builder sendType = new AlertDialog.Builder(DeviceControlActivity.this);
+        View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.new_dialog_type_chooser, null);
+        sendType.setView(view);
+        AlertDialog dialog = sendType.create();
+        RecyclerView recyclerView = view.findViewById(R.id.recycleView_DCA_dialog_getType);
+        Button btAdd = view.findViewById(R.id.button_DCA_dialog_add);
+        Button btSendOut = view.findViewById(R.id.button_DCA_dialog_sendOut);
+        Button btClear = view.findViewById(R.id.button_DCA_dialog_clear);
+        Button btCancel = view.findViewById(R.id.button_DCA_dialog_cancel);
+        ArrayList<String> mChoose = NewSupportDCARecycleViewTypeChooser.mSelectType;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this
+                , DividerItemDecoration.VERTICAL));
+        NewSupportDCARecycleViewTypeChooser mAdapter = new NewSupportDCARecycleViewTypeChooser();
+
+        btSendOut.setOnClickListener((v -> {
+
+            if (mChoose.size() > 0) {
+                ProgressDialog progressDialog = ProgressDialog.show(DeviceControlActivity.this
+                        , getResources().getString(R.string.progressing)
+                        , getResources().getString(R.string.plzWait), false);
+                new Thread(() -> {
+
+                    String defaultName = "BT-" + mChoose.size() + "-";
+                    String getType;
+                    switch (mChoose.size()) {
+                        case 1:
+                            getType = mChoose.get(0);
+                            break;
+                        case 2:
+                            getType = mChoose.get(0) + mChoose.get(1);
+                            break;
+                        case 3:
+                            getType = mChoose.get(0) + mChoose.get(1)
+                                    + mChoose.get(2);
+                            break;
+                        case 4:
+                            getType = mChoose.get(0) + mChoose.get(1)
+                                    + mChoose.get(2) + mChoose.get(3);
+                            break;
+                        case 5:
+                            getType = mChoose.get(0) + mChoose.get(1)
+                                    + mChoose.get(2) + mChoose.get(3) + mChoose.get(4);
+                            break;
+                        case 6:
+                            getType = mChoose.get(0) + mChoose.get(1)
+                                    + mChoose.get(2) + mChoose.get(3) + mChoose.get(4)
+                                    + mChoose.get(5);
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + mChoose.size());
+                    }
+                    SendType.SendForBLEDataType = defaultName + getType + "-N";
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    SystemClock.sleep(500);
+                    SendType.SendForBLEDataType = "NAMEMyJTC-N";
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+                    SystemClock.sleep(500);
+                    mChoose.clear();
+                    runOnUiThread(()->{
+                        progressDialog.dismiss();
+                        finish();
+                    });
+                }).start();
+
+
+
+            }
+
+        }));
+
+        btCancel.setOnClickListener((v) -> {
+            dialog.dismiss();
+            mChoose.clear();
+            finish();
+        });
+        btClear.setOnClickListener((v -> {
+            mChoose.clear();
+            mAdapter.notifyDataSetChanged();
+        }));
+        setAddFunction(view, btAdd, mChoose, mAdapter);//增加型號的按鈕
+        makeRecycleAnimate(recyclerView, mChoose, mAdapter);
+        recyclerView.setAdapter(mAdapter);
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.show();
+    }
+
+    /**
+     * 處理RecycleView內部的排序以及左滑刪除
+     */
+    private void makeRecycleAnimate(RecyclerView recyclerView, ArrayList<String> mChoose, NewSupportDCARecycleViewTypeChooser mAdapter) {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper
+                .SimpleCallback(ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, 0) {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                int swipeFlags = ItemTouchHelper.LEFT;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView
+                    , @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
+
+                int position_dragged = dragged.getAdapterPosition();
+                int position_target = target.getAdapterPosition();
+                Collections.swap(mChoose, position_dragged, position_target);
+                mAdapter.notifyItemMoved(position_dragged, position_target);
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                switch (direction) {
+                    case ItemTouchHelper.LEFT:
+                        mChoose.remove(position);
+                        mAdapter.notifyItemRemoved(position);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addBackgroundColor(ContextCompat.getColor(DeviceControlActivity.this, R.color.redGINSYU))
+                        .addActionIcon(R.drawable.ic_delete_black_24dp)
+                        .create()
+                        .decorate();
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        });
+        helper.attachToRecyclerView(recyclerView);
+    }
+
+    /**
+     * 增加型號的按鈕
+     */
+    private void setAddFunction(View view, Button btAdd, ArrayList<String> mChoose, NewSupportDCARecycleViewTypeChooser mAdapter) {
+        btAdd.setOnClickListener((v -> {
+            AlertDialog.Builder mAdd = new AlertDialog.Builder(DeviceControlActivity.this);
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            double weight = metrics.widthPixels * 0.7;
+            double height = metrics.heightPixels * 0.6;
+            View mV = LayoutInflater.from(view.getContext()).inflate(R.layout.new_dialog_type_chooser_item, null);
+            mAdd.setView(mV);
+            AlertDialog alertDialog = mAdd.create();
+            ListView mListView = mV.findViewById(R.id.listView_DSA_dialog_items);
+            String[] ableSetType = {"T", "H", "C", "D", "E", "M", "O", "P", "Q", "I", "R", "Y", "Z", "L"};
+            ArrayAdapter adapter = new ArrayAdapter(mV.getContext(), android.R.layout.simple_list_item_1, ableSetType);
+            mListView.setAdapter(adapter);
+            alertDialog.show();
+            alertDialog.getWindow().setLayout((int) weight, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mListView.setOnItemClickListener(((parent, view1, position, id) -> {
+                if (mChoose.size() < 6) {
+                    String getType = ableSetType[position];
+                    mChoose.add(getType);
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(mV.getContext(), "不可以再新增了", Toast.LENGTH_SHORT).show();
+                }
+
+            }));
+        }));
+    }
+
+
+    /**
+     * ===========================================================================================
+     */
+    private boolean count() {
         new CountDownTimer(5000, 1000) {
             public void onTick(long millisUntilFinished) {
-                Log.v("BT","倒數中:"+millisUntilFinished / 1000);
+                Log.v("BT", "倒數中:" + millisUntilFinished / 1000);
             }
+
             public void onFinish() {
-                if (mConnected == false){
-                    Log.v("BT","自動連線第三次");
+                if (mConnected == false) {
+                    Log.v("BT", "自動連線第三次");
                     mBluetoothLeService.connect(SendType.DeviceAddress);
-                    new CountDownTimer(5000,1000){
+                    new CountDownTimer(5000, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            Log.v("BT","再次倒數中:"+millisUntilFinished / 1000);
+                            Log.v("BT", "再次倒數中:" + millisUntilFinished / 1000);
                         }
 
                         @Override
@@ -219,12 +419,8 @@ public class DeviceControlActivity extends Activity {
     }
 
     private void displayData(final String data) {
-        if (data.contains("ERR")){//如果是組合式大顯顯顯顯顯.....(還沒設定前)
-            AlertDialog.Builder sendType = new AlertDialog.Builder(DeviceControlActivity.this);
-            View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.new_dialog_type_chooser,null);
-            sendType.setView(view);
-            sendType.show();
-
+        if (data.contains("ERR")) {//如果是組合式大顯顯顯顯顯.....(還沒設定前)
+            setNewMonitorTypeSetter();
         }
 
 
@@ -246,34 +442,32 @@ public class DeviceControlActivity extends Activity {
             SendType.SecondWord = data.charAt(6);
             SendType.row = data.charAt(3);
             if (data.charAt(3) == '3') {
-                Log.v("BT", "裝置有三個輸入"+data.substring(0, 8));
-                if(data.length() == 37){
-                    Log.v("BT", "裝置有三個輸入而且還有記錄功能"+data.substring(0, 9));
+                Log.v("BT", "裝置有三個輸入" + data.substring(0, 8));
+                if (data.length() == 37) {
+                    Log.v("BT", "裝置有三個輸入而且還有記錄功能" + data.substring(0, 9));
                     SendType.FourthWord = data.charAt(8);
                     SendType.ThirdWord = data.charAt(7);
                     String getTable = data.substring(0, 8);
                     SendType.DB_TABLE = getTable.replace("-", "");
-                }else{
+                } else {
                     SendType.ThirdWord = data.charAt(7);
                     String getTable = data.substring(0, 8);
                     SendType.DB_TABLE = getTable.replace("-", "");
                 }
 
-            }
-
-            else if (data.charAt(3) == '2') {
+            } else if (data.charAt(3) == '2') {
                 Log.v("BT", "裝置有兩個輸入");
-                if (data.length() == 33){
+                if (data.length() == 33) {
                     Log.v("BT", "裝置有兩個輸入而且還有記錄功能");
                     SendType.ThirdWord = data.charAt(7);
                     String getTable = data.substring(0, 8);
                     SendType.DB_TABLE = getTable.replace("-", "");
-                }else{
+                } else {
                     String getTable = data.substring(0, 7);
                     SendType.DB_TABLE = getTable.replace("-", "");
                 }
 
-            }else if(data.charAt(3) =='1'){
+            } else if (data.charAt(3) == '1') {
                 Log.v("BT", "裝置有一個輸入");
                 String getTable = data.substring(0, 6);
                 SendType.DB_TABLE = getTable.replace("-", "");
@@ -319,7 +513,7 @@ public class DeviceControlActivity extends Activity {
                         PASSOK = true;
                         dialog.dismiss();
                         waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
-                                getResources().getString(R.string.plzWait),getResources().getString(R.string.progressing),true);
+                                getResources().getString(R.string.plzWait), getResources().getString(R.string.progressing), true);
 //                        new CountDownTimer(3000, 1000) {
 //                            @Override
 //                            public void onTick(long millisUntilFinished) {
@@ -339,13 +533,13 @@ public class DeviceControlActivity extends Activity {
 //                            }
 //                        }.start();
 
-                    } else if(!edInput.getText().toString().isEmpty()&&
-                    edInput.getText().toString().contains("@JETEC")){
-                        Toast.makeText(getBaseContext(),"工程師模式",Toast.LENGTH_SHORT).show();
+                    } else if (!edInput.getText().toString().isEmpty() &&
+                            edInput.getText().toString().contains("@JETEC")) {
+                        Toast.makeText(getBaseContext(), "工程師模式", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(DeviceControlActivity.this, EngineerMode.class);
                         startActivity(intent);
 
-                    }else {
+                    } else {
                         Toast.makeText(getBaseContext(), R.string.inputError, Toast.LENGTH_LONG).show();
                     }
                 }
@@ -355,11 +549,11 @@ public class DeviceControlActivity extends Activity {
         String getMain = data.substring(0, 3);
         GetDisplayData get1 = new GetDisplayData(data);
         get1.analysisData(getMain);
-        if (PASSOK == true){
+        if (PASSOK == true) {
 
 //            hashMap.put(getMain,data.substring(3,10));
 
-            new  CountDownTimer(5000,1000){
+            new CountDownTimer(5000, 1000) {
 
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -368,9 +562,9 @@ public class DeviceControlActivity extends Activity {
 
                 @Override
                 public void onFinish() {
-                    if (SendType.NormalData.contains("OVER")){
+                    if (SendType.NormalData.contains("OVER")) {
 //                        Log.v("BT","已正常連線取得數據");
-                    }else {
+                    } else {
                         SendType.SendForBLEDataType = "get";
                         SendType.getSendBluetoothLeService.
                                 setCharacteristicNotification(SendType.Mycharacteristic, true);
@@ -380,7 +574,7 @@ public class DeviceControlActivity extends Activity {
         }
 
 
-        if (data.contains("OVER")){
+        if (data.contains("OVER")) {
             switch (SendType.ThirdWord) {
                 case 'L':
                     if (SendType.SecondWord == 'L' || SendType.ThirdWord == 'L') {
@@ -406,12 +600,12 @@ public class DeviceControlActivity extends Activity {
                     break;
 
             }
-            if(coint == 0){
+            if (coint == 0) {
                 SendType.SendForBLEDataType = "get";
                 SendType.getSendBluetoothLeService.
                         setCharacteristicNotification(SendType.Mycharacteristic, true);
                 coint++;
-            }else if(coint ==1){
+            } else if (coint == 1) {
                 PASSOK = false;
 //                Log.v("BT","HashMap測試:\n"+hashMap);
                 goNextActivity();
@@ -421,9 +615,10 @@ public class DeviceControlActivity extends Activity {
         }
 
 
-
     }//displayData(回傳值都在這邊操作)
-    private void goNextActivity(){
+
+
+    private void goNextActivity() {
         Intent intent = new Intent(DeviceControlActivity.this, DataDisplayActivity.class);
         startActivity(intent);
         waitdialog.dismiss();
@@ -460,7 +655,6 @@ public class DeviceControlActivity extends Activity {
         ((TextView) findViewById(R.id.device_address)).setText(SendType.DeviceName);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         mDataField = (TextView) findViewById(R.id.data_value);
-
 
 
         getActionBar().setTitle(R.string.Connecting3);
@@ -512,14 +706,14 @@ public class DeviceControlActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_connect:
-                Log.v("BT","手動連線");
+                Log.v("BT", "手動連線");
                 mBluetoothLeService.connect(SendType.DeviceAddress);
-                tt=0;
+                tt = 0;
                 return true;
             case R.id.menu_disconnect:
                 mBluetoothLeService.disconnect();
-                tt=1;
-                Log.v("BT","手動取消");
+                tt = 1;
+                Log.v("BT", "手動取消");
                 return true;
             case android.R.id.home:
                 onBackPressed();

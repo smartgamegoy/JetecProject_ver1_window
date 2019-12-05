@@ -25,6 +25,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 repositories {
@@ -58,6 +62,9 @@ dependencies {
 
 //    implementation 'org.apache.pdfbox:pdfbox:2.0.17'//另一個寫PDF的,來源->
     //https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox/2.0.17
+
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'//像google信箱一樣的左滑刪除
+    //https://github.com/xabaras/RecyclerViewSwipeDecorator
 
 
 }
