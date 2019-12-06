@@ -69,6 +69,7 @@ import com.example.jetecpro_ver1.Values.SendType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -370,24 +371,33 @@ public class DeviceControlActivity extends Activity {
             alertDialog.show();
             alertDialog.getWindow().setLayout((int) weight, ViewGroup.LayoutParams.WRAP_CONTENT);
             mListView.setOnItemClickListener(((parent, view1, position, id) -> {
-                if (mChoose.size() < 6) {
+                if (mChoose.size() < 6 ) {
+
                     String getType = ableSetType[position];
-                    if(mChoose.indexOf("L")==-1){//如果L不在最後一個
+                    if(mChoose.indexOf("L")==-1){//如果還沒有Ｌ
                         mChoose.add(getType);
                         mAdapter.notifyDataSetChanged();
                     }else {
                         mChoose.add(getType);
                         Collections.swap(mChoose,mChoose.size()-1,mChoose.size()-2);
                         mAdapter.notifyDataSetChanged();
+                        if (mChoose.indexOf("L")>0&& getType.contains("L")){
+                            mChoose.remove(mChoose.indexOf("L"));
+                            mAdapter.notifyItemRemoved(mChoose.indexOf("L"));
+                        }
+
                     }
                     if (mChoose.indexOf("L")==0){
                         mChoose.remove(0);
                         mAdapter.notifyItemRemoved(0);
                     }
 
+
+
                 } else {
                     Toast.makeText(mV.getContext(), "不可以再新增了", Toast.LENGTH_SHORT).show();
                 }
+
 
             }));
         }));
