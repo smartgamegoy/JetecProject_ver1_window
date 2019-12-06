@@ -325,8 +325,8 @@ public class BluetoothLeService extends Service {
         }
         mBluetoothGatt.readCharacteristic(characteristic);
         record = characteristic.getStringValue(0);
-        Log.v(TAG, "回傳String " + record);
-        Log.d(TAG, "回傳byte[] "+byteArrayToHexStr(characteristic.getValue()));
+        Log.d(TAG, "回傳String " + record);
+        Log.d(TAG, "回傳byte[] "+byteArrayToHexStr(characteristic.getValue())+"\n"+"++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
     }
 
