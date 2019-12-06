@@ -97,9 +97,9 @@ public class DataDisplayActivity extends Activity {
         Stetho.initializeWithDefaults(this);
 
 
-        if (SendType.mLOG != null){
-            Log.v("BT", SendType.mLOG.substring(0,3));
-            if (SendType.mLOG.contains("ON")){
+        if (SendType.mLOG != null) {
+            Log.v("BT", SendType.mLOG.substring(0, 3));
+            if (SendType.mLOG.contains("ON")) {
 //                getActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.redGINSYU)));
 //                getActionBar().setTitle(SendType.DeviceName+R.string.isRecoeding);
                 DeviceScanActivity.DeviceScan.finish();
@@ -108,7 +108,7 @@ public class DataDisplayActivity extends Activity {
                                 .getDrawable(R.drawable.noun_record_2822351_red)
                         , null, null, null);
                 setActionBarTextW();
-            }else {
+            } else {
                 getActionBar().setTitle(SendType.DeviceName);
                 DeviceScanActivity.DeviceScan.finish();
                 btStartRecord.setText(R.string.StartRecord);
@@ -118,7 +118,7 @@ public class DataDisplayActivity extends Activity {
                 setActionBarTextB();
             }
 
-        }else{
+        } else {
             setActionBarTextB();
             DeviceScanActivity.DeviceScan.finish();
         }
@@ -129,10 +129,10 @@ public class DataDisplayActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         View view = findViewById(R.id.menu_disconnect);
         if (view != null && view instanceof TextView) {
-            if (actionBarRecordChoose == 1){
-                ((TextView) view).setTextColor( Color.WHITE );
-            }else if(actionBarRecordChoose == 0){
-                ((TextView) view).setTextColor( Color.BLACK );
+            if (actionBarRecordChoose == 1) {
+                ((TextView) view).setTextColor(Color.WHITE);
+            } else if (actionBarRecordChoose == 0) {
+                ((TextView) view).setTextColor(Color.BLACK);
             }
 
         }
@@ -144,10 +144,12 @@ public class DataDisplayActivity extends Activity {
         return str;
     }
 
-    /**記錄中的ActionBar*/
-    private void setActionBarTextW(){
+    /**
+     * 記錄中的ActionBar
+     */
+    private void setActionBarTextW() {
         TextView textView = new TextView(this);
-        textView.setText(SendType.DeviceName+"\n"+trans(R.string.isRecoeding));
+        textView.setText(SendType.DeviceName + "\n" + trans(R.string.isRecoeding));
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(18);
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -160,8 +162,11 @@ public class DataDisplayActivity extends Activity {
         actionBarRecordChoose = 1;
         invalidateOptionsMenu();
     }
-    /**一般的ActionBar*/
-    private void setActionBarTextB(){
+
+    /**
+     * 一般的ActionBar
+     */
+    private void setActionBarTextB() {
         TextView textView = new TextView(this);
         textView.setText(SendType.DeviceName);
         textView.setTextColor(Color.BLACK);
@@ -200,7 +205,7 @@ public class DataDisplayActivity extends Activity {
 
         } else if (SendType.SecondWord == 'L') {
 
-        }else if(SendType.FourthWord == 'L'){
+        } else if (SendType.FourthWord == 'L') {
 
         } else {
             btChart.setEnabled(false);
@@ -237,7 +242,7 @@ public class DataDisplayActivity extends Activity {
 
                     break;
                 case R.id.Go_DownloadData:
-                    if(btStartRecord.getText().toString().matches(trans(R.string.stopRecord))){
+                    if (btStartRecord.getText().toString().matches(trans(R.string.stopRecord))) {
                         mBuilder.setTitle(R.string.alertTitle);
                         mBuilder.setMessage(getBaseContext().getResources().getString(R.string.itWillStopRecord) + "\n" +
                                 getBaseContext().getResources().getString(R.string.notify));
@@ -254,7 +259,7 @@ public class DataDisplayActivity extends Activity {
                             }
                         });
                         mBuilder.show();
-                    }else{
+                    } else {
                         downLoadEvent();//開啟資料下載
                     }
 
@@ -385,7 +390,10 @@ public class DataDisplayActivity extends Activity {
             }
         }
     };
-    /**下載資料*/
+
+    /**
+     * 下載資料
+     */
     private void downLoadEvent() {
         final Dialog d = ProgressDialog.show(DataDisplayActivity.this,
                 getBaseContext().getResources().getString(R.string.plzWait)
@@ -431,11 +439,11 @@ public class DataDisplayActivity extends Activity {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
 
-            if(drawerLayout.isDrawerOpen(GravityCompat.START) == false){
+            if (drawerLayout.isDrawerOpen(GravityCompat.START) == false) {
                 mBluetoothLeService.disconnect();
                 Toast.makeText(getBaseContext(), "斷開裝置，請重新連接裝置 ", Toast.LENGTH_SHORT).show();
                 finish();
-            }else{
+            } else {
                 drawerLayout.closeDrawers();
             }
 
@@ -484,9 +492,9 @@ public class DataDisplayActivity extends Activity {
             String GetName = nameItems[position];
             String GetValues = valueItems[position];
 
-            if(GetName.contains(trans(R.string.Y_function_TimeSet))){
+            if (GetName.contains(trans(R.string.Y_function_TimeSet))) {
                 AlertDialog.Builder timeSetBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
-                final TimeSet timeSet = new TimeSet(timeSetBuilder,DataDisplayActivity.this,GetName);
+                final TimeSet timeSet = new TimeSet(timeSetBuilder, DataDisplayActivity.this, GetName);
                 timeSetBuilder.setTitle(GetName);
                 timeSetBuilder.setMessage(R.string.question);
                 timeSetBuilder.setPositiveButton(R.string.Y_freshSet, new DialogInterface.OnClickListener() {
@@ -501,87 +509,88 @@ public class DataDisplayActivity extends Activity {
                         timeSet.manualSetting();
                     }
                 });
-                timeSetBuilder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) {}});
+                timeSetBuilder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
                 timeSetBuilder.show();
-            }else {
-            View v;
-            AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
-
-            if (GetName.contains(SendType.SPK)) {//警報
-                v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog, null);
-            }
-            else if (SendType.FirstWord == 'I'
-                    || SendType.SecondWord == 'I'
-                    || SendType.ThirdWord == 'I') {//II的洨數點
-                try{
-                    if (GetName.contains(trans(R.string.decimal_point))) {
-                        v = getLayoutInflater().inflate(R.layout.activity_data_display_numberpicker_dialog, null);
-
-                        mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                    }else if ( GetName.contains(trans(R.string.INTER))) {//處理有紀錄的('L')
-                        v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
-
-                        mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-
-                         }
-
-                    else{
-                        v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
-                        mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                    }
-
-                }catch (Exception e){
-                    v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
-
-                }
-
-
-            } else if ( GetName.contains(trans(R.string.INTER))) {//處理有紀錄的('L')
-                v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
-
-                mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
             } else {
-                v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
-                mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                View v;
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DataDisplayActivity.this);
+
+                if (GetName.contains(SendType.SPK)) {//警報
+                    v = getLayoutInflater().inflate(R.layout.activity_data_display_switch_dialog, null);
+                } else if (SendType.FirstWord == 'I'
+                        || SendType.SecondWord == 'I'
+                        || SendType.ThirdWord == 'I') {//II的洨數點
+                    try {
+                        if (GetName.contains(trans(R.string.decimal_point))) {
+                            v = getLayoutInflater().inflate(R.layout.activity_data_display_numberpicker_dialog, null);
+
+                            mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                        } else if (GetName.contains(trans(R.string.INTER))) {//處理有紀錄的('L')
+                            v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
+
+                            mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+
+                        } else {
+                            v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
+                            mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                        }
+
+                    } catch (Exception e) {
+                        v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
+
+                    }
+
+
+                } else if (GetName.contains(trans(R.string.INTER))) {//處理有紀錄的('L')
+                    v = getLayoutInflater().inflate(R.layout.activity_data_display_number_picker_function_dialog, null);
+
+                    mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                } else {
+                    v = getLayoutInflater().inflate(R.layout.activity_data_display_input_modify_data_dialog, null);
+                    mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                }
+                final NumberPicker nbDPpicker = v.findViewById(R.id.numberPickerDPChoose);
+                final EditText edInput = (EditText) v.findViewById(R.id.editValueInput);
+                final Switch swInput = (Switch) v.findViewById(R.id.switch1);
+                final NumberPicker npHour = (NumberPicker) v.findViewById(R.id.hourPic);
+                final NumberPicker npMin = (NumberPicker) v.findViewById(R.id.minPic);
+                final NumberPicker npSec = (NumberPicker) v.findViewById(R.id.secPick);
+
+
+                mBuilder.setTitle(GetName);
+                mBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 });
-            }
-            final NumberPicker nbDPpicker   = v.findViewById(R.id.numberPickerDPChoose);
-            final EditText edInput      = (EditText) v.findViewById(R.id.editValueInput);
-            final Switch swInput        = (Switch) v.findViewById(R.id.switch1);
-            final NumberPicker npHour   = (NumberPicker) v.findViewById(R.id.hourPic);
-            final NumberPicker npMin    = (NumberPicker) v.findViewById(R.id.minPic);
-            final NumberPicker npSec    = (NumberPicker) v.findViewById(R.id.secPick);
-
-
-            mBuilder.setTitle(GetName);
-            mBuilder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
-            mBuilder.setView(v);
-            DDA_SendData dda_sendData = new DDA_SendData(GetName, GetValues, edInput, swInput, getBaseContext()
-                    , npHour, npMin, npSec,nbDPpicker);
-            dda_sendData.mAlertDialog(mBuilder);
+                mBuilder.setView(v);
+                DDA_SendData dda_sendData = new DDA_SendData(GetName, GetValues, edInput, swInput, getBaseContext()
+                        , npHour, npMin, npSec, nbDPpicker);
+                dda_sendData.mAlertDialog(mBuilder);
             }
         }
     });
@@ -660,7 +669,14 @@ public class DataDisplayActivity extends Activity {
             //接收來自藍芽傳回的資料
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 /**接收來自Service的訊息*/
-                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+
+                byte[] getByteData = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
+                final StringBuilder stringBuilder = new StringBuilder(getByteData.length);
+                for (byte byteChar : getByteData)
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
+                displayData(stringData);
+
             }
         }
     };//onReceive
@@ -682,14 +698,17 @@ public class DataDisplayActivity extends Activity {
         get.getRecord();
 
         //如果有改名字
-        if (actionBarRecordChoose ==1){
+        if (actionBarRecordChoose == 1) {
             setActionBarTextW();
-        }else if(actionBarRecordChoose == 0){
+        } else if (actionBarRecordChoose == 0) {
             setActionBarTextB();
         }
 
     }
-    /**連線狀態控制*/
+
+    /**
+     * 連線狀態控制
+     */
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override

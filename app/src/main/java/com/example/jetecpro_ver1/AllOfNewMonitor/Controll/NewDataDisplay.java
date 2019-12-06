@@ -1,4 +1,4 @@
-package com.example.jetecpro_ver1.AllOfNewMonitor;
+package com.example.jetecpro_ver1.AllOfNewMonitor.Controll;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

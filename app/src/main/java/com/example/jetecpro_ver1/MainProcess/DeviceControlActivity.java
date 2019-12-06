@@ -19,7 +19,6 @@ package com.example.jetecpro_ver1.MainProcess;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Presentation;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -35,7 +34,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -44,7 +42,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,7 +54,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jetecpro_ver1.AllOfNewMonitor.NewSupportDeviceControlActivity.NewSupportDCARecycleViewTypeChooser;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DeviceInitialzation;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSupportDCARecycleViewTypeChooser;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.BLE_function.SampleGattAttributes;
 import com.example.jetecpro_ver1.EngineerMode.EngineerMode;
@@ -69,10 +67,7 @@ import com.example.jetecpro_ver1.Values.SendType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -190,7 +185,7 @@ public class DeviceControlActivity extends Activity {
     };//onReceive
 
     /**
-     * ===========================================================================================
+     * ======================================組合式大顯===============================================
      */
     /*組合式大顯*/
     private void newGetValue(String stringData, String byteData) {
@@ -231,8 +226,21 @@ public class DeviceControlActivity extends Activity {
                         , getResources().getString(R.string.progressing)
                         , getResources().getString(R.string.plzWait), false);
                 new Thread(() -> {
+                    int row = mChoose.size();
+                    if (mChoose.contains("L")){
+                        row--;
+                    }
+                    if (mChoose.contains("R")){
+                        row--;
+                    }
+                    if (mChoose.contains("Y")){
+                        row--;
+                    }
+                    if (mChoose.contains("Z")){
+                        row--;
+                    }
 
-                    String defaultName = "BT-" + mChoose.size() + "-";
+                    String defaultName = "BT-" + row + "-";
                     String getType;
                     switch (mChoose.size()) {
                         case 1:
@@ -261,14 +269,16 @@ public class DeviceControlActivity extends Activity {
                         default:
                             throw new IllegalStateException("Unexpected value: " + mChoose.size());
                     }
-                    SendType.SendForBLEDataType = defaultName + getType + "-N";
-                    SendType.getSendBluetoothLeService.
-                            setCharacteristicNotification(SendType.Mycharacteristic, true);
-                    SystemClock.sleep(500);
-                    SendType.SendForBLEDataType = "NAMEJTC"+getType;
-                    SendType.getSendBluetoothLeService.
-                            setCharacteristicNotification(SendType.Mycharacteristic, true);
-                    SystemClock.sleep(500);
+                    DeviceInitialzation d = new DeviceInitialzation();
+                    d.inItalzation(defaultName,getType,"-N",mChoose);
+//                    SendType.SendForBLEDataType = defaultName + getType + "-N";
+//                    SendType.getSendBluetoothLeService.
+//                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+//                    SystemClock.sleep(500);
+//                    SendType.SendForBLEDataType = "NAMEJTC"+getType;
+//                    SendType.getSendBluetoothLeService.
+//                            setCharacteristicNotification(SendType.Mycharacteristic, true);
+//                    SystemClock.sleep(500);
                     mChoose.clear();
                     runOnUiThread(()->{
                         progressDialog.dismiss();
@@ -371,41 +381,34 @@ public class DeviceControlActivity extends Activity {
             alertDialog.show();
             alertDialog.getWindow().setLayout((int) weight, ViewGroup.LayoutParams.WRAP_CONTENT);
             mListView.setOnItemClickListener(((parent, view1, position, id) -> {
-                if (mChoose.size() < 6 ) {
-
+                if (mChoose.size() < 6 ) {//最多就六個不能再多
                     String getType = ableSetType[position];
                     if(mChoose.indexOf("L")==-1){//如果還沒有Ｌ
                         mChoose.add(getType);
                         mAdapter.notifyDataSetChanged();
-                    }else {
+                    }else {//有L
                         mChoose.add(getType);
                         Collections.swap(mChoose,mChoose.size()-1,mChoose.size()-2);
                         mAdapter.notifyDataSetChanged();
-                        if (mChoose.indexOf("L")>0&& getType.contains("L")){
+                        if (mChoose.indexOf("L")>0&& getType.contains("L")){//L重複
                             mChoose.remove(mChoose.indexOf("L"));
                             mAdapter.notifyItemRemoved(mChoose.indexOf("L"));
                         }
-
                     }
-                    if (mChoose.indexOf("L")==0){
+                    if (mChoose.indexOf("L")==0){//L在第一個
                         mChoose.remove(0);
                         mAdapter.notifyItemRemoved(0);
                     }
-
-
-
                 } else {
                     Toast.makeText(mV.getContext(), "不可以再新增了", Toast.LENGTH_SHORT).show();
                 }
-
-
             }));
         }));
     }
 
 
     /**
-     * ===========================================================================================
+     * ======================================組合式大顯===============================================
      */
     private boolean count() {
         new CountDownTimer(5000, 1000) {

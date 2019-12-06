@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Base">
-        <activity android:name=".AllOfNewMonitor.NewDataDisplay"></activity>
+        <activity android:name=".AllOfNewMonitor.Controll.NewDataDisplay"></activity>
         <activity android:name=".EngineerMode.EngineerMode" />
         <activity android:name=".SupportListDownloadListView.DownloadDataFilteredActivity" />
         <activity android:name=".SupportListDownloadListView.DataFilterActivity" />

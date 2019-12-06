@@ -29,7 +29,8 @@ public class SendType {
     public static String DB_Name = "LeCustomDB.db";
     public static String DB_TABLE;
 
-    public static int newMonitorChooser;
+    public static int newMonitorChooser;//判斷是否為組合式大顯
+    public static int sentByteChoose;//決定以哪種方式送資料，1為Byte,0為字串
 
 
 
@@ -135,4 +136,5 @@ public class SendType {
     //紀錄時間計算
     public static String arrayDate;
     public static String arrayTime;
+
 }

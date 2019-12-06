@@ -43,7 +43,7 @@ import java.util.UUID;
  * given Bluetooth LE device.
  */
 public class BluetoothLeService extends Service {
-    private final static String TAG = BluetoothLeService.class.getSimpleName();
+    private final static String TAG = "藍芽接收狀況";
 
     private BluetoothManager mBluetoothManager;//藍芽管理器
     private BluetoothAdapter mBluetoothAdapter;//藍芽適配器
@@ -154,7 +154,7 @@ public class BluetoothLeService extends Service {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
-            Log.v("BT", "花送成功");
+//            Log.d(TAG, "發送成功！");
         }
 
         @Override
@@ -325,8 +325,8 @@ public class BluetoothLeService extends Service {
         }
         mBluetoothGatt.readCharacteristic(characteristic);
         record = characteristic.getStringValue(0);
-        Log.v("BT", "readCharacteristic回傳: " + record);
-
+        Log.v(TAG, "回傳String " + record);
+        Log.d(TAG, "回傳byte[] "+byteArrayToHexStr(characteristic.getValue()));
 
     }
 
@@ -388,10 +388,20 @@ public class BluetoothLeService extends Service {
             return;
         }
 
-        byte[] strBytes = SendType.SendForBLEDataType.getBytes();
-        RxChar.setValue(SendType.SendForBLEbyteType);
-        RxChar.setValue(strBytes);
-        mBluetoothGatt.writeCharacteristic(RxChar);
+        if (SendType.sentByteChoose == 1){
+            RxChar.setValue(SendType.SendForBLEbyteType);
+            mBluetoothGatt.writeCharacteristic(RxChar);
+            Log.d(TAG, "發送(byte[]) "+ byteArrayToHexStr(SendType.SendForBLEbyteType));
+            SendType.sentByteChoose = 0;
+        }else{
+            byte[] strBytes = SendType.SendForBLEDataType.getBytes();
+            RxChar.setValue(SendType.SendForBLEbyteType);
+            RxChar.setValue(strBytes);
+            mBluetoothGatt.writeCharacteristic(RxChar);
+            Log.d(TAG, "發送(String) "+ SendType.SendForBLEDataType);
+
+        }
+
 
     }
 
@@ -409,6 +419,23 @@ public class BluetoothLeService extends Service {
 //            Log.v("BT","DCA.取得Gatt:"+ mBluetoothGatt.getServices().get(x).getUuid().toString());
 //        }
         return mBluetoothGatt.getServices();
+    }
+
+    /**
+     * Byte轉16進字串工具
+     */
+    public static String byteArrayToHexStr(byte[] byteArray) {
+        if (byteArray == null) {
+            return null;
+        }
+
+        StringBuilder hex = new StringBuilder(byteArray.length * 2);
+        for (byte aData : byteArray) {
+            hex.append(String.format("%02X", aData));
+        }
+        String gethex = hex.toString();
+        return gethex;
+
     }
 
 }
