@@ -40,11 +40,160 @@ public class DeviceInitialzation {
         sendString("DATE"+date.format(dNow));
         SystemClock.sleep(500);
         sendString("TIME"+time.format(dNow));
+        SystemClock.sleep(500);
+        sendString(defaultName + getType + newMonitorWord);
+        SystemClock.sleep(500);
         //送大家都有的值
+        for (int i=0;i<mChoose.size();i++){//取得選擇型號與取得它的排數
+            Log.d(TAG, "inItalzation: 第"+(i+1)+"排是："+mChoose.get(i));
+            switch (mChoose.get(i)){
+                case "T"://溫
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,65);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,-10);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,0);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
+                case "H"://濕
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,100);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,0);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,0);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
+                case "C"://二氧化碳2000
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,2000);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,0);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,0);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
+                case "D"://二氧化碳3000
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,3000);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,0);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,0);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
+                case "E"://二氧化碳5000
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,5000);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,0);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,0);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
+                case "M"://PM2.5
+                case "P"://壓力
+                case "Q"://PM10
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,1000);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,0);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,0);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
+                case "O"://噪音
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,130);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,30);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,0);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
 
+                case "I"://類比
+                    sendByte(i+1,1,0,0);//PV
+                    SystemClock.sleep(500);
+                    sendByte(i+1,2,0,9999);//EH
+                    SystemClock.sleep(500);
+                    sendByte(i+1,3,0,-9999);//EL
+                    SystemClock.sleep(500);
+                    sendByte(i+1,6,0,9999);//CR
+                    SystemClock.sleep(500);
+                    sendByte(i+1,10,0,0);//RL1
+                    SystemClock.sleep(500);
+                    sendByte(i+1,11,0,0);//RL2
+                    SystemClock.sleep(500);
+                    sendByte(i+1,12,0,0);//RL3
+                    SystemClock.sleep(500);
+                    break;
+                case "R":
 
+                    break;
+                case "Y":
 
+                    break;
+                case "Z":
 
+                    break;
+                case "L":
+
+                    break;
+
+            }
+
+        }
 
 
 

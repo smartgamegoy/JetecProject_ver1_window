@@ -230,15 +230,6 @@ public class DeviceControlActivity extends Activity {
                     if (mChoose.contains("L")){
                         row--;
                     }
-                    if (mChoose.contains("R")){
-                        row--;
-                    }
-                    if (mChoose.contains("Y")){
-                        row--;
-                    }
-                    if (mChoose.contains("Z")){
-                        row--;
-                    }
 
                     String defaultName = "BT-" + row + "-";
                     String getType;
@@ -266,23 +257,22 @@ public class DeviceControlActivity extends Activity {
                                     + mChoose.get(2) + mChoose.get(3) + mChoose.get(4)
                                     + mChoose.get(5);
                             break;
+                        case 7:
+                            getType = mChoose.get(0) + mChoose.get(1)
+                                    + mChoose.get(2) + mChoose.get(3) + mChoose.get(4)
+                                    + mChoose.get(5) +mChoose.get(6);
+                            break;
                         default:
                             throw new IllegalStateException("Unexpected value: " + mChoose.size());
                     }
                     DeviceInitialzation d = new DeviceInitialzation();
                     d.inItalzation(defaultName,getType,"-N",mChoose);
-//                    SendType.SendForBLEDataType = defaultName + getType + "-N";
-//                    SendType.getSendBluetoothLeService.
-//                            setCharacteristicNotification(SendType.Mycharacteristic, true);
-//                    SystemClock.sleep(500);
-//                    SendType.SendForBLEDataType = "NAMEJTC"+getType;
-//                    SendType.getSendBluetoothLeService.
-//                            setCharacteristicNotification(SendType.Mycharacteristic, true);
-//                    SystemClock.sleep(500);
                     mChoose.clear();
+
                     runOnUiThread(()->{
+                        mAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
-//                        finish();
+                        finish();
                     });
                 }).start();
 
@@ -328,7 +318,7 @@ public class DeviceControlActivity extends Activity {
                 int position_target = target.getAdapterPosition();
                 Collections.swap(mChoose, position_dragged, position_target);
                 mAdapter.notifyItemMoved(position_dragged, position_target);
-                if (mChoose.indexOf("L") !=mChoose.size()-1){
+                if (mChoose.contains("L")&&mChoose.indexOf("L") !=mChoose.size()-1){
                     Collections.swap(mChoose,position_target,position_dragged);
                     mAdapter.notifyItemMoved(position_target,position_dragged);
                 }
@@ -386,6 +376,7 @@ public class DeviceControlActivity extends Activity {
                     if(mChoose.indexOf("L")==-1){//如果還沒有Ｌ
                         mChoose.add(getType);
                         mAdapter.notifyDataSetChanged();
+                        getYZ(mChoose, mAdapter, getType);//處理Y,Z的憲制問題
                     }else {//有L
                         mChoose.add(getType);
                         Collections.swap(mChoose,mChoose.size()-1,mChoose.size()-2);
@@ -394,16 +385,46 @@ public class DeviceControlActivity extends Activity {
                             mChoose.remove(mChoose.indexOf("L"));
                             mAdapter.notifyItemRemoved(mChoose.indexOf("L"));
                         }
-                    }
+                        getYZ(mChoose, mAdapter, getType);//處理Y,Z的憲制問題
+                    }//else
                     if (mChoose.indexOf("L")==0){//L在第一個
                         mChoose.remove(0);
                         mAdapter.notifyItemRemoved(0);
                     }
                 } else {
-                    Toast.makeText(mV.getContext(), "不可以再新增了", Toast.LENGTH_SHORT).show();
+                    if (ableSetType[position].contains("L")&&!mChoose.contains("L")){
+                        mChoose.add("L");
+                        mAdapter.notifyDataSetChanged();
+                    }else{
+                        Toast.makeText(mV.getContext(), "不可以再新增了", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }));
         }));
+    }
+    /**處理Y,Z限制問題*/
+    private void getYZ(ArrayList<String> mChoose, NewSupportDCARecycleViewTypeChooser mAdapter, String getType) {
+        /*規則
+        * 有Y就不可有Z
+        * 有Z就不可有Y
+        * Z只能出現一次
+        * Y只能出現兩次*/
+        if (getType.contains("Y") && mChoose.contains("Z")) {
+            mChoose.remove(mChoose.indexOf("Y"));
+            mAdapter.notifyItemRemoved(mChoose.indexOf("Y"));
+        } else if (getType.contains("Z") && mChoose.contains("Y")) {
+            mChoose.remove(mChoose.indexOf("Z"));
+            mAdapter.notifyItemRemoved(mChoose.indexOf("Z"));
+        }
+        if (Collections.frequency(mChoose, "Y") > 2) {
+            mChoose.remove(mChoose.indexOf("Y"));
+            mAdapter.notifyItemRemoved(mChoose.indexOf("Y"));
+        }
+        if (Collections.frequency(mChoose, "Z") > 1) {
+            mChoose.remove(mChoose.indexOf("Z"));
+            mAdapter.notifyItemRemoved(mChoose.indexOf("Z"));
+        }
     }
 
 
