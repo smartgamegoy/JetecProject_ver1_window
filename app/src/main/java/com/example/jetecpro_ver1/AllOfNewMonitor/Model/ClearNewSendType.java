@@ -26,5 +26,8 @@ public class ClearNewSendType {
         NewSendType.newLastForthWord = ' ';
         NewSendType.row = 0;
         NewSendType.logSwitch = false;
+        NewSendType.engineerMode = false;
+        NewSendType.newDeviceName = " ";
+        NewSendType.newDeviceAddress = " ";
     }
 }

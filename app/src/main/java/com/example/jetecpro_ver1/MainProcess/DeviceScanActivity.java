@@ -131,6 +131,7 @@ public class DeviceScanActivity extends ListActivity {
         SendType.DeviceName = device.getName();
         SendType.DeviceAddress = device.getAddress();
 
+
         Intent intent = new Intent(DeviceScanActivity.this,
                 DeviceControlActivity.class);
         startActivity(intent);

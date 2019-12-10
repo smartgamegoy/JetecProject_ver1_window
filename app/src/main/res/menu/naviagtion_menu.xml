@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/button_NDD_Save"
+        android:icon="@drawable/ic_save_black_24dp"
+        android:title="@string/Save" />
+    <item android:id="@+id/button_NDD_Export"
+        android:icon="@drawable/ic_file_upload_black_24dp"
+        android:title="@string/Load" />
+    <item android:id="@+id/button_NDD_modifyPasswd"
+        android:icon="@drawable/noun_edit_password_1688576"
+        android:title="@string/ModifyPSW" />
+    <item android:id="@+id/button_NDD_startlog"
+        android:icon="@drawable/noun_record_2822351"
+        android:title="@string/StartRecord" />
+    <item android:id="@+id/button_NDD_chart"
+        android:icon="@drawable/noun_chart_283088"
+        android:title="@string/DisplayChart" />
+
+
+</menu>

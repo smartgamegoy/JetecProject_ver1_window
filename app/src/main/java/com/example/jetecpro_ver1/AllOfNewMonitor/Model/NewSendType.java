@@ -2,7 +2,10 @@ package com.example.jetecpro_ver1.AllOfNewMonitor.Model;
 
 public class NewSendType {
 
+    //取得裝置基本資訊
     public static String newDeviceType;
+    public static String newDeviceName;
+    public static String newDeviceAddress;
 
     //他奶奶的有事沒事就再加，一次來10個字啦！怕了吧(BT-XXXXXXXXX-N)
     public static int row;
@@ -23,7 +26,13 @@ public class NewSendType {
     public static char newLastThirdWord;
     public static char newLastForthWord;
 
+    //是否有紀錄
     public static boolean logSwitch;
+
+    //是否進入工程師模式
+    public static boolean engineerMode;
+
+
 
 
 }

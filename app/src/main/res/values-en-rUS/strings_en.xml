@@ -208,5 +208,9 @@
 <!--    新大顯-->
 
     <string name="newDisconnect">Disconnect</string>
-
+    <string name="Noise">Noise</string>
+    <string name="press">Pressure</string>
+    <string name="output">Output</string>
+    <string name="deviceSetting">DeviceSetting</string>
+    <string name="analog">analog</string>
 </resources>

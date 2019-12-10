@@ -13,6 +13,5 @@
         android:hint="@string/inputDevicePasswordHint"
         android:inputType="textPersonName"
         android:maxLength="6"
-        android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         />
 </LinearLayout>

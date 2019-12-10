@@ -181,7 +181,7 @@ public class DeviceControlActivity extends Activity {
                 if (SendType.newMonitorChooser == 1) {
                     newGetValue(stringData, byteArrayToHexStr(getByteData));
                 } else {
-                    displayData(stringData);
+                    displayData(stringData,byteArrayToHexStr(getByteData));
                 }
 
             }
@@ -465,14 +465,15 @@ public class DeviceControlActivity extends Activity {
         return false;
     }
 
-    private void displayData(final String data) {
-        if (data.contains("ERR")) {//如果是組合式大顯顯顯顯顯.....(還沒設定前)
+    private void displayData(final String data,String byteString) {
+        if (byteString.matches("455252")) {//如果是組合式大顯顯顯顯顯.....(還沒設定前)
             setNewMonitorTypeSetter();
         }
         if (data.contains("BT-")&&data.substring(data.lastIndexOf("-")+1).contains("N")){//取得新大顯型號資訊
             new Thread(()->{
                 String type = data.substring(0,data.lastIndexOf("\n"));
                 Log.d(TAG, "displayData: "+type);
+                NewSendType.newDeviceType = type;
                 NewSendType.row = Integer.parseInt(type.substring(3,4));
                 String getType = type.substring(5,type.lastIndexOf("-"));
                 int typeLength = type.substring(5,type.lastIndexOf("-")).length();//取得有幾個字
@@ -654,30 +655,27 @@ public class DeviceControlActivity extends Activity {
                         dialog.dismiss();
                         waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
                                 getResources().getString(R.string.plzWait), getResources().getString(R.string.progressing), true);
-//                        new CountDownTimer(3000, 1000) {
-//                            @Override
-//                            public void onTick(long millisUntilFinished) {
-//                                Log.v("BT","讀秒中:"+millisUntilFinished / 1000);
-//                            }
-//
-//                            @Override
-//                            public void onFinish() {
-//                                if (SendType.NormalData.contains("OVER")){
-//                                    Log.v("BT","已正常連線取得數據");
-//                                }else {
-//                                    SendType.SendForBLEDataType = "get";
-//                                    SendType.getSendBluetoothLeService.
-//                                            setCharacteristicNotification(SendType.Mycharacteristic, true);
-//                                }
-//
-//                            }
-//                        }.start();
 
                     } else if (!edInput.getText().toString().isEmpty() &&
                             edInput.getText().toString().contains("@JETEC")) {
                         Toast.makeText(getBaseContext(), "工程師模式", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(DeviceControlActivity.this, EngineerMode.class);
-                        startActivity(intent);
+                        if (NewSendType.newDeviceType!= " "){
+                            SendType.newMonitorChooser =1;
+                            mDataField.setText(R.string.Correct);
+                            GetDisplayData get = new GetDisplayData(data);
+                            get.sendGet();
+                            PASSOK = true;
+                            dialog.dismiss();
+                            waitdialog = ProgressDialog.show(DeviceControlActivity.this,//顯示等待圖示
+                                    getResources().getString(R.string.plzWait), getResources().getString(R.string.progressing), true);
+                        }
+                        if (SendType.newMonitorChooser ==1){
+                            NewSendType.engineerMode = true;
+
+                        }else{
+                            Intent intent = new Intent(DeviceControlActivity.this, EngineerMode.class);
+                            startActivity(intent);
+                        }
 
                     } else {
                         Toast.makeText(getBaseContext(), R.string.inputError, Toast.LENGTH_LONG).show();

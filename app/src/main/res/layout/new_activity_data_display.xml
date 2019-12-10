@@ -13,15 +13,40 @@
         android:background="#ECECEC">
 
         <Button
+            android:id="@+id/button_NDD_calibration"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:background="@color/none"
+            android:gravity="start|center"
+            android:text="校正"
+            android:textColor="@color/dodBlue"
+            android:textSize="18dp" />
+
+        <Button
+
+            android:id="@+id/button_NDD_ENsetType"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:background="@color/none"
+            android:gravity="start|center"
+            android:text="型號"
+            android:textColor="@color/dodBlue"
+            android:textSize="18dp" />
+
+
+
+        <Button
             android:id="@+id/button_NDD_disconnect"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
             android:background="@color/none"
+            android:gravity="end|center_vertical"
             android:text="@string/newDisconnect"
             android:textColor="@color/dodBlue"
-            android:textSize="22dp"
-            android:gravity="end|center_vertical"
-            android:layout_marginEnd="20dp" />
+            android:textSize="18dp" />
     </Toolbar>
 
     <android.support.design.widget.TabLayout
@@ -34,7 +59,21 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/naviagtion_menu"
+        app:labelVisibilityMode="labeled"
+        android:clipToPadding="false"
+        android:duplicateParentState="true"
+        app:itemHorizontalTranslationEnabled="false"
+
+        />
 
 
 </LinearLayout>
