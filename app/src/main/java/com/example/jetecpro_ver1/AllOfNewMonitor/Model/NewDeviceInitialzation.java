@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class DeviceInitialzation {
-    public static final String TAG = DeviceInitialzation.class.getSimpleName();
+public class NewDeviceInitialzation {
+    public static final String TAG = NewDeviceInitialzation.class.getSimpleName();
 
 
-    public DeviceInitialzation() {
+    public NewDeviceInitialzation() {
     }
 
     public void inItalzation(String defaultName, String getType, String newMonitorWord
@@ -198,9 +198,6 @@ public class DeviceInitialzation {
 
 
     }
-
-
-
 
 
     //+++++++++++++++++++++++++++以下為模組區+++++++++++++++++++++++++++//

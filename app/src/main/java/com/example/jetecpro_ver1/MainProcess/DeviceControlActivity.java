@@ -16,6 +16,7 @@
 
 package com.example.jetecpro_ver1.MainProcess;
 
+import android.accounts.NetworkErrorException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -54,8 +55,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DeviceInitialzation;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSupportDCARecycleViewTypeChooser;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.ClearNewSendType;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivitySupport.NewSupportDCAGetValue;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivitySupport.NewSupportDCARecycleViewTypeChooser;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.BLE_function.SampleGattAttributes;
 import com.example.jetecpro_ver1.EngineerMode.EngineerMode;
@@ -189,14 +193,9 @@ public class DeviceControlActivity extends Activity {
      */
     /*組合式大顯*/
     private void newGetValue(String stringData, String byteData) {
-        Log.d(TAG, "newGetValue byte： " + byteData + ", 字串: " + stringData);
         mDataField.setText("byte： " + byteData + "\n" + "字串: " + stringData);
-
-
-        if (stringData.contains("OVER")) {
-            waitdialog.dismiss();
-        }
-
+        NewSupportDCAGetValue s= new NewSupportDCAGetValue(DeviceControlActivity.this,waitdialog);
+        s.getValueFromDevice(stringData,byteData);//將控制權轉給NewSupportDCAGetValue類別
     }
 
 
@@ -265,7 +264,7 @@ public class DeviceControlActivity extends Activity {
                         default:
                             throw new IllegalStateException("Unexpected value: " + mChoose.size());
                     }
-                    DeviceInitialzation d = new DeviceInitialzation();
+                    NewDeviceInitialzation d = new NewDeviceInitialzation();
                     d.inItalzation(defaultName,getType,"-N",mChoose);
                     mChoose.clear();
 
@@ -469,6 +468,99 @@ public class DeviceControlActivity extends Activity {
     private void displayData(final String data) {
         if (data.contains("ERR")) {//如果是組合式大顯顯顯顯顯.....(還沒設定前)
             setNewMonitorTypeSetter();
+        }
+        if (data.contains("BT-")&&data.substring(data.lastIndexOf("-")+1).contains("N")){//取得新大顯型號資訊
+            new Thread(()->{
+                String type = data.substring(0,data.lastIndexOf("\n"));
+                Log.d(TAG, "displayData: "+type);
+                NewSendType.row = Integer.parseInt(type.substring(3,4));
+                String getType = type.substring(5,type.lastIndexOf("-"));
+                int typeLength = type.substring(5,type.lastIndexOf("-")).length();//取得有幾個字
+                if (typeLength-Integer.parseInt(type.substring(3,4))!=0&&type.substring(5,type.lastIndexOf("-")).contains("L")){
+                    Log.d(TAG, "displayData: 有紀錄");
+                    NewSendType.logSwitch = true;//開啟記錄
+                }
+                switch (typeLength){
+                    case 1:
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 2:
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 3:
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 4:
+                        NewSendType.newForthWord = getType.charAt(3);
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 5:
+                        NewSendType.newFiveWord =getType.charAt(4) ;
+                        NewSendType.newForthWord = getType.charAt(3);
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 6:
+                        NewSendType.newSixWord = getType.charAt(5);
+                        NewSendType.newFiveWord =getType.charAt(4) ;
+                        NewSendType.newForthWord = getType.charAt(3);
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 7:
+                        NewSendType.newSevenWord = getType.charAt(6);
+                        NewSendType.newSixWord = getType.charAt(5);
+                        NewSendType.newFiveWord =getType.charAt(4) ;
+                        NewSendType.newForthWord = getType.charAt(3);
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 8:
+                        NewSendType.newEightWord = getType.charAt(7);
+                        NewSendType.newSevenWord = getType.charAt(6);
+                        NewSendType.newSixWord = getType.charAt(5);
+                        NewSendType.newFiveWord =getType.charAt(4) ;
+                        NewSendType.newForthWord = getType.charAt(3);
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 9:
+                        NewSendType.newNineWord = getType.charAt(8);
+                        NewSendType.newEightWord = getType.charAt(7);
+                        NewSendType.newSevenWord = getType.charAt(6);
+                        NewSendType.newSixWord = getType.charAt(5);
+                        NewSendType.newFiveWord =getType.charAt(4) ;
+                        NewSendType.newForthWord = getType.charAt(3);
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                    case 10:
+                        NewSendType.newTenWord = getType.charAt(9);
+                        NewSendType.newNineWord = getType.charAt(8);
+                        NewSendType.newEightWord = getType.charAt(7);
+                        NewSendType.newSevenWord = getType.charAt(6);
+                        NewSendType.newSixWord = getType.charAt(5);
+                        NewSendType.newFiveWord =getType.charAt(4) ;
+                        NewSendType.newForthWord = getType.charAt(3);
+                        NewSendType.newThirdWord= getType.charAt(2);
+                        NewSendType.newSecondWord = getType.charAt(1);
+                        NewSendType.newFirstWord = getType.charAt(0);
+                        break;
+                }
+
+            }).start();
+
+
         }
 
 
@@ -698,6 +790,8 @@ public class DeviceControlActivity extends Activity {
         OptionThis = this;
         ClearAllData clearAllData = new ClearAllData();
         clearAllData.clearAllData();//清除上一個裝置連線的所有資料
+
+        new ClearNewSendType().clearNewAll();//清除所有新大顯資料
 
         // Sets up UI references.
         ((TextView) findViewById(R.id.device_address)).setText(SendType.DeviceName);

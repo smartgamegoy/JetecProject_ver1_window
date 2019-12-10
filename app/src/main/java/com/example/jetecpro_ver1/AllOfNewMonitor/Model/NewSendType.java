@@ -5,6 +5,7 @@ public class NewSendType {
     public static String newDeviceType;
 
     //他奶奶的有事沒事就再加，一次來10個字啦！怕了吧(BT-XXXXXXXXX-N)
+    public static int row;
     public static char newFirstWord;
     public static char newSecondWord;
     public static char newThirdWord;
@@ -21,6 +22,8 @@ public class NewSendType {
     public static char newLastSecondWord;
     public static char newLastThirdWord;
     public static char newLastForthWord;
+
+    public static boolean logSwitch;
 
 
 }

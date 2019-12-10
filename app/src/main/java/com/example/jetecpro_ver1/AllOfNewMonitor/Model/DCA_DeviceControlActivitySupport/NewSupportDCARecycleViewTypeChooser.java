@@ -1,4 +1,4 @@
-package com.example.jetecpro_ver1.AllOfNewMonitor.Model;
+package com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivitySupport;
 
 
 import android.support.annotation.NonNull;

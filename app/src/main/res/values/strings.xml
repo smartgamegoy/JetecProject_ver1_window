@@ -203,6 +203,7 @@
     <!--記錄功能-->
 
     <string name="capture">擷取並離開下載</string>
+    <string name="newDisconnect">中斷連線</string>
 
 
 </resources>

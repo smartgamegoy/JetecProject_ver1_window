@@ -205,4 +205,8 @@
     <string name="capture">Leave this function</string>
 
 
+<!--    新大顯-->
+
+    <string name="newDisconnect">Disconnect</string>
+
 </resources>

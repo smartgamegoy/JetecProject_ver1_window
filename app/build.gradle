@@ -66,5 +66,8 @@ dependencies {
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'//像google信箱一樣的左滑刪除
     //https://github.com/xabaras/RecyclerViewSwipeDecorator
 
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+
 
 }
