@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import com.example.jetecpro_ver1.R;
 
-public class FragmentList_Twp extends RelativeLayout {
+public class NormalDataSetting extends RelativeLayout {
     private View mView;
 
-    public FragmentList_Twp(Context context) {
+    public NormalDataSetting(Context context) {
         super(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         mView = inflater.inflate(R.layout.new_viewpager,null);

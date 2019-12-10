@@ -12,9 +12,6 @@ import android.content.ServiceConnection;
 import android.graphics.Canvas;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.design.bottomnavigation.LabelVisibilityMode;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +22,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,15 +34,11 @@ import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivity
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDPagerAdapter;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.FragmentList_One;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.FragmentList_Three;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.FragmentList_Twp;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.FirstAndLastSetting;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
-import com.example.jetecpro_ver1.MainProcess.DeviceControlActivity;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -120,13 +112,26 @@ public class NewDataDisplay extends Activity {
     /**設置分頁*/
     private void setPager() {
         mPages = new ArrayList<>();
-        mPages.add(new FragmentList_One(this));//預設首
-        mPages.add(new FragmentList_One(this));//預設尾
+        ArrayList<String> array = new ArrayList<>();
+        ArrayList<String> arrays = new ArrayList<>();
+        ArrayList<String> arrayss = new ArrayList<>();
+        arrayss.add("1");
+        arrayss.add("2");
+        array.add("1");
+        array.add("2");
+        array.add("3");
+        array.add("4");
+        arrays.add("1");
+        arrays.add("2");
+        arrays.add("3");
+        arrays.add("4");
+        arrays.add("5");
+        mPages.add(new FirstAndLastSetting(this,arrayss));//預設首
         int tabCount = NewSendType.row-getMaches(NewSendType.newDeviceType, "Y")-getMaches(NewSendType.newDeviceType, "Z");
-
         for (int i=0;i< tabCount;i++){
-            mPages.add(new FragmentList_One(this));
+            mPages.add(new FirstAndLastSetting(this,array));
         }
+        mPages.add(new FirstAndLastSetting(this,arrays));//預設尾
         NewSupportNDDPagerAdapter a= new NewSupportNDDPagerAdapter(mPages,getBaseContext());
         mViewPager.setCurrentItem(0);
         tabLayout.setupWithViewPager(mViewPager);
