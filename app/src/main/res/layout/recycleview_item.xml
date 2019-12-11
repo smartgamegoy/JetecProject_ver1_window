@@ -11,7 +11,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:layout_margin="3dp"
-        android:background="@drawable/roundforlayout"
+        android:background="@drawable/roundforlayout_new"
         android:elevation="7dp"
         >
         <TextView

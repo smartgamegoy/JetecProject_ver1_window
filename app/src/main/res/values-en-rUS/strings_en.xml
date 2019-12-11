@@ -213,4 +213,5 @@
     <string name="output">Output</string>
     <string name="deviceSetting">DeviceSetting</string>
     <string name="analog">analog</string>
+    <string name="NDD_send">Send</string>
 </resources>

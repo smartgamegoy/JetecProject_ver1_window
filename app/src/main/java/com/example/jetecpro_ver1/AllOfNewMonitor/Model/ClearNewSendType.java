@@ -29,5 +29,6 @@ public class ClearNewSendType {
         NewSendType.engineerMode = false;
         NewSendType.newDeviceName = " ";
         NewSendType.newDeviceAddress = " ";
+        NewSendType.engineerModeArrayList.clear();
     }
 }

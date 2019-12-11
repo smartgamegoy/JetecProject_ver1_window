@@ -211,6 +211,7 @@
     <string name="output">輸出</string>
     <string name="deviceSetting">裝置設定</string>
     <string name="analog">類比</string>
+    <string name="NDD_send">送出</string>
 
 
 </resources>

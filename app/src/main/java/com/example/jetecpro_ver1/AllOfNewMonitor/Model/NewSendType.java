@@ -1,5 +1,9 @@
 package com.example.jetecpro_ver1.AllOfNewMonitor.Model;
 
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+
 public class NewSendType {
 
     //取得裝置基本資訊
@@ -31,6 +35,8 @@ public class NewSendType {
 
     //是否進入工程師模式
     public static boolean engineerMode;
+    public static ArrayList<String> engineerModeArrayList = new ArrayList<>();
+    public static ArrayAdapter adapter;
 
 
 

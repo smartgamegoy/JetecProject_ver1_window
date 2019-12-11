@@ -17,6 +17,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.FirstAndLastSetting;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.NormalDataSetting;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
@@ -52,12 +55,16 @@ public class NewDataDisplay extends Activity {
     private ArrayList<View> mPages;
     private BottomNavigationView bottomNavigationView;
 
+    ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_activity_data_display);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        engineerModeSetting();
 
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -67,9 +74,12 @@ public class NewDataDisplay extends Activity {
         findViewById(R.id.button_NDD_disconnect).setOnClickListener((view)->{finish();});
         Button btTypeselecter =  findViewById(R.id.button_NDD_ENsetType);
         Button btcalibration =findViewById(R.id.button_NDD_calibration);
+        DrawerLayout drawerLayout = findViewById(R.id.new_drawerLayout);
         if (NewSendType.engineerMode == false){
             btcalibration.setVisibility(View.GONE);
             btTypeselecter.setVisibility(View.GONE);
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         }else{
             btcalibration.setVisibility(View.VISIBLE);
             btTypeselecter.setVisibility(View.VISIBLE);
@@ -78,6 +88,9 @@ public class NewDataDisplay extends Activity {
         btcalibration.setOnClickListener((v -> {}));
         btTypeselecter.setOnClickListener((v -> {setNewMonitorTypeSetter();}));
     }
+
+
+
     /**設置按鈕事件*/
     private void setButtonEvent() {
         bottomNavigationView.getMenu().setGroupCheckable(0,false,false);
@@ -129,7 +142,7 @@ public class NewDataDisplay extends Activity {
         mPages.add(new FirstAndLastSetting(this,arrayss));//預設首
         int tabCount = NewSendType.row-getMaches(NewSendType.newDeviceType, "Y")-getMaches(NewSendType.newDeviceType, "Z");
         for (int i=0;i< tabCount;i++){
-            mPages.add(new FirstAndLastSetting(this,array));
+            mPages.add(new NormalDataSetting(this,array));
         }
         mPages.add(new FirstAndLastSetting(this,arrays));//預設尾
         NewSupportNDDPagerAdapter a= new NewSupportNDDPagerAdapter(mPages,getBaseContext());
@@ -208,6 +221,24 @@ public class NewDataDisplay extends Activity {
             }
             //接收來自藍芽傳回的資料
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                byte[] getByteData = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
+                final StringBuilder stringBuilder = new StringBuilder(getByteData.length);
+                for (byte byteChar : getByteData)
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
+                new Thread(()->{
+                    NewSendType.engineerModeArrayList.add("回傳string>"+stringData);
+                    NewSendType.engineerModeArrayList.add("回傳byte>"+byteArrayToHexStr(getByteData));
+                    NewSendType.engineerModeArrayList.add("---------------------------");
+                    runOnUiThread(()->{
+                        listView.setAdapter(NewSendType.adapter);
+                        NewSendType.adapter.notifyDataSetChanged();
+                        listView.setSelection(NewSendType.engineerModeArrayList.size()-1);
+                    });
+                }).start();
+
+
+
                 /**接收來自Service的訊息*/
 
 
@@ -221,6 +252,35 @@ public class NewDataDisplay extends Activity {
     /**
      * ============================================工程師模式↓=======================================
      */
+    /**左側監視視窗*/
+    private void engineerModeSetting() {
+        listView = findViewById(R.id.engineer_New_listView);
+        NewSendType.adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,NewSendType.engineerModeArrayList);
+        listView.setAdapter(NewSendType.adapter);
+        Button btClear = findViewById(R.id.engineer_New_clear);
+        btClear.setOnClickListener((v -> {
+            NewSendType.engineerModeArrayList.clear();
+            NewSendType.adapter.notifyDataSetChanged();
+        }));
+        Button btSend = findViewById(R.id.engineer_New_Button);
+        btSend.setOnClickListener(v -> {
+            EditText edOut = findViewById(R.id.engineer_New_EditText);
+            if (edOut.getText().toString().length()>0){
+                NewSendType.engineerModeArrayList.add("寫出字串>"+edOut.getText().toString());
+                SendType.SendForBLEDataType = edOut.getText().toString();
+                SendType.getSendBluetoothLeService.
+                        setCharacteristicNotification(SendType.Mycharacteristic, true);
+                runOnUiThread(()->{
+                    listView.setAdapter(NewSendType.adapter);
+                    NewSendType.adapter.notifyDataSetChanged();
+                    listView.setSelection(NewSendType.engineerModeArrayList.size()-1);
+                });
+
+                edOut.setText("");
+            }
+
+        });
+    }
     /**
      * 設定組合大顯型號
      */
@@ -445,6 +505,23 @@ public class NewDataDisplay extends Activity {
             mChoose.remove(mChoose.indexOf("Z"));
             mAdapter.notifyItemRemoved(mChoose.indexOf("Z"));
         }
+    }
+
+    /**
+     * Byte轉16進字串工具
+     */
+    private String byteArrayToHexStr(byte[] byteArray) {
+        if (byteArray == null) {
+            return null;
+        }
+
+        StringBuilder hex = new StringBuilder(byteArray.length * 2);
+        for (byte aData : byteArray) {
+            hex.append(String.format("%02X", aData));
+        }
+        String gethex = hex.toString();
+        return gethex;
+
     }
 /**
  * ============================================工程師模式↑=======================================

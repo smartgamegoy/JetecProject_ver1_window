@@ -175,6 +175,9 @@ public class DeviceControlActivity extends Activity {
                 for (byte byteChar : getByteData)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
+                NewSendType.engineerModeArrayList.add("回傳string>"+stringData);
+                NewSendType.engineerModeArrayList.add("回傳byte>"+byteArrayToHexStr(getByteData));
+                NewSendType.engineerModeArrayList.add("---------------------------");
                 if (stringData.contains("BYTE")) {
                     SendType.newMonitorChooser = 1;
                 }
@@ -196,6 +199,7 @@ public class DeviceControlActivity extends Activity {
         mDataField.setText("byte： " + byteData + "\n" + "字串: " + stringData);
         NewSupportDCAGetValue s= new NewSupportDCAGetValue(DeviceControlActivity.this,waitdialog);
         s.getValueFromDevice(stringData,byteData);//將控制權轉給NewSupportDCAGetValue類別
+
     }
 
 

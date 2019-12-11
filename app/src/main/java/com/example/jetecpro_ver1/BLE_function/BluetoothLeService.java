@@ -33,6 +33,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.Values.SendType;
 
 import java.util.List;
@@ -392,6 +393,9 @@ public class BluetoothLeService extends Service {
             RxChar.setValue(SendType.SendForBLEbyteType);
             mBluetoothGatt.writeCharacteristic(RxChar);
             Log.d(TAG, "發送(byte[]) "+ byteArrayToHexStr(SendType.SendForBLEbyteType));
+            NewSendType.engineerModeArrayList.add("寫出byte>"+byteArrayToHexStr(SendType.SendForBLEbyteType));
+            NewSendType.engineerModeArrayList.add("---------------------------");
+
             SendType.sentByteChoose = 0;
         }else{
             byte[] strBytes = SendType.SendForBLEDataType.getBytes();
@@ -399,8 +403,10 @@ public class BluetoothLeService extends Service {
             RxChar.setValue(strBytes);
             mBluetoothGatt.writeCharacteristic(RxChar);
             Log.d(TAG, "發送(String) "+ SendType.SendForBLEDataType);
-
+            NewSendType.engineerModeArrayList.add("寫出String>"+SendType.SendForBLEDataType);
+            NewSendType.engineerModeArrayList.add("---------------------------");
         }
+
 
 
     }
