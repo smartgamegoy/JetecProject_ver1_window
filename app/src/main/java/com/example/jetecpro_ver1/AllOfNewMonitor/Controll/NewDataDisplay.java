@@ -69,30 +69,10 @@ public class NewDataDisplay extends Activity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-        Intent intent = getIntent();
-        getFromIntentArray = (HashMap<String, ArrayList<String>>) intent.getSerializableExtra("SettingArray");
-
-        String str = NewSendType.newDeviceType.substring(5,NewSendType.newDeviceType.lastIndexOf("-"));
-        if (NewSendType.newDeviceType.contains("Y")){
-            str = str.replaceAll("Y","");
-        }else if(NewSendType.newDeviceType.contains("Z")){
-            str = str.replaceAll("Z","");
-        }
-        getTab = (ArrayList<Integer>) intent.getSerializableExtra("GetTabRow");
-        if (str.length() != getTab.size()){
-            Log.d(TAG, "onCreate: "+str);
-            Log.d(TAG, "onCreate: "+getTab);
-            for (int i=0;i<str.length();i++){
-                if (str.charAt(i) == 'D'||str.charAt(i) == 'E'){
-                    getTab.add(i,i+1);
-                }
-            }
-        }
-        Log.d(TAG, "onCreate: (修正後)"+getTab);
+        setArrays();//取得與修正陣列->有YZ問題以及DE為空值問題
 
 
-
-        engineerModeSetting();
+        engineerModeSetting();//工程師模式
 
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -117,6 +97,37 @@ public class NewDataDisplay extends Activity {
         btTypeselecter.setOnClickListener((v -> {setNewMonitorTypeSetter();}));
     }
 
+    /**處理陣列問題*/
+    private void setArrays() {
+        Intent intent = getIntent();
+        getFromIntentArray = (HashMap<String, ArrayList<String>>) intent.getSerializableExtra("SettingArray");
+        String str = NewSendType.newDeviceType.substring(5,NewSendType.newDeviceType.lastIndexOf("-"));
+        if (NewSendType.newDeviceType.contains("Y")){
+            str = str.replaceAll("Y","&");
+        }else if(NewSendType.newDeviceType.contains("Z")){
+            str = str.replaceAll("Z","&");
+        }
+        getTab = (ArrayList<Integer>) intent.getSerializableExtra("GetTabRow");
+        Log.d(TAG, "onCreate:(比對) "+str);
+        Log.d(TAG, "onCreate:(比對) "+getTab);
+        if (str.length() != getTab.size()-1){
+            for (int i=0;i<str.length();i++){
+                if (str.charAt(i) == 'D'){
+                    getTab.add(i,i+1);
+                }else if(str.charAt(i) == 'E'){
+                    getTab.add(i,i+1);
+                }else if (str.charAt(i) == '&'){
+                    getTab.add(i,-1);
+                }
+            }
+        }
+        for (int i = 0;i<getTab.size();i++){
+            if (getTab.get(i) == -1){
+                getTab.remove(i);
+            }
+        }
+        Log.d(TAG, "onCreate: (修正後)"+getTab);
+    }
 
 
     /**設置按鈕事件*/
@@ -157,9 +168,9 @@ public class NewDataDisplay extends Activity {
         mPages.add(new FirstPageSetting(this,getFromIntentArray,getTab));//預設首
         int tabCount = NewSendType.row-getMaches(NewSendType.newDeviceType, "Y")-getMaches(NewSendType.newDeviceType, "Z");
         for (int i=0;i< tabCount;i++){
-            mPages.add(new NormalDataSetting(this,getFromIntentArray,getTab,i));
+            mPages.add(new NormalDataSetting(this,getFromIntentArray,getTab.get(i)));
         }
-        mPages.add(new NormalDataSetting(this,getFromIntentArray,getTab,mPages.size()-1));//預設尾
+        mPages.add(new NormalDataSetting(this,getFromIntentArray,7));//預設尾
 
         NewSupportNDDPagerAdapter a= new NewSupportNDDPagerAdapter(mPages,getBaseContext(),getTab);
         mViewPager.setCurrentItem(0);
