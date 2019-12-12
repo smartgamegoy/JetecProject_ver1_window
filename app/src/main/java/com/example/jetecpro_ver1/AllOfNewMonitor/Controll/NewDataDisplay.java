@@ -23,6 +23,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,14 +37,15 @@ import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivity
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDPagerAdapter;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.FirstAndLastSetting;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers.NormalDataSetting;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.FirstPageSetting;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.NormalDataSetting;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -55,6 +57,9 @@ public class NewDataDisplay extends Activity {
     private ArrayList<View> mPages;
     private BottomNavigationView bottomNavigationView;
 
+    private HashMap<String,ArrayList<String>> getFromIntentArray = new HashMap<>();
+    private ArrayList<Integer> getTab = new ArrayList<>();
+
     ListView listView;
 
     @Override
@@ -63,6 +68,29 @@ public class NewDataDisplay extends Activity {
         setContentView(R.layout.new_activity_data_display);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        Intent intent = getIntent();
+        getFromIntentArray = (HashMap<String, ArrayList<String>>) intent.getSerializableExtra("SettingArray");
+
+        String str = NewSendType.newDeviceType.substring(5,NewSendType.newDeviceType.lastIndexOf("-"));
+        if (NewSendType.newDeviceType.contains("Y")){
+            str = str.replaceAll("Y","");
+        }else if(NewSendType.newDeviceType.contains("Z")){
+            str = str.replaceAll("Z","");
+        }
+        getTab = (ArrayList<Integer>) intent.getSerializableExtra("GetTabRow");
+        if (str.length() != getTab.size()){
+            Log.d(TAG, "onCreate: "+str);
+            Log.d(TAG, "onCreate: "+getTab);
+            for (int i=0;i<str.length();i++){
+                if (str.charAt(i) == 'D'||str.charAt(i) == 'E'){
+                    getTab.add(i,i+1);
+                }
+            }
+        }
+        Log.d(TAG, "onCreate: (修正後)"+getTab);
+
+
 
         engineerModeSetting();
 
@@ -75,7 +103,7 @@ public class NewDataDisplay extends Activity {
         Button btTypeselecter =  findViewById(R.id.button_NDD_ENsetType);
         Button btcalibration =findViewById(R.id.button_NDD_calibration);
         DrawerLayout drawerLayout = findViewById(R.id.new_drawerLayout);
-        if (NewSendType.engineerMode == false){
+        if (NewSendType.engineerMode == true){//等開發完成記得改回來
             btcalibration.setVisibility(View.GONE);
             btTypeselecter.setVisibility(View.GONE);
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -125,27 +153,15 @@ public class NewDataDisplay extends Activity {
     /**設置分頁*/
     private void setPager() {
         mPages = new ArrayList<>();
-        ArrayList<String> array = new ArrayList<>();
-        ArrayList<String> arrays = new ArrayList<>();
-        ArrayList<String> arrayss = new ArrayList<>();
-        arrayss.add("1");
-        arrayss.add("2");
-        array.add("1");
-        array.add("2");
-        array.add("3");
-        array.add("4");
-        arrays.add("1");
-        arrays.add("2");
-        arrays.add("3");
-        arrays.add("4");
-        arrays.add("5");
-        mPages.add(new FirstAndLastSetting(this,arrayss));//預設首
+
+        mPages.add(new FirstPageSetting(this,getFromIntentArray,getTab));//預設首
         int tabCount = NewSendType.row-getMaches(NewSendType.newDeviceType, "Y")-getMaches(NewSendType.newDeviceType, "Z");
         for (int i=0;i< tabCount;i++){
-            mPages.add(new NormalDataSetting(this,array));
+            mPages.add(new NormalDataSetting(this,getFromIntentArray,getTab,i));
         }
-        mPages.add(new FirstAndLastSetting(this,arrays));//預設尾
-        NewSupportNDDPagerAdapter a= new NewSupportNDDPagerAdapter(mPages,getBaseContext());
+        mPages.add(new NormalDataSetting(this,getFromIntentArray,getTab,mPages.size()-1));//預設尾
+
+        NewSupportNDDPagerAdapter a= new NewSupportNDDPagerAdapter(mPages,getBaseContext(),getTab);
         mViewPager.setCurrentItem(0);
         tabLayout.setupWithViewPager(mViewPager);
         mViewPager.setAdapter(a);

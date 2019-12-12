@@ -1,41 +1,33 @@
-package com.example.jetecpro_ver1.AllOfNewMonitor.Model.Pagers;
+package com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDRecyclerViewAdapter;
 import com.example.jetecpro_ver1.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class FirstAndLastSetting extends RelativeLayout {
-
-    NewSupportNDDRecyclerViewAdapter mAdapter;
+public class NormalDataSetting extends RelativeLayout {
     private View mView;
+    NewSupportNDDRecyclerViewAdapter mAdapter;
 
-    public FirstAndLastSetting(Context context, ArrayList<String> arrayList) {
+    public NormalDataSetting(Context context, HashMap<String,ArrayList<String>> getFromIntentArray
+            , ArrayList<Integer> getTab,int area) {
         super(context);
         LayoutInflater inflater = LayoutInflater.from(context);
-        mView = inflater.inflate(R.layout.new_viewpager,null);
-        RecyclerView r = mView.findViewById(R.id.recycleView_Pages);
+        mView = inflater.inflate(R.layout.new_ndd_recycler_item_normal_setting,null);
+        RecyclerView r = mView.findViewById(R.id.recyclerview_NDD_normal_data_set);
         r.setLayoutManager(new GridLayoutManager(getContext(),2));
-        mAdapter = new NewSupportNDDRecyclerViewAdapter(arrayList,getContext());
+//        mAdapter = new NewSupportNDDRecyclerViewAdapter(arrayList,getContext());
         r.setAdapter(mAdapter);
         addView(mView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
     }
-
-
 }

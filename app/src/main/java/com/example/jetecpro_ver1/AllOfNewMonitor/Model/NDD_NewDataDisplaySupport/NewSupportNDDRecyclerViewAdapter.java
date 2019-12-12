@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jetecpro_ver1.R;
 
@@ -17,14 +18,14 @@ import java.util.HashMap;
 public class NewSupportNDDRecyclerViewAdapter extends RecyclerView.Adapter<NewSupportNDDRecyclerViewAdapter.ViewHolder> {
 
 
-    private ArrayList<String> arrayList;
+    private ArrayList<HashMap<String,String>> arrayList;
     private Context context;
     private View mHeaderView;
     public static final int TYPE_HEADER = 0;  //说明是带有Header的
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
     public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
 
-    public NewSupportNDDRecyclerViewAdapter(ArrayList<String> arrayList, Context context) {
+    public NewSupportNDDRecyclerViewAdapter(ArrayList<HashMap<String,String>> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -33,18 +34,14 @@ public class NewSupportNDDRecyclerViewAdapter extends RecyclerView.Adapter<NewSu
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle,tvValue;
+        View view;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            if (itemView == mHeaderView){
-                return;
-            }
             tvTitle = itemView.findViewById(R.id.textView_NDD_CellTitle);
             tvValue = itemView.findViewById(R.id.textView_NDD_CellValue);
+            view = itemView;
         }
     }
-
-
-
 
     @NonNull
     @Override
@@ -56,7 +53,17 @@ public class NewSupportNDDRecyclerViewAdapter extends RecyclerView.Adapter<NewSu
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.tvTitle.setText(arrayList.get(i));
+        if (arrayList.get(i).get("Value").matches("就說了這個欄位是沒有東西的ㄎㄎ")){
+            viewHolder.tvValue.setVisibility(View.GONE);
+        }else{
+            viewHolder.tvValue.setText(arrayList.get(i).get("Value"));
+        }
+        viewHolder.tvTitle.setText(arrayList.get(i).get("Title"));
+        viewHolder.view.setOnClickListener((v)->{
+            Toast.makeText(context,viewHolder.tvTitle.getText().toString(),Toast.LENGTH_SHORT).show();
+        });
+
+
     }
 
     @Override

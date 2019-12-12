@@ -14,16 +14,19 @@ import android.view.ViewGroup;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewSupportNDDPagerAdapter extends PagerAdapter {
     private String TAG = NewSupportNDDPagerAdapter.class.getSimpleName();
     private List<View> fragmentList;
     private Context context;
+    private ArrayList<Integer> getTab;
 
-    public NewSupportNDDPagerAdapter(List<View> fragmentList,Context context) {
+    public NewSupportNDDPagerAdapter(List<View> fragmentList,Context context,ArrayList<Integer> getTab) {
         this.fragmentList = fragmentList;
         this.context = context;
+        this.getTab = getTab;
     }
 
     @Override
@@ -55,24 +58,56 @@ public class NewSupportNDDPagerAdapter extends PagerAdapter {
             String str = NewSendType.newDeviceType;
             if (NewSendType.newDeviceType.contains("Y")){
                 str = NewSendType.newDeviceType.replaceAll("Y","");
-            }else if(NewSendType.newDeviceType.contains("L")){
+            }else if(NewSendType.newDeviceType.contains("Z")){
                 str = NewSendType.newDeviceType.replaceAll("Z","");
             }
+        Log.d(TAG, "getPageTitle: "+str);
+        Log.d(TAG, "getPageTitle: "+getTab);
             switch (position){
                 case 0:
                     return trans(R.string.deviceSetting);
                 case 1:
-                    return getTag(str.charAt(5),1);
+                    try {
+                        return getTag(str.charAt(5),getTab.get(0));
+                    }catch (Exception e){
+                        return getTag(str.charAt(5),1);
+                    }
+
                 case 2:
-                    return getTag(str.charAt(6),2);
+                    try {
+                        return getTag(str.charAt(6),getTab.get(1));
+                    }catch (Exception e){
+                        return getTag(str.charAt(6),2);
+                    }
+
                 case 3:
-                    return getTag(str.charAt(7),3);
+                    try {
+                        return getTag(str.charAt(7),getTab.get(2));
+                    }catch (Exception e){
+                        return getTag(str.charAt(7),3);
+                    }
+
                 case 4:
-                    return getTag(str.charAt(8),4);
+                    try {
+                        return getTag(str.charAt(8),getTab.get(3));
+                    }catch (Exception e){
+                        return getTag(str.charAt(8),4);
+                    }
+
                 case 5:
-                    return getTag(str.charAt(9),5);
+                    try {
+                        return getTag(str.charAt(9),getTab.get(4));
+                    }catch (Exception e){
+                        return getTag(str.charAt(9),5);
+                    }
+
                 case 6:
-                    return getTag(str.charAt(10),6);
+                    try {
+                        return getTag(str.charAt(10),getTab.get(5));
+                    }catch (Exception e){
+                        return getTag(str.charAt(10),6);
+                    }
+
                 default:
                     return trans(R.string.output);
 

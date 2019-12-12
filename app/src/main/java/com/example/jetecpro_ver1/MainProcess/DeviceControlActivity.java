@@ -478,6 +478,7 @@ public class DeviceControlActivity extends Activity {
                 String type = data.substring(0,data.lastIndexOf("\n"));
                 Log.d(TAG, "displayData: "+type);
                 NewSendType.newDeviceType = type;
+                NewSendType.newDeviceName = SendType.DeviceName;
                 NewSendType.row = Integer.parseInt(type.substring(3,4));
                 String getType = type.substring(5,type.lastIndexOf("-"));
                 int typeLength = type.substring(5,type.lastIndexOf("-")).length();//取得有幾個字
