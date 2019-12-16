@@ -30,5 +30,7 @@ public class ClearNewSendType {
         NewSendType.newDeviceName = " ";
         NewSendType.newDeviceAddress = " ";
         NewSendType.engineerModeArrayList.clear();
+        NewSendType.cheatByteSend = " ";
+        NewSendType.cheatStringSend = " ";
     }
 }

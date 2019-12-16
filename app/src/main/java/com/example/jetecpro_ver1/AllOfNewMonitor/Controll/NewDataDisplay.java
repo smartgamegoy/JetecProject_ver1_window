@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivitySupport.NewSupportDCARecycleViewTypeChooser;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDPagerAdapter;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDRecyclerViewAdapter;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.FirstPageSetting;
@@ -50,14 +52,14 @@ import java.util.HashMap;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class NewDataDisplay extends Activity {
-    private String TAG = NewDataDisplay.class.getSimpleName()+"My";
+    private String TAG = NewDataDisplay.class.getSimpleName() + "My";
     private BluetoothLeService mBluetoothLeService;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private ArrayList<View> mPages;
     private BottomNavigationView bottomNavigationView;
 
-    private HashMap<String,ArrayList<String>> getFromIntentArray = new HashMap<>();
+    private HashMap<String, ArrayList<String>> getFromIntentArray = new HashMap<>();
     private ArrayList<Integer> getTab = new ArrayList<>();
 
     ListView listView;
@@ -79,67 +81,76 @@ public class NewDataDisplay extends Activity {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation_view);
         setButtonEvent();//設置按鈕事件
         setPager();//設置分頁
-        findViewById(R.id.button_NDD_disconnect).setOnClickListener((view)->{finish();});
-        Button btTypeselecter =  findViewById(R.id.button_NDD_ENsetType);
-        Button btcalibration =findViewById(R.id.button_NDD_calibration);
+        findViewById(R.id.button_NDD_disconnect).setOnClickListener((view) -> {
+            finish();
+        });
+        Button btTypeselecter = findViewById(R.id.button_NDD_ENsetType);
+        Button btcalibration = findViewById(R.id.button_NDD_calibration);
         DrawerLayout drawerLayout = findViewById(R.id.new_drawerLayout);
-        if (NewSendType.engineerMode == true){//等開發完成記得改回來
+        if (NewSendType.engineerMode == true) {//等開發完成記得改回來
             btcalibration.setVisibility(View.GONE);
             btTypeselecter.setVisibility(View.GONE);
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        }else{
+        } else {
             btcalibration.setVisibility(View.VISIBLE);
             btTypeselecter.setVisibility(View.VISIBLE);
         }
 
-        btcalibration.setOnClickListener((v -> {}));
-        btTypeselecter.setOnClickListener((v -> {setNewMonitorTypeSetter();}));
+        btcalibration.setOnClickListener((v -> {
+        }));
+        btTypeselecter.setOnClickListener((v -> {
+            setNewMonitorTypeSetter();
+        }));
     }
 
-    /**處理陣列問題*/
+    /**
+     * 處理陣列問題
+     */
     private void setArrays() {
         Intent intent = getIntent();
         getFromIntentArray = (HashMap<String, ArrayList<String>>) intent.getSerializableExtra("SettingArray");
-        String str = NewSendType.newDeviceType.substring(5,NewSendType.newDeviceType.lastIndexOf("-"));
-        if (NewSendType.newDeviceType.contains("Y")){
-            str = str.replaceAll("Y","&");
-        }else if(NewSendType.newDeviceType.contains("Z")){
-            str = str.replaceAll("Z","&");
+        String str = NewSendType.newDeviceType.substring(5, NewSendType.newDeviceType.lastIndexOf("-"));
+        if (NewSendType.newDeviceType.contains("Y")) {
+            str = str.replaceAll("Y", "&");
+        } else if (NewSendType.newDeviceType.contains("Z")) {
+            str = str.replaceAll("Z", "&");
         }
         getTab = (ArrayList<Integer>) intent.getSerializableExtra("GetTabRow");
-        Log.d(TAG, "onCreate:(比對) "+str);
-        Log.d(TAG, "onCreate:(比對) "+getTab);
-        if (str.length() != getTab.size()-1){
-            for (int i=0;i<str.length();i++){
-                if (str.charAt(i) == 'D'){
-                    getTab.add(i,i+1);
-                }else if(str.charAt(i) == 'E'){
-                    getTab.add(i,i+1);
-                }else if (str.charAt(i) == '&'){
-                    getTab.add(i,-1);
+        Log.d(TAG, "onCreate:(比對) " + str);
+        Log.d(TAG, "onCreate:(比對) " + getTab);
+        if (str.length() != getTab.size() - 1) {
+            for (int i = 0; i < str.length(); i++) {
+                if (str.charAt(i) == 'D') {
+                    getTab.add(i, i + 1);
+                } else if (str.charAt(i) == 'E') {
+                    getTab.add(i, i + 1);
+                } else if (str.charAt(i) == '&') {
+                    getTab.add(i, -1);
                 }
             }
         }
-        for (int i = 0;i<getTab.size();i++){
-            if (getTab.get(i) == -1){
+        for (int i = 0; i < getTab.size(); i++) {
+            if (getTab.get(i) == -1) {
                 getTab.remove(i);
             }
         }
-        Log.d(TAG, "onCreate: (修正後)"+getTab);
+        Log.d(TAG, "onCreate: (修正後)" + getTab);
     }
 
 
-    /**設置按鈕事件*/
+    /**
+     * 設置按鈕事件
+     */
     private void setButtonEvent() {
-        bottomNavigationView.getMenu().setGroupCheckable(0,false,false);
-        if (NewSendType.logSwitch == false){//開啟or關閉紀錄系列功能
+        bottomNavigationView.getMenu().setGroupCheckable(0, false, false);
+        if (NewSendType.logSwitch == false) {//開啟or關閉紀錄系列功能
             bottomNavigationView.getMenu().getItem(4).setEnabled(false);
             bottomNavigationView.getMenu().getItem(3).setEnabled(false);
 
         }
-        bottomNavigationView.setOnNavigationItemSelectedListener((item)->{
-            switch (item.getItemId()){
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
                 case R.id.button_NDD_Save:
 
                     break;
@@ -161,28 +172,31 @@ public class NewDataDisplay extends Activity {
         });
     }
 
-    /**設置分頁*/
+    /**
+     * 設置分頁
+     */
     private void setPager() {
         mPages = new ArrayList<>();
 
-        mPages.add(new FirstPageSetting(this,getFromIntentArray,getTab));//預設首
-        int tabCount = NewSendType.row-getMaches(NewSendType.newDeviceType, "Y")-getMaches(NewSendType.newDeviceType, "Z");
-        for (int i=0;i< tabCount;i++){
-            mPages.add(new NormalDataSetting(this,getFromIntentArray,getTab.get(i)));
+        mPages.add(new FirstPageSetting(this, getFromIntentArray, getTab,NewDataDisplay.this));//預設首
+        int tabCount = NewSendType.row - getMaches(NewSendType.newDeviceType, "Y") - getMaches(NewSendType.newDeviceType, "Z");
+        for (int i = 0; i < tabCount; i++) {
+            mPages.add(new NormalDataSetting(this, getFromIntentArray, getTab.get(i),NewDataDisplay.this));
         }
-        mPages.add(new NormalDataSetting(this,getFromIntentArray,7));//預設尾
+        mPages.add(new NormalDataSetting(this, getFromIntentArray, 7,NewDataDisplay.this));//預設尾
 
-        NewSupportNDDPagerAdapter a= new NewSupportNDDPagerAdapter(mPages,getBaseContext(),getTab);
+        NewSupportNDDPagerAdapter a = new NewSupportNDDPagerAdapter(mPages, getBaseContext(), getTab);
         mViewPager.setCurrentItem(0);
         tabLayout.setupWithViewPager(mViewPager);
         mViewPager.setAdapter(a);
     }
-    private int getMaches(String str,String substr){
+
+    private int getMaches(String str, String substr) {
         int count = 0;//count用來接收子字串substr在字串str中出現的次數
         //使用for迴圈從字串的0位置開始迴圈擷取和子字串長度相同的字串；
         //然後判斷擷取的字串是否和子字串substr相同，若相同則count加一。
-        for(int i=0;i<str.length()+1-substr.length();i++) {
-            if(str.substring(i, substr.length()+i).equals(substr)) {
+        for (int i = 0; i < str.length() + 1 - substr.length(); i++) {
+            if (str.substring(i, substr.length() + i).equals(substr)) {
                 count++;
             }
         }
@@ -209,6 +223,7 @@ public class NewDataDisplay extends Activity {
             mBluetoothLeService.connect(SendType.DeviceAddress);
         }
     };//serviceConnection
+
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);//連接一個GATT服務
@@ -217,6 +232,7 @@ public class NewDataDisplay extends Activity {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);//從服務中接受(收?)數據
         return intentFilter;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -225,6 +241,7 @@ public class NewDataDisplay extends Activity {
             final boolean result = mBluetoothLeService.connect(SendType.DeviceAddress);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -233,6 +250,7 @@ public class NewDataDisplay extends Activity {
         mBluetoothLeService = null;
         unregisterReceiver(mGattUpdateReceiver);
     }
+
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -253,17 +271,18 @@ public class NewDataDisplay extends Activity {
                 for (byte byteChar : getByteData)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
-                new Thread(()->{
-                    NewSendType.engineerModeArrayList.add("回傳string>"+stringData);
-                    NewSendType.engineerModeArrayList.add("回傳byte>"+byteArrayToHexStr(getByteData));
+
+                returnModifyData(byteArrayToHexStr(getByteData), stringData.substring(0, stringData.indexOf("\n")));
+                new Thread(() -> {
+                    NewSendType.engineerModeArrayList.add("回傳string>" + stringData);
+                    NewSendType.engineerModeArrayList.add("回傳byte>" + byteArrayToHexStr(getByteData));
                     NewSendType.engineerModeArrayList.add("---------------------------");
-                    runOnUiThread(()->{
+                    runOnUiThread(() -> {
                         listView.setAdapter(NewSendType.adapter);
                         NewSendType.adapter.notifyDataSetChanged();
-                        listView.setSelection(NewSendType.engineerModeArrayList.size()-1);
+                        listView.setSelection(NewSendType.engineerModeArrayList.size() - 1);
                     });
                 }).start();
-
 
 
                 /**接收來自Service的訊息*/
@@ -279,10 +298,12 @@ public class NewDataDisplay extends Activity {
     /**
      * ============================================工程師模式↓=======================================
      */
-    /**左側監視視窗*/
+    /**
+     * 左側監視視窗
+     */
     private void engineerModeSetting() {
         listView = findViewById(R.id.engineer_New_listView);
-        NewSendType.adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,NewSendType.engineerModeArrayList);
+        NewSendType.adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, NewSendType.engineerModeArrayList);
         listView.setAdapter(NewSendType.adapter);
         Button btClear = findViewById(R.id.engineer_New_clear);
         btClear.setOnClickListener((v -> {
@@ -292,15 +313,15 @@ public class NewDataDisplay extends Activity {
         Button btSend = findViewById(R.id.engineer_New_Button);
         btSend.setOnClickListener(v -> {
             EditText edOut = findViewById(R.id.engineer_New_EditText);
-            if (edOut.getText().toString().length()>0){
-                NewSendType.engineerModeArrayList.add("寫出字串>"+edOut.getText().toString());
+            if (edOut.getText().toString().length() > 0) {
+                NewSendType.engineerModeArrayList.add("寫出字串>" + edOut.getText().toString());
                 SendType.SendForBLEDataType = edOut.getText().toString();
                 SendType.getSendBluetoothLeService.
                         setCharacteristicNotification(SendType.Mycharacteristic, true);
-                runOnUiThread(()->{
+                runOnUiThread(() -> {
                     listView.setAdapter(NewSendType.adapter);
                     NewSendType.adapter.notifyDataSetChanged();
-                    listView.setSelection(NewSendType.engineerModeArrayList.size()-1);
+                    listView.setSelection(NewSendType.engineerModeArrayList.size() - 1);
                 });
 
                 edOut.setText("");
@@ -308,6 +329,7 @@ public class NewDataDisplay extends Activity {
 
         });
     }
+
     /**
      * 設定組合大顯型號
      */
@@ -335,7 +357,7 @@ public class NewDataDisplay extends Activity {
                         , getResources().getString(R.string.plzWait), false);
                 new Thread(() -> {
                     int row = mChoose.size();
-                    if (mChoose.contains("L")){
+                    if (mChoose.contains("L")) {
                         row--;
                     }
 
@@ -368,16 +390,16 @@ public class NewDataDisplay extends Activity {
                         case 7:
                             getType = mChoose.get(0) + mChoose.get(1)
                                     + mChoose.get(2) + mChoose.get(3) + mChoose.get(4)
-                                    + mChoose.get(5) +mChoose.get(6);
+                                    + mChoose.get(5) + mChoose.get(6);
                             break;
                         default:
                             throw new IllegalStateException("Unexpected value: " + mChoose.size());
                     }
                     NewDeviceInitialzation d = new NewDeviceInitialzation();
-                    d.inItalzation(defaultName,getType,"-N",mChoose);
+                    d.inItalzation(defaultName, getType, "-N", mChoose);
                     mChoose.clear();
 
-                    runOnUiThread(()->{
+                    runOnUiThread(() -> {
                         mAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
                         finish();
@@ -425,9 +447,9 @@ public class NewDataDisplay extends Activity {
                 int position_target = target.getAdapterPosition();
                 Collections.swap(mChoose, position_dragged, position_target);
                 mAdapter.notifyItemMoved(position_dragged, position_target);
-                if (mChoose.contains("L")&&mChoose.indexOf("L") !=mChoose.size()-1){
-                    Collections.swap(mChoose,position_target,position_dragged);
-                    mAdapter.notifyItemMoved(position_target,position_dragged);
+                if (mChoose.contains("L") && mChoose.indexOf("L") != mChoose.size() - 1) {
+                    Collections.swap(mChoose, position_target, position_dragged);
+                    mAdapter.notifyItemMoved(position_target, position_dragged);
                 }
 
                 return false;
@@ -478,31 +500,31 @@ public class NewDataDisplay extends Activity {
             alertDialog.show();
             alertDialog.getWindow().setLayout((int) weight, ViewGroup.LayoutParams.WRAP_CONTENT);
             mListView.setOnItemClickListener(((parent, view1, position, id) -> {
-                if (mChoose.size() < 6 ) {//最多就六個不能再多
+                if (mChoose.size() < 6) {//最多就六個不能再多
                     String getType = ableSetType[position];
-                    if(mChoose.indexOf("L")==-1){//如果還沒有Ｌ
+                    if (mChoose.indexOf("L") == -1) {//如果還沒有Ｌ
                         mChoose.add(getType);
                         mAdapter.notifyDataSetChanged();
                         getYZ(mChoose, mAdapter, getType);//處理Y,Z的憲制問題
-                    }else {//有L
+                    } else {//有L
                         mChoose.add(getType);
-                        Collections.swap(mChoose,mChoose.size()-1,mChoose.size()-2);
+                        Collections.swap(mChoose, mChoose.size() - 1, mChoose.size() - 2);
                         mAdapter.notifyDataSetChanged();
-                        if (mChoose.indexOf("L")>0&& getType.contains("L")){//L重複
+                        if (mChoose.indexOf("L") > 0 && getType.contains("L")) {//L重複
                             mChoose.remove(mChoose.indexOf("L"));
                             mAdapter.notifyItemRemoved(mChoose.indexOf("L"));
                         }
                         getYZ(mChoose, mAdapter, getType);//處理Y,Z的憲制問題
                     }//else
-                    if (mChoose.indexOf("L")==0){//L在第一個
+                    if (mChoose.indexOf("L") == 0) {//L在第一個
                         mChoose.remove(0);
                         mAdapter.notifyItemRemoved(0);
                     }
                 } else {
-                    if (ableSetType[position].contains("L")&&!mChoose.contains("L")){
+                    if (ableSetType[position].contains("L") && !mChoose.contains("L")) {
                         mChoose.add("L");
                         mAdapter.notifyDataSetChanged();
-                    }else{
+                    } else {
                         Toast.makeText(mV.getContext(), "不可以再新增了", Toast.LENGTH_SHORT).show();
                     }
 
@@ -510,7 +532,10 @@ public class NewDataDisplay extends Activity {
             }));
         }));
     }
-    /**處理Y,Z限制問題*/
+
+    /**
+     * 處理Y,Z限制問題
+     */
     private void getYZ(ArrayList<String> mChoose, NewSupportDCARecycleViewTypeChooser mAdapter, String getType) {
         /*規則
          * 有Y就不可有Z
@@ -550,9 +575,29 @@ public class NewDataDisplay extends Activity {
         return gethex;
 
     }
-/**
- * ============================================工程師模式↑=======================================
- */
+
+    /**
+     * ============================================工程師模式↑=======================================
+     */
+
+    private void returnModifyData(String strByte, String strString) {
+        /*NewSendType.cheatStringSend = strString;
+        NewSendType.cheatByteSend = strByte;
+        //作弊用的..*/
+
+        runOnUiThread(()->{
+            if (strString.substring(0,4).matches("NAME")){
+                SendType.DeviceName = strString.substring(4);
+            }
+        });
+
+
+    }
+
+    private String trans(Context context,int name) {//不是我在講...每個都要寫ctx.getResources().getString(R.string.??);真的會死人
+        String str = context.getResources().getString(name);
+        return str;
+    }
 
 
 }

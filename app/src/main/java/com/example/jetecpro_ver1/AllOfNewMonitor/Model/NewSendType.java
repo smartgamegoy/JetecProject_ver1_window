@@ -38,6 +38,10 @@ public class NewSendType {
     public static ArrayList<String> engineerModeArrayList = new ArrayList<>();
     public static ArrayAdapter adapter;
 
+    //作弊用
+    public static String cheatStringSend;
+    public static String cheatByteSend;
+
 
 
 

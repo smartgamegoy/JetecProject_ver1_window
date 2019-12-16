@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,16 @@ public class NewSupportNDDPagerAdapter extends PagerAdapter {
     }
 
     @Override
+    public int getItemPosition(@NonNull Object object) {
+        if (mChildCount>0){
+            mChildCount --;
+            return POSITION_NONE;
+        }
+        return  super.getItemPosition(object);
+
+    }
+
+    @Override
     public int getCount() {
         return fragmentList.size();
     }
@@ -42,8 +53,19 @@ public class NewSupportNDDPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        container.addView(fragmentList.get(position));
+//        container.addView(fragmentList.get(position));
+//        return fragmentList.get(position);
+
+        fragmentList.get(position).setTag(position);
+        ((ViewPager) container).addView(fragmentList.get(position));
         return fragmentList.get(position);
+    }
+
+    private int mChildCount = 0;
+    @Override
+    public void notifyDataSetChanged() {
+        mChildCount = getCount();
+        super.notifyDataSetChanged();
     }
 
     @Override
