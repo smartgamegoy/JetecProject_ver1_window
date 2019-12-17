@@ -63,6 +63,7 @@ public class NewSupportDCAGetValue {
         }else if(stringData.substring(0, 4).contains("BYTE")){
             hashMap.clear();
             arrayList.clear();
+            arrayByte.clear();
             hashSet.clear();
         }else{
             arrayByte.add(byteData);

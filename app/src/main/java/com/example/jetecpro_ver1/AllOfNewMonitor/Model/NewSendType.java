@@ -11,7 +11,7 @@ public class NewSendType {
     public static String newDeviceName;
     public static String newDeviceAddress;
 
-    //他奶奶的有事沒事就再加，一次來10個字啦！怕了吧(BT-XXXXXXXXX-N)
+    //(BT-XXXXXXXXX-N)
     public static int row;
     public static char newFirstWord;
     public static char newSecondWord;

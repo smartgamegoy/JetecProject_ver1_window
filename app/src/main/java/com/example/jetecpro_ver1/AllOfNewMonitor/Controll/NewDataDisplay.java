@@ -178,12 +178,12 @@ public class NewDataDisplay extends Activity {
     private void setPager() {
         mPages = new ArrayList<>();
 
-        mPages.add(new FirstPageSetting(this, getFromIntentArray, getTab,NewDataDisplay.this));//預設首
+        mPages.add(new FirstPageSetting(this, getFromIntentArray, getTab, NewDataDisplay.this));//預設首
         int tabCount = NewSendType.row - getMaches(NewSendType.newDeviceType, "Y") - getMaches(NewSendType.newDeviceType, "Z");
         for (int i = 0; i < tabCount; i++) {
-            mPages.add(new NormalDataSetting(this, getFromIntentArray, getTab.get(i),NewDataDisplay.this));
+            mPages.add(new NormalDataSetting(this, getFromIntentArray, getTab.get(i), NewDataDisplay.this));
         }
-        mPages.add(new NormalDataSetting(this, getFromIntentArray, 7,NewDataDisplay.this));//預設尾
+        mPages.add(new NormalDataSetting(this, getFromIntentArray, 7, NewDataDisplay.this));//預設尾
 
         NewSupportNDDPagerAdapter a = new NewSupportNDDPagerAdapter(mPages, getBaseContext(), getTab);
         mViewPager.setCurrentItem(0);
@@ -271,16 +271,16 @@ public class NewDataDisplay extends Activity {
                 for (byte byteChar : getByteData)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
-
-                returnModifyData(byteArrayToHexStr(getByteData), stringData.substring(0, stringData.indexOf("\n")));
+//                returnModifyData(byteArrayToHexStr(getByteData), stringData.substring(0, stringData.indexOf("\n")));
                 new Thread(() -> {
-                    NewSendType.engineerModeArrayList.add("回傳string>" + stringData);
-                    NewSendType.engineerModeArrayList.add("回傳byte>" + byteArrayToHexStr(getByteData));
-                    NewSendType.engineerModeArrayList.add("---------------------------");
                     runOnUiThread(() -> {
+                        NewSendType.engineerModeArrayList.add("回傳string>" + stringData);
+                        NewSendType.engineerModeArrayList.add("回傳byte>" + byteArrayToHexStr(getByteData));
+                        NewSendType.engineerModeArrayList.add("---------------------------");
                         listView.setAdapter(NewSendType.adapter);
                         NewSendType.adapter.notifyDataSetChanged();
                         listView.setSelection(NewSendType.engineerModeArrayList.size() - 1);
+
                     });
                 }).start();
 
@@ -585,16 +585,15 @@ public class NewDataDisplay extends Activity {
         NewSendType.cheatByteSend = strByte;
         //作弊用的..*/
 
-        runOnUiThread(()->{
-            if (strString.substring(0,4).matches("NAME")){
-                SendType.DeviceName = strString.substring(4);
-            }
-        });
+
+        if (strString.substring(0, 4).matches("NAME")) {
+            SendType.DeviceName = strString.substring(4);
+        }
 
 
     }
 
-    private String trans(Context context,int name) {//不是我在講...每個都要寫ctx.getResources().getString(R.string.??);真的會死人
+    private String trans(Context context, int name) {//不是我在講...每個都要寫ctx.getResources().getString(R.string.??);真的會死人
         String str = context.getResources().getString(name);
         return str;
     }
