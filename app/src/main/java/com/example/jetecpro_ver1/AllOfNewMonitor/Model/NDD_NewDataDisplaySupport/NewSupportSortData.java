@@ -21,7 +21,7 @@ public class NewSupportSortData {
         this.activity = activity;
     }
 
-
+    /**設置標題*/
     public String ReBackTitle() {
         int row = Integer.parseInt(data.substring(0, 2), 16);
         int type = Integer.parseInt(data.substring(2, 4), 16);
@@ -67,7 +67,7 @@ public class NewSupportSortData {
         }
         return "xx";
     }
-
+    /**設置內容*/
     public String ReBackValues() {
         int row = Integer.parseInt(data.substring(0, 2), 16);
         int type = Integer.parseInt(data.substring(2, 4), 16);
@@ -75,28 +75,31 @@ public class NewSupportSortData {
         double values;
         Log.d(TAG, "ReBackValues: "+data);
         try {
+            double i1 =Long.valueOf(data.substring(6),16).intValue();
             switch (dp){
                 default:
-                    values = (short) Integer.parseInt(data.substring(6), 16);
+                    values =i1;
                     break;
                 case 1:
-                    values = Integer.parseInt(Integer.toHexString((short) Integer.parseInt(data.substring(6), 16)/10));
+                    values = i1/10;
+//                    values = Integer.parseInt(Integer.toHexString((short) Integer.parseInt(data.substring(6), 16)/10));
                     break;
                 case 2:
-                    double s = Integer.parseInt(data.substring(6),16);
-                    values =s/100;
+                    values = i1/100;
                     /*values = (short)Integer.parseInt(Long.toHexString(Long.parseLong(data.substring(6)
                             , 16)/Long.parseLong("0064", 16)),16);*/
-                    Log.d(TAG, "ReBackValues: "+values);
+
                     break;
                 case 3:
-                    values = Integer.parseInt(Integer.toHexString((short) Integer.parseInt(data.substring(6), 16)/1000));
+                    values = i1/1000;
+//                    values = Integer.parseInt(Integer.toHexString((short) Integer.parseInt(data.substring(6), 16)/1000));
                     break;
 
             }
 
         } catch (Exception e) {
             values = (short) Integer.parseInt(data.substring(10), 16);
+            Log.d(TAG, "ReBackValues: here"+values);
         }
 //        Log.d(TAG, "ReBackValues: "+data);
 //        Log.d(TAG, "ReBackValues: "+data.substring(6));
@@ -122,10 +125,21 @@ public class NewSupportSortData {
 
         }
 
-        return String.valueOf(values);
+//        return String.valueOf(values);
+        switch (dp){
+            case 1:
+                return String.format("%.1f",values);
+            case 2:
+                return String.format("%.2f",values);
+            case 3:
+                return String.format("%.3f",values);
+                default:
+                    return String.format("%.0f",values);
+        }
+
 
     }
-
+    /**設置RL456的標籤*/
     private String RL456GetValue(int input) {
         String TypeTag = NewSendType.newDeviceType.substring(5, NewSendType.newDeviceType.lastIndexOf("-"));
 //        Log.d(TAG, "RL456GetValue: "+TypeTag);
@@ -163,7 +177,7 @@ public class NewSupportSortData {
 
     }
 
-
+    /**設置小數點調整欄位的數值*/
     public String getDP() {
         int row = Integer.parseInt(data.substring(0, 2), 16);
         if (row == area) {
