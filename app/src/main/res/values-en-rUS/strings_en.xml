@@ -218,14 +218,15 @@
     <string name="ADR">Address</string>
     <string name="REG">Register</string>
     <string name="LEN">Length</string>
-    <string name="RL1">Alarm1</string>
-    <string name="RL2">Alarm2</string>
-    <string name="RL3">Alarm3</string>
-    <string name="RL4">Output1</string>
-    <string name="RL5">Output2</string>
-    <string name="RL6">Output3</string>
+    <string name="RL123">Alarm</string>
+
+    <string name="RL456">Output</string>
+
     <string name="alarmOff">OFF</string>
     <string name="alarmOn">ON</string>
     <string name="PM2_5">PM2.5</string>
     <string name="PM10">PM10</string>
+
+    <string name="new_Decimal">Decimal Point</string>
+    <string name="new_none">None</string>
 </resources>

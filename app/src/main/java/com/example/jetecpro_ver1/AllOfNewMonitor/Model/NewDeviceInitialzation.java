@@ -23,6 +23,7 @@ public class NewDeviceInitialzation {
         //    String defaultName;//BT-...
         //    String getType;//BT-XXXXXXXXXX...
         //    String newMonitorWord;//BT-XXXXXXXXXX-O
+        int timeCount = 300;
 
         Log.d(TAG, "取得型號: " + defaultName + getType + newMonitorWord);
         //範例：sendByte(1, 7, 1, 20);
@@ -34,149 +35,153 @@ public class NewDeviceInitialzation {
         Date dNow = new Date();
         //送大家都有的值
         sendString("NAMEJTC-N-Test");
-        SystemClock.sleep(500);
+        SystemClock.sleep(timeCount);
         sendString("PWR=000000");//密碼
-        SystemClock.sleep(500);
+        SystemClock.sleep(timeCount);
         sendString("DATE"+date.format(dNow));
-        SystemClock.sleep(500);
+        SystemClock.sleep(timeCount);
         sendString("TIME"+time.format(dNow));
-        SystemClock.sleep(500);
+        SystemClock.sleep(timeCount);
         sendString(defaultName + getType + newMonitorWord);
-        SystemClock.sleep(500);
+        SystemClock.sleep(timeCount);
         //送大家都有的值
         for (int i=0;i<mChoose.size();i++){//取得選擇型號與取得它的排數
             Log.d(TAG, "inItalzation: 第"+(i+1)+"排是："+mChoose.get(i));
             switch (mChoose.get(i)){
                 case "T"://溫
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,65);//EH
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,3,0,-10);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,0);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
                 case "H"://濕
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,100);//EH
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,3,0,0);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,0);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
                 case "C"://二氧化碳2000
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,2000);//EH
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,3,0,0);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,0);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
                 case "D"://二氧化碳3000
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,3000);//EH
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,3,0,0);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,0);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
                 case "E"://二氧化碳5000
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,5000);//EH
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,3,0,0);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,0);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
                 case "M"://PM2.5
                 case "P"://壓力
                 case "Q"://PM10
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,1000);//EH
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,3,0,0);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,0);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
                 case "O"://噪音
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,130);//EH
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,3,0,30);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,0);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
 
                 case "I"://類比
                     sendByte(i+1,1,0,0);//PV
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,2,0,9999);//EH
-                    SystemClock.sleep(500);
-                    sendByte(i+1,3,0,-9999);//EL
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
+                    sendByte(i+1,3,0,-999);//EL
+                    SystemClock.sleep(timeCount);
+                    sendByte(i+1,4,0,9999);//IH
+                    SystemClock.sleep(timeCount);
+                    sendByte(i+1,5,0,-999);//IL
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,6,0,9999);//CR
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,10,0,0);//RL1
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,11,0,0);//RL2
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     sendByte(i+1,12,0,0);//RL3
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(timeCount);
                     break;
                 case "R":
 

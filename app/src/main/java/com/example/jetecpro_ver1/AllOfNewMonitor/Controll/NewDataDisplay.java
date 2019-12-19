@@ -181,9 +181,9 @@ public class NewDataDisplay extends Activity {
         mPages.add(new FirstPageSetting(this, getFromIntentArray, getTab, NewDataDisplay.this));//預設首
         int tabCount = NewSendType.row - getMaches(NewSendType.newDeviceType, "Y") - getMaches(NewSendType.newDeviceType, "Z");
         for (int i = 0; i < tabCount; i++) {
-            mPages.add(new NormalDataSetting(this, getFromIntentArray, getTab.get(i), NewDataDisplay.this));
+            mPages.add(new NormalDataSetting(this, getFromIntentArray, getTab.get(i), NewDataDisplay.this,getTab));
         }
-        mPages.add(new NormalDataSetting(this, getFromIntentArray, 7, NewDataDisplay.this));//預設尾
+        mPages.add(new NormalDataSetting(this, getFromIntentArray, 7, NewDataDisplay.this,getTab));//預設尾
 
         NewSupportNDDPagerAdapter a = new NewSupportNDDPagerAdapter(mPages, getBaseContext(), getTab);
         mViewPager.setCurrentItem(0);
@@ -314,11 +314,11 @@ public class NewDataDisplay extends Activity {
         btSend.setOnClickListener(v -> {
             EditText edOut = findViewById(R.id.engineer_New_EditText);
             if (edOut.getText().toString().length() > 0) {
-                NewSendType.engineerModeArrayList.add("寫出字串>" + edOut.getText().toString());
-                SendType.SendForBLEDataType = edOut.getText().toString();
-                SendType.getSendBluetoothLeService.
-                        setCharacteristicNotification(SendType.Mycharacteristic, true);
                 runOnUiThread(() -> {
+                    NewSendType.engineerModeArrayList.add("寫出字串>" + edOut.getText().toString());
+                    SendType.SendForBLEDataType = edOut.getText().toString();
+                    SendType.getSendBluetoothLeService.
+                            setCharacteristicNotification(SendType.Mycharacteristic, true);
                     listView.setAdapter(NewSendType.adapter);
                     NewSendType.adapter.notifyDataSetChanged();
                     listView.setSelection(NewSendType.engineerModeArrayList.size() - 1);

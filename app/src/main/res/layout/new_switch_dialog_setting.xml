@@ -25,7 +25,7 @@
 
 
                 <Button
-                    android:id="@+id/button_NDD_cancel"
+                    android:id="@+id/button_switch_NDD_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -36,7 +36,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/textView_NDD_modifyTitle"
+                    android:id="@+id/textView_switch_NDD_modifyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
@@ -46,7 +46,7 @@
                     android:textSize="16dp"/>
 
                 <Button
-                    android:id="@+id/button_NDD_modify"
+                    android:id="@+id/button_switch_NDD_modify"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -59,15 +59,18 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/editText_NDD_modify"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <Switch
+
             android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:inputType="textPersonName" />
+            android:layout_marginBottom="10dp"
+            android:id="@+id/switch_switch_NDD_Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:thumb="@drawable/new_switch_thumb"
+            android:track="@drawable/new_switch_track"
+            />
+
 
     </LinearLayout>
 </LinearLayout>

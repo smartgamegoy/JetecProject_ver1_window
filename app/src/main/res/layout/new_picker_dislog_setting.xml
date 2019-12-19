@@ -25,7 +25,7 @@
 
 
                 <Button
-                    android:id="@+id/button_NDD_cancel"
+                    android:id="@+id/button_picker_NDD_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -36,7 +36,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/textView_NDD_modifyTitle"
+                    android:id="@+id/textView_picker_NDD_modifyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
@@ -46,7 +46,7 @@
                     android:textSize="16dp"/>
 
                 <Button
-                    android:id="@+id/button_NDD_modify"
+                    android:id="@+id/button_picker_NDD_modify"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -58,16 +58,12 @@
 
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/editText_NDD_modify"
+        <NumberPicker
+            android:id="@+id/numberPicker_picker_NDD_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:ems="10"
-            android:inputType="textPersonName" />
+
+            />
 
     </LinearLayout>
 </LinearLayout>

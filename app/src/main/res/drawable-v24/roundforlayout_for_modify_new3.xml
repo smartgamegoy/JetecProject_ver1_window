@@ -7,7 +7,8 @@
 
     <!-- 圓角，Layout佈局圓角幅度設定值 -->
     <corners
-        android:radius="10dip"
+        android:topRightRadius="10dip"
+        android:topLeftRadius="10dip"
         />
 
     <!-- 框內底部顏色 -->
@@ -23,8 +24,8 @@
 
     <!-- 畫面顏色漸層，開始色碼與結束色碼進行漸層，角度為315度 -->
     <gradient
-        android:startColor="@color/White"
-        android:endColor="@color/White"
+        android:startColor="#32549B"
+        android:endColor="#0d4498"
 
         android:angle="315"
         />

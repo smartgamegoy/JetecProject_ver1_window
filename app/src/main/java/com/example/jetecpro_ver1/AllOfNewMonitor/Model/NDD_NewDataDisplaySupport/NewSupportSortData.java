@@ -49,17 +49,17 @@ public class NewSupportSortData {
                 case 9:
                     return trans(R.string.LEN);
                 case 10:
-                    return trans(R.string.RL1);
+                    return trans(R.string.RL123)+"1";
                 case 11:
-                    return trans(R.string.RL2);
+                    return trans(R.string.RL123)+"2";
                 case 12:
-                    return trans(R.string.RL3);
+                    return trans(R.string.RL123)+"3";
                 case 13:
-                    return trans(R.string.RL4);
+                    return trans(R.string.RL456)+"1";
                 case 14:
-                    return trans(R.string.RL5);
+                    return trans(R.string.RL456)+"2";
                 case 15:
-                    return trans(R.string.RL6);
+                    return trans(R.string.RL456)+"3";
 
             }
 
@@ -109,12 +109,13 @@ public class NewSupportSortData {
             case 10:
             case 11:
             case 12:
-                if (values == 0) {
+                int i= Integer.parseInt(data.substring(6),16);
+                if (i == 0) {
                     return trans(R.string.alarmOff);
-                } else if (values == 1) {
+                } else if (i == 1) {
                     return trans(R.string.alarmOn);
                 } else {
-                    return String.valueOf(values);
+                    return String.valueOf(i);
                 }
             case 13:
             case 14:
@@ -140,7 +141,7 @@ public class NewSupportSortData {
 
     }
     /**設置RL456的標籤*/
-    private String RL456GetValue(int input) {
+    public String RL456GetValue(int input) {
         String TypeTag = NewSendType.newDeviceType.substring(5, NewSendType.newDeviceType.lastIndexOf("-"));
 //        Log.d(TAG, "RL456GetValue: "+TypeTag);
         if (input>0){
@@ -162,7 +163,7 @@ public class NewSupportSortData {
                 case 'Q':
                     return trans(R.string.PM10);
                 case 'I':
-                    return trans(R.string.analog);
+                    return trans(R.string.analog)+input;
                 case 'R':
                     return "R";
                 default:
@@ -177,13 +178,15 @@ public class NewSupportSortData {
 
     }
 
+
+
     /**設置小數點調整欄位的數值*/
     public String getDP() {
         int row = Integer.parseInt(data.substring(0, 2), 16);
         if (row == area) {
             return String.valueOf(Integer.parseInt(data.substring(4, 6), 16));
         } else {
-            return "9";
+            return "-";
         }
     }
 

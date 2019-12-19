@@ -215,16 +215,14 @@
     <string name="ADR">位址</string>
     <string name="REG">暫存器</string>
     <string name="LEN">長度</string>
-    <string name="RL1">警報1</string>
-    <string name="RL2">警報２</string>
-    <string name="RL3">警報3</string>
-    <string name="RL4">輸出1</string>
-    <string name="RL5">輸出2</string>
-    <string name="RL6">輸出3</string>
+    <string name="RL123">警報</string>
+    <string name="RL456">輸出</string>
     <string name="alarmOff">關</string>
     <string name="alarmOn">開</string>
     <string name="PM2_5">PM2.5</string>
     <string name="PM10">PM10</string>
+    <string name="new_Decimal">小數點</string>
+    <string name="new_none">無</string>
 
 
 </resources>
