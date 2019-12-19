@@ -19,7 +19,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -36,7 +35,6 @@ import android.widget.Toast;
 
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivitySupport.NewSupportDCARecycleViewTypeChooser;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDPagerAdapter;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDRecyclerViewAdapter;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.FirstPageSetting;

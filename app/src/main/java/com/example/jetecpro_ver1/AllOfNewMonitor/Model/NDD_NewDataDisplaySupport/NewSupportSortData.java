@@ -167,11 +167,11 @@ public class NewSupportSortData {
                 case 'R':
                     return "R";
                 default:
-                    return " ";
+                    return trans(R.string.new_none);
 
             }
         }else{
-            return " ";
+            return trans(R.string.new_none);
         }
 
 
