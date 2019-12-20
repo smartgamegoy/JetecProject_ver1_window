@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewNDD_ModifiedDataSendOut;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportSortData;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.R;
@@ -98,10 +99,10 @@ public class NormalDataSetting extends RelativeLayout {
 //        Log.d(TAG, "NormalDataSetting: "+displayHashMap);
         /**按鈕在這邊*/
         btSend.setOnClickListener((v -> {
-            Log.d(TAG, "NormalDataSetting: " + area);
-            Log.d(TAG, "NormalDataSetting: " + displayHashMap);
-
-
+//            Log.d(TAG, "NormalDataSetting: " + area);
+//            Log.d(TAG, "NormalDataSetting: " + displayHashMap);
+            NewNDD_ModifiedDataSendOut send = new NewNDD_ModifiedDataSendOut(area,displayHashMap,activity,getTab);
+            send.sendOut();
         }));
         r.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mAdapter = new MyRecyclerView();
@@ -159,9 +160,6 @@ public class NormalDataSetting extends RelativeLayout {
 //        Log.d(TAG, "getClick: " + value);
 //        Log.d(TAG, "getClick: " + displayHashMap);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mActivity);
-        AlertDialog dialog;
-        View view;
-        Button btCancel, btSendOut;
         NewSupportSortData s = new NewSupportSortData(getArea, title, mActivity);
 
         if (title.matches(trans(R.string.PV))
