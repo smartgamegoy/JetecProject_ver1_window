@@ -68,22 +68,22 @@ public class NewNDD_ModifiedDataSendOut {
 
     private int value_Output(String value){
 
-        if (value.matches(trans(R.string.Temperature))){
-            return value_Output_2('T');
-        }else if (value.matches(trans(R.string.Humidity))){
-            return value_Output_2('H');
-        }else if (value.matches(trans(R.string.CO2))){
-            return value_Output_2('C');
-        }else if (value.matches(trans(R.string.PM2_5))){
-            return value_Output_2('M');
-        }else if (value.matches(trans(R.string.Noise))){
-            return value_Output_2('O');
-        }else if (value.matches(trans(R.string.PM10))){
-            return value_Output_2('Q');
-        }else if (value.matches(trans(R.string.press))){
-            return value_Output_2('P');
+        if (value.contains(trans(R.string.Temperature))){
+            return Integer.parseInt(value.substring(3));
+        }else if (value.contains(trans(R.string.Humidity))){
+            return Integer.parseInt(value.substring(3));
+        }else if (value.contains(trans(R.string.CO2))){
+            return Integer.parseInt(value.substring(5));
+        }else if (value.contains(trans(R.string.PM2_5))){
+            return Integer.parseInt(value.substring(6));
+        }else if (value.contains(trans(R.string.Noise))){
+            return Integer.parseInt(value.substring(3));
+        }else if (value.contains(trans(R.string.PM10))){
+            return Integer.parseInt(value.substring(5));
+        }else if (value.contains(trans(R.string.press))){
+            return Integer.parseInt(value.substring(3));
         }else if (value.contains(trans(R.string.analog))){
-            return Integer.parseInt(value.substring(2));
+            return Integer.parseInt(value.substring(3));
         }else {
             return 0;
         }

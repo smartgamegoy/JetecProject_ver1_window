@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivitySupport.NewSupportDCARecycleViewTypeChooser;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDPagerAdapter;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewModifyPassword;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.FirstPageSetting;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.NormalDataSetting;
@@ -156,7 +157,8 @@ public class NewDataDisplay extends Activity {
 
                     break;
                 case R.id.button_NDD_modifyPasswd:
-
+                    NewModifyPassword m = new NewModifyPassword(NewDataDisplay.this);
+                    m.modifyPassword();
                     break;
                 case R.id.button_NDD_startlog:
 
@@ -269,7 +271,7 @@ public class NewDataDisplay extends Activity {
                 for (byte byteChar : getByteData)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 String stringData = new String(getByteData) + "\n" + stringBuilder.toString();
-//                returnModifyData(byteArrayToHexStr(getByteData), stringData.substring(0, stringData.indexOf("\n")));
+                returnModifyData(byteArrayToHexStr(getByteData), stringData.substring(0, stringData.indexOf("\n")));
                 new Thread(() -> {
                     runOnUiThread(() -> {
                         NewSendType.engineerModeArrayList.add("回傳string>" + stringData);
@@ -578,15 +580,11 @@ public class NewDataDisplay extends Activity {
      * ============================================工程師模式↑=======================================
      */
 
-    private void returnModifyData(String strByte, String strString) {
+    public void returnModifyData(String strByte, String strString) {
         /*NewSendType.cheatStringSend = strString;
         NewSendType.cheatByteSend = strByte;
         //作弊用的..*/
 
-
-        if (strString.substring(0, 4).matches("NAME")) {
-            SendType.DeviceName = strString.substring(4);
-        }
 
 
     }

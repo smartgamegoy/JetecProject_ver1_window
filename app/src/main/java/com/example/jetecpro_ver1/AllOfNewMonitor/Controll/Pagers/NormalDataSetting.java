@@ -228,6 +228,8 @@ public class NormalDataSetting extends RelativeLayout {
         });
 
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     /**
@@ -269,6 +271,8 @@ public class NormalDataSetting extends RelativeLayout {
         });
 
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     /**
@@ -291,7 +295,7 @@ public class NormalDataSetting extends RelativeLayout {
             npSelect.setMaxValue(3);
             npSelect.setValue(Integer.parseInt(value));
             dialog = mBuilder.create();
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
             btCancel.setOnClickListener(v -> {
                 dialog.dismiss();
             });
@@ -314,6 +318,8 @@ public class NormalDataSetting extends RelativeLayout {
             });
 
             dialog.show();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(900, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
 
@@ -405,6 +411,8 @@ public class NormalDataSetting extends RelativeLayout {
         }));
 
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     /**

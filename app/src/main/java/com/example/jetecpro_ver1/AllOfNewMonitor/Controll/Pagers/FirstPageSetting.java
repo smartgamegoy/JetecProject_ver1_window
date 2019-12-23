@@ -153,7 +153,6 @@ public class FirstPageSetting extends RelativeLayout {
                 mBuilder.setView(view);
                 AlertDialog dialog = mBuilder.create();
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
                 if (title.matches(trans(mActivity, R.string.device_name))) {
 
                     setName(i, editText, btCancel, btSendOut, dialog);/**設定名字*/
@@ -196,6 +195,7 @@ public class FirstPageSetting extends RelativeLayout {
 
             });
             dialog.show();
+            dialog.getWindow().setLayout(900, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
 

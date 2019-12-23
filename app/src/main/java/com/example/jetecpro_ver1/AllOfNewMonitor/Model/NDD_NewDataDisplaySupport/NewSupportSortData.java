@@ -147,25 +147,25 @@ public class NewSupportSortData {
         if (input>0){
             switch (TypeTag.charAt(input-1)) {
                 case 'T':
-                    return trans(R.string.Temperature);
+                    return trans(R.string.Temperature)+" "+input;
                 case 'H':
-                    return trans(R.string.Humidity);
+                    return trans(R.string.Humidity)+" "+input;
                 case 'C':
                 case 'D':
                 case 'E':
-                    return trans(R.string.CO2);
+                    return trans(R.string.CO2)+" "+input;
                 case 'M':
-                    return trans(R.string.PM2_5);
+                    return trans(R.string.PM2_5)+" "+input;
                 case 'O':
-                    return trans(R.string.Noise);
+                    return trans(R.string.Noise)+" "+input;
                 case 'P':
-                    return trans(R.string.press);
+                    return trans(R.string.press)+" "+input;
                 case 'Q':
-                    return trans(R.string.PM10);
+                    return trans(R.string.PM10)+" "+input;
                 case 'I':
-                    return trans(R.string.analog)+input;
+                    return trans(R.string.analog)+" "+input;
                 case 'R':
-                    return "R";
+                    return "R"+" "+input;
                 default:
                     return trans(R.string.new_none);
 

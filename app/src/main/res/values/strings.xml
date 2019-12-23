@@ -223,6 +223,10 @@
     <string name="PM10">PM10</string>
     <string name="new_Decimal">小數點</string>
     <string name="new_none">無</string>
+    <string name="new_modify_Password">更改密碼</string>
+    <string name="new_modify_Password_notice">請輸入舊密碼與新密碼</string>
+    <string name="new_oldPasswDisError">舊密碼輸入錯誤！</string>
+    <string name="new_plzInputSix">請輸入六字密碼！</string>
 
 
 </resources>
