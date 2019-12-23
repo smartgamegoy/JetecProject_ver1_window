@@ -1,6 +1,7 @@
 package com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -29,27 +30,30 @@ public class NewNDD_ModifiedDataSendOut {
     }
 
     public void sendOut(){
-
-        Log.d(TAG, "sendOut: "+arrayList+", "+area);
-        sendString("ERA"+area);//先送區域
-//        Log.d(TAG, "sendOut: "+"ERA"+area);
-        SystemClock.sleep(count);
-        for (int i=0;i<arrayList.size();i++){
-//            sendByte(area,type,DP,value);
-            String title = arrayList.get(i).get("Title");
-            String value = arrayList.get(i).get("Value");
-
-            if (area<7){//非輸出的區域
-                sendByte(area,title2type(title),getDP(title,arrayList),value2SendValue(value,getDP(title,arrayList)));
-            }else{//輸出區域
-
-
-            }
-
-
-
+        ProgressDialog pDialog = ProgressDialog.show(activity,trans(R.string.progressing),trans(R.string.plzWait),true);
+        new Thread(()->{
+            sendString("ERA"+area);//先送區域
             SystemClock.sleep(count);
-        }
+            for (int i=0;i<arrayList.size();i++){
+                String title = arrayList.get(i).get("Title");
+                String value = arrayList.get(i).get("Value");
+
+                if (area<7){//非輸出的區域
+
+                    if (!title.matches(trans(R.string.new_Decimal))){
+                        sendByte(area,title2type(title),getDP(arrayList), Integer.parseInt(value2SendValue(value,getDP(arrayList))));
+                    }
+
+                }else{//輸出區域
+                    sendByte(area,title2type(title),0,value_Output(value));
+
+                }
+
+                SystemClock.sleep(count);
+            }
+            pDialog.dismiss();
+        }).start();
+
 
 
 
@@ -61,6 +65,41 @@ public class NewNDD_ModifiedDataSendOut {
 
 
     /*============================================模組區============================================*/
+
+    private int value_Output(String value){
+
+        if (value.matches(trans(R.string.Temperature))){
+            return value_Output_2('T');
+        }else if (value.matches(trans(R.string.Humidity))){
+            return value_Output_2('H');
+        }else if (value.matches(trans(R.string.CO2))){
+            return value_Output_2('C');
+        }else if (value.matches(trans(R.string.PM2_5))){
+            return value_Output_2('M');
+        }else if (value.matches(trans(R.string.Noise))){
+            return value_Output_2('O');
+        }else if (value.matches(trans(R.string.PM10))){
+            return value_Output_2('Q');
+        }else if (value.matches(trans(R.string.press))){
+            return value_Output_2('P');
+        }else if (value.contains(trans(R.string.analog))){
+            return Integer.parseInt(value.substring(2));
+        }else {
+            return 0;
+        }
+    }
+
+    private int value_Output_2(char word){
+        String TypeTag = NewSendType.newDeviceType.substring(5
+                , NewSendType.newDeviceType.lastIndexOf("-"));
+        for (int i=0;i<TypeTag.length();i++){
+            if (TypeTag.charAt(i) == word){
+                return i+1;
+            }
+        }
+
+        return 0;
+    }
 
     private int title2type(String title){//Ex:將"上線警報"轉為"2",type的部分
             if (title.matches(trans(R.string.PV))){
@@ -98,9 +137,9 @@ public class NewNDD_ModifiedDataSendOut {
             }
 
     }
-    private int getDP(String title,ArrayList<HashMap<String,String>> hashMaps){
+    private int getDP(ArrayList<HashMap<String,String>> hashMaps){
         for (int i=0;i<hashMaps.size();i++){
-            if (title.matches(trans(R.string.new_Decimal))){
+            if (hashMaps.get(i).get("Title").matches(trans(R.string.new_Decimal))){
                 return Integer.parseInt(hashMaps.get(i).get("Value"));
             }
 
@@ -109,14 +148,28 @@ public class NewNDD_ModifiedDataSendOut {
 
     }
 
-    private int value2SendValue(String value,int dp){
+    private String value2SendValue(String value,int dp){
         if (value.matches(trans(R.string.alarmOn))){
-            return 1;
+            return "1";
         }else if (value.matches(trans(R.string.alarmOff))){
-            return 0;
-        }
-        return Integer.parseInt(value);
+            return "0";
 
+        }
+
+        switch (dp){
+            case 0:
+                return String.format("%.0f",Double.parseDouble(value)*1);
+            case 1:
+                return String.format("%.0f",Double.parseDouble(value)*10);
+//                return String.valueOf(Double.parseDouble(value)*10);
+            case 2:
+                return String.format("%.0f",Double.parseDouble(value)*100);
+            case 3:
+                return String.format("%.0f",Double.parseDouble(value)*1000);
+
+                default:
+                    return "0";
+        }
     }
 
 

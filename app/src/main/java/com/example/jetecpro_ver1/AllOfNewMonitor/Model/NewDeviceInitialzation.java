@@ -23,7 +23,7 @@ public class NewDeviceInitialzation {
         //    String defaultName;//BT-...
         //    String getType;//BT-XXXXXXXXXX...
         //    String newMonitorWord;//BT-XXXXXXXXXX-O
-        int timeCount = 300;
+        int timeCount = 400;
 
         Log.d(TAG, "取得型號: " + defaultName + getType + newMonitorWord);
         //範例：sendByte(1, 7, 1, 20);

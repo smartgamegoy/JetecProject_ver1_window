@@ -199,14 +199,12 @@ public class NormalDataSetting extends RelativeLayout {
         TextView tvPickerTitle = view.findViewById(R.id.textView_picker_NDD_modifyTitle);
         tvPickerTitle.setText(title);
         ArrayList<String> outputSelect = new ArrayList<>();
+        outputSelect.add(trans(R.string.new_none));
         for (int i = 0; i < mGetTabs.size(); i++) {
             if (mGetTabs.get(i) < 7) {
 //                    Log.d(TAG, "getClick: " + str.charAt(mGetTabs.get(i) - 1));
-                outputSelect.add(String.valueOf(s.RL456GetValue(mGetTabs.get(i) - 1)));
+                outputSelect.add(String.valueOf(s.RL456GetValue(mGetTabs.get(i))));
             }
-        }
-        if (outputSelect.contains(" ")) {
-            outputSelect.set(outputSelect.indexOf(" "), trans(R.string.new_none));
         }
         npSelect.setWrapSelectorWheel(false);
         npSelect.setMinValue(0);
@@ -374,7 +372,7 @@ public class NormalDataSetting extends RelativeLayout {
                             editText.setText(String.valueOf(getMin).substring(0, String.valueOf(getMin).indexOf(".")));
 //                                editText.setSelection(editText.getText().length());
                         }
-                        if (s.toString().length() > 1 && s.toString().startsWith("0")) {
+                        /*if (s.toString().length() > 1 && s.toString().startsWith("0")) {
                             s.replace(0, 1, "");
 
                         } else if (s.toString().length() > 1 && s.toString().startsWith("-")) {
@@ -382,7 +380,7 @@ public class NormalDataSetting extends RelativeLayout {
                                 s.replace(1, 2, "");
                                 editText.setSelection(editText.getText().length());
                             }
-                        }
+                        }*/
                     }
 
                 } catch (Exception e) {
