@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/roundforlayout_new2">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundforlayout_for_modify_new3"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:text="@string/Save"
+            android:textColor="@color/White"
+            android:textSize="22dp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editText_NewSaveDialogName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/button_NewSaveDialogCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/none"
+        android:text="@string/btCreate"
+        android:textColor="@color/dodBlue"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_NewSaveDialogName" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Gray_shironezumi"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/button_NewSaveDialogCreate"
+        tools:layout_editor_absoluteX="3dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="@string/new_savedTitle"
+            android:textColor="@color/Black2"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView_NewSaveDialog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

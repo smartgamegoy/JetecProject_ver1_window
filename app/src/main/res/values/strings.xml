@@ -227,6 +227,7 @@
     <string name="new_modify_Password_notice">請輸入舊密碼與新密碼</string>
     <string name="new_oldPasswDisError">舊密碼輸入錯誤！</string>
     <string name="new_plzInputSix">請輸入六字密碼！</string>
+    <string name="new_savedTitle">已儲存列表</string>
 
 
 </resources>

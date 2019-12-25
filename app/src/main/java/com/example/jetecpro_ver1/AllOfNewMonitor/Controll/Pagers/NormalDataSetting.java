@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class NormalDataSetting extends RelativeLayout {
     private String TAG = NormalDataSetting.class.getSimpleName();
     private View mView;
-    MyRecyclerView mAdapter;
+    public MyRecyclerView mAdapter;
     Activity mActivity;
     int getArea;
     ArrayList<Integer> mGetTabs;
@@ -44,6 +44,7 @@ public class NormalDataSetting extends RelativeLayout {
     public NormalDataSetting(Context context, HashMap<String, ArrayList<String>> getFromIntentArray
             , int area, Activity activity, ArrayList<Integer> getTab) {//area是該編號的位置
         super(context);
+
         mGetTabs = getTab;
         mActivity = activity;
         displayHashMap.clear();
@@ -112,7 +113,7 @@ public class NormalDataSetting extends RelativeLayout {
 
     }
 
-    private class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHolder> {
+    public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHolder> {
         public class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvTitle, tvValue;
             View mView;
@@ -205,6 +206,13 @@ public class NormalDataSetting extends RelativeLayout {
 //                    Log.d(TAG, "getClick: " + str.charAt(mGetTabs.get(i) - 1));
                 outputSelect.add(String.valueOf(s.RL456GetValue(mGetTabs.get(i))));
             }
+        }
+
+        for (int i = 0;i<displayHashMap.size();i++){
+            if (!displayHashMap.get(i).get("Value").matches(trans(R.string.new_none))){
+                outputSelect.remove(outputSelect.indexOf(displayHashMap.get(i).get("Value")));
+            }
+
         }
         npSelect.setWrapSelectorWheel(false);
         npSelect.setMinValue(0);

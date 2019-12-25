@@ -35,7 +35,7 @@ public class NewDeviceInitialzation {
         Date dNow = new Date();
         //送大家都有的值
         sendString("NAMEJTC-N-Test");
-        SystemClock.sleep(timeCount);
+        SystemClock.sleep(600);
         sendString("PWR=000000");//密碼
         SystemClock.sleep(timeCount);
         sendString("DATE"+date.format(dNow));

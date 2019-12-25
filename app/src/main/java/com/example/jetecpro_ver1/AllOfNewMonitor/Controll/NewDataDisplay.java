@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Canvas;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -35,14 +36,15 @@ import android.widget.Toast;
 
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.DCA_DeviceControlActivitySupport.NewSupportDCARecycleViewTypeChooser;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NDD_NewDataDisplaySupport.NewSupportNDDPagerAdapter;
+import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NSDS_NewDBHelper.NewDBHelper;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewDeviceInitialzation;
-import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewModifyPassword;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Model.NewSendType;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.FirstPageSetting;
 import com.example.jetecpro_ver1.AllOfNewMonitor.Controll.Pagers.NormalDataSetting;
 import com.example.jetecpro_ver1.BLE_function.BluetoothLeService;
 import com.example.jetecpro_ver1.R;
 import com.example.jetecpro_ver1.Values.SendType;
+import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +63,7 @@ public class NewDataDisplay extends Activity {
     private HashMap<String, ArrayList<String>> getFromIntentArray = new HashMap<>();
     private ArrayList<Integer> getTab = new ArrayList<>();
 
+
     ListView listView;
 
     @Override
@@ -69,7 +72,7 @@ public class NewDataDisplay extends Activity {
         setContentView(R.layout.new_activity_data_display);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-
+        Stetho.initializeWithDefaults(this);
         setArrays();//取得與修正陣列->有YZ問題以及DE為空值問題
 
 
@@ -151,7 +154,8 @@ public class NewDataDisplay extends Activity {
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.button_NDD_Save:
-
+                    NewSaveDataSetting nsds = new NewSaveDataSetting(NewDataDisplay.this,getFromIntentArray);
+                    nsds.save();
                     break;
                 case R.id.button_NDD_Export:
 
@@ -584,14 +588,40 @@ public class NewDataDisplay extends Activity {
         /*NewSendType.cheatStringSend = strString;
         NewSendType.cheatByteSend = strByte;
         //作弊用的..*/
+        try {
+            getFromIntentArray.get("Byte").set(getByteIndex(getFromIntentArray,strByte),strByte);
+            NormalDataSetting m = new NormalDataSetting(NewDataDisplay.this,getFromIntentArray,0,NewDataDisplay.this,getTab);
+            m.mAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            Log.d(TAG, "returnModifyData: "+e.getMessage());
+        }
 
 
+    }
+
+    private int getByteIndex(HashMap<String, ArrayList<String>> hashArray,String strByte){
+
+        for (int i=0;i<hashArray.get("Byte").size();i++){
+            if (strByte.substring(0,4).contains(hashArray.get("Byte").get(i).substring(0,4))){
+                return i;
+            }
+        }
+        return -1;
 
     }
 
     private String trans(Context context, int name) {//不是我在講...每個都要寫ctx.getResources().getString(R.string.??);真的會死人
         String str = context.getResources().getString(name);
         return str;
+    }
+
+    /**
+     * 送字串模組
+     */
+    private void sendString(String getSend) {
+        SendType.SendForBLEDataType = getSend;
+        SendType.getSendBluetoothLeService.
+                setCharacteristicNotification(SendType.Mycharacteristic, true);
     }
 
 

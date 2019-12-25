@@ -268,6 +268,17 @@ public class DDA_SendData {
                     edInput.setHint("0~5000");
                 }
                 break;
+            case 'M':
+                if (selectName.contains(SendType.PV2)) {
+                    edInput.setHint("-10~10");
+                } else if (selectName.contains(SendType.EH2)||selectName.contains(SendType.HH2)) {
+                    edInput.setHint("0~1000");
+                } else if (selectName.contains(SendType.EL2)||selectName.contains(SendType.LL2)) {
+                    edInput.setHint("0~1000");
+                } else if (selectName.contains(SendType.CR2)) {
+                    edInput.setHint("0~1000");
+                }
+                break;
 
             case 'I':
 //                if (SendType.mDP2.contains("on")){//洨數點打開
@@ -1051,6 +1062,21 @@ public class DDA_SendData {
                     return "LL2";
                 }
 
+                break;
+            case 'M':
+                if (input.contains(trans(R.string.PM2_5) + trans(R.string.PV))) {
+                    return "PV2";
+                } else if (input.contains(trans(R.string.PM2_5) + trans(R.string.EH))) {
+                    return "EH2";
+                } else if (input.contains(trans(R.string.PM2_5) + trans(R.string.EL))) {
+                    return "EL2";
+                } else if (input.contains(trans(R.string.PM2_5) + trans(R.string.CR))) {
+                    return "CR2";
+                } else if (input.contains(trans(R.string.PM2_5) + trans(R.string.HH))) {
+                    return "HH2";
+                } else if (input.contains(trans(R.string.PM2_5) + trans(R.string.LL))) {
+                    return "LL2";
+                }
                 break;
         }
         switch (SendType.ThirdWord){

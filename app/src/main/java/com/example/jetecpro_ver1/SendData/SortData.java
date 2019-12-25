@@ -169,6 +169,14 @@ public class SortData {
                     SendType.HH2 = trans(R.string.CO2) + trans(R.string.HH);
                     SendType.LL2 = trans(R.string.CO2) + trans(R.string.LL);
                     break;
+                case 'M':
+                    SendType.PV2 = trans(R.string.PM2_5) + trans(R.string.PV);
+                    SendType.EH2 = trans(R.string.PM2_5) + trans(R.string.EH);
+                    SendType.EL2 = trans(R.string.PM2_5) + trans(R.string.EL);
+                    SendType.CR2 = trans(R.string.PM2_5) + trans(R.string.CR);
+                    SendType.HH2 = trans(R.string.PM2_5) + trans(R.string.HH);
+                    SendType.LL2 = trans(R.string.PM2_5) + trans(R.string.LL);
+                    break;
             }
             if (SendType.row == '2') {
                 switch (SendType.ThirdWord) {
@@ -264,6 +272,7 @@ public class SortData {
                     SendType.HH2 = trans(R.string.CO2) + trans(R.string.HH);
                     SendType.LL2 = trans(R.string.CO2) + trans(R.string.LL);
                     break;
+
             }
             switch (SendType.ThirdWord) {
                 case 'T':
@@ -340,6 +349,15 @@ public class SortData {
                 , SendType.EH2, SendType.EL2
                 , SendType.CR1, SendType.CR2
                 , SendType.DP1, SendType.DP2
+                , SendType.SPK};
+
+        String[] IM = {trans(R.string.device_name)
+                , SendType.IH1, SendType.IL1
+                , SendType.PV1, SendType.PV2
+                , SendType.EH1, SendType.EL1
+                , SendType.EH2, SendType.EL2
+                , SendType.CR1, SendType.CR2
+                , SendType.DP1
                 , SendType.SPK};
 
 
@@ -426,6 +444,8 @@ public class SortData {
                             return II;
                         } else if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H'&& SendType.mALARM == null) {
                             return TH;
+                        }else if (SendType.FirstWord == 'I' && SendType.SecondWord == 'M' && SendType.mALARM == null){
+                            return IM;
                         } else if (Integer.parseInt(SendType.mALARM) == 2) {
                             return TH_AL2;
                         }
@@ -511,6 +531,15 @@ public class SortData {
                 , SendType.mDP1, SendType.mDP2
                 , SendType.mSPK};
 
+        String[] mIM = {SendType.DeviceName
+                , SendType.mIH1, SendType.mIL1
+                , SendType.mPV1, SendType.mPV2
+                , SendType.mEH1, SendType.mEL1
+                , SendType.mEH2, SendType.mEL2
+                , SendType.mCR1, SendType.mCR2
+                , SendType.mDP1
+                , SendType.mSPK};
+
         String[] mI = {SendType.DeviceName
                 , SendType.mIH1, SendType.mIL1
                 , SendType.mPV1, SendType.mEH1
@@ -584,6 +613,8 @@ public class SortData {
                             return mII;
                         } else if (SendType.FirstWord == 'T' && SendType.SecondWord == 'H'&& SendType.mALARM == null) {
                             return mTH;
+                        }else if (SendType.FirstWord == 'I' && SendType.SecondWord == 'M' && SendType.mALARM == null){
+                            return mIM;
                         } else if (Integer.parseInt(SendType.mALARM) == 2) {
                             return mTH_AL2;
                         }
